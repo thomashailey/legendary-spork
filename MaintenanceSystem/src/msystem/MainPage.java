@@ -29,11 +29,81 @@ public class MainPage extends javax.swing.JFrame {
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        jMenuBar1 = new javax.swing.JMenuBar();
+        equipmentTab = new javax.swing.JPanel();
+        inventoryTab = new javax.swing.JPanel();
+        maintenanceTab = new javax.swing.JPanel();
+        reportTab = new javax.swing.JPanel();
+        Employee = new javax.swing.JPanel();
+        mainMenuBar = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         logOutBtn = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        javax.swing.GroupLayout equipmentTabLayout = new javax.swing.GroupLayout(equipmentTab);
+        equipmentTab.setLayout(equipmentTabLayout);
+        equipmentTabLayout.setHorizontalGroup(
+            equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 667, Short.MAX_VALUE)
+        );
+        equipmentTabLayout.setVerticalGroup(
+            equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 291, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Epuipment", equipmentTab);
+
+        javax.swing.GroupLayout inventoryTabLayout = new javax.swing.GroupLayout(inventoryTab);
+        inventoryTab.setLayout(inventoryTabLayout);
+        inventoryTabLayout.setHorizontalGroup(
+            inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 667, Short.MAX_VALUE)
+        );
+        inventoryTabLayout.setVerticalGroup(
+            inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 291, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Inventory", inventoryTab);
+
+        javax.swing.GroupLayout maintenanceTabLayout = new javax.swing.GroupLayout(maintenanceTab);
+        maintenanceTab.setLayout(maintenanceTabLayout);
+        maintenanceTabLayout.setHorizontalGroup(
+            maintenanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 667, Short.MAX_VALUE)
+        );
+        maintenanceTabLayout.setVerticalGroup(
+            maintenanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 291, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Maintenance", maintenanceTab);
+
+        javax.swing.GroupLayout reportTabLayout = new javax.swing.GroupLayout(reportTab);
+        reportTab.setLayout(reportTabLayout);
+        reportTabLayout.setHorizontalGroup(
+            reportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 667, Short.MAX_VALUE)
+        );
+        reportTabLayout.setVerticalGroup(
+            reportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 291, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Report", reportTab);
+
+        javax.swing.GroupLayout EmployeeLayout = new javax.swing.GroupLayout(Employee);
+        Employee.setLayout(EmployeeLayout);
+        EmployeeLayout.setHorizontalGroup(
+            EmployeeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 667, Short.MAX_VALUE)
+        );
+        EmployeeLayout.setVerticalGroup(
+            EmployeeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 291, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Employee", Employee);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -41,20 +111,27 @@ public class MainPage extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 592, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(59, Short.MAX_VALUE))
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         jMenu1.setText("File");
+        jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu1MouseClicked(evt);
+            }
+        });
 
         logOutBtn.setText("Log Out");
+        logOutBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logOutBtnMouseClicked(evt);
+            }
+        });
         logOutBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 logOutBtnActionPerformed(evt);
@@ -62,9 +139,9 @@ public class MainPage extends javax.swing.JFrame {
         });
         jMenu1.add(logOutBtn);
 
-        jMenuBar1.add(jMenu1);
+        mainMenuBar.add(jMenu1);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(mainMenuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -87,6 +164,14 @@ public class MainPage extends javax.swing.JFrame {
     private void logOutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutBtnActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_logOutBtnActionPerformed
+
+    private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenu1MouseClicked
+
+    private void logOutBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logOutBtnMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logOutBtnMouseClicked
 
     /**
      * @param args the command line arguments
@@ -124,11 +209,16 @@ public class MainPage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel Employee;
+    private javax.swing.JPanel equipmentTab;
+    private javax.swing.JPanel inventoryTab;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JMenuItem logOutBtn;
+    private javax.swing.JMenuBar mainMenuBar;
+    private javax.swing.JPanel maintenanceTab;
+    private javax.swing.JPanel reportTab;
     // End of variables declaration//GEN-END:variables
 }
