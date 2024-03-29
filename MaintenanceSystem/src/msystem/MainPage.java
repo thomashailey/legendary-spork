@@ -27,8 +27,8 @@ public class MainPage extends javax.swing.JFrame {
     private void initComponents() {
 
         jTabbedPane2 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        mainPanel = new javax.swing.JPanel();
+        tabPanePanel = new javax.swing.JTabbedPane();
         equipmentTab = new javax.swing.JPanel();
         inventoryTab = new javax.swing.JPanel();
         maintenanceTab = new javax.swing.JPanel();
@@ -51,7 +51,7 @@ public class MainPage extends javax.swing.JFrame {
             .addGap(0, 291, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("Epuipment", equipmentTab);
+        tabPanePanel.addTab("Epuipment", equipmentTab);
 
         javax.swing.GroupLayout inventoryTabLayout = new javax.swing.GroupLayout(inventoryTab);
         inventoryTab.setLayout(inventoryTabLayout);
@@ -64,7 +64,7 @@ public class MainPage extends javax.swing.JFrame {
             .addGap(0, 291, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("Inventory", inventoryTab);
+        tabPanePanel.addTab("Inventory", inventoryTab);
 
         javax.swing.GroupLayout maintenanceTabLayout = new javax.swing.GroupLayout(maintenanceTab);
         maintenanceTab.setLayout(maintenanceTabLayout);
@@ -77,7 +77,7 @@ public class MainPage extends javax.swing.JFrame {
             .addGap(0, 291, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("Maintenance", maintenanceTab);
+        tabPanePanel.addTab("Maintenance", maintenanceTab);
 
         javax.swing.GroupLayout reportTabLayout = new javax.swing.GroupLayout(reportTab);
         reportTab.setLayout(reportTabLayout);
@@ -90,7 +90,7 @@ public class MainPage extends javax.swing.JFrame {
             .addGap(0, 291, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("Report", reportTab);
+        tabPanePanel.addTab("Report", reportTab);
 
         javax.swing.GroupLayout EmployeeLayout = new javax.swing.GroupLayout(Employee);
         Employee.setLayout(EmployeeLayout);
@@ -103,20 +103,20 @@ public class MainPage extends javax.swing.JFrame {
             .addGap(0, 291, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("Employee", Employee);
+        tabPanePanel.addTab("Employee", Employee);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
+        mainPanel.setLayout(mainPanelLayout);
+        mainPanelLayout.setHorizontalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1)
+                .addComponent(tabPanePanel)
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+        mainPanelLayout.setVerticalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(tabPanePanel, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         jMenu1.setText("File");
@@ -148,13 +148,13 @@ public class MainPage extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -213,12 +213,12 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JPanel equipmentTab;
     private javax.swing.JPanel inventoryTab;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JMenuItem logOutBtn;
     private javax.swing.JMenuBar mainMenuBar;
+    private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel maintenanceTab;
     private javax.swing.JPanel reportTab;
+    private javax.swing.JTabbedPane tabPanePanel;
     // End of variables declaration//GEN-END:variables
 }
