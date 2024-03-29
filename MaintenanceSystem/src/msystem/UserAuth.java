@@ -59,7 +59,7 @@ public class UserAuth extends javax.swing.JFrame {
 
     private void tempNextPageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tempNextPageMouseClicked
         // TODO add your handling code here:
-        this.setVisible(false);
+        this.setVisible(true);
         new MainPage().setVisible(true);
     }//GEN-LAST:event_tempNextPageMouseClicked
 
