@@ -26,7 +26,6 @@ public class MainPage extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane2 = new javax.swing.JTabbedPane();
         mainPanel = new javax.swing.JPanel();
         tabPanePanel = new javax.swing.JTabbedPane();
         equipmentTab = new javax.swing.JPanel();
@@ -35,8 +34,7 @@ public class MainPage extends javax.swing.JFrame {
         reportTab = new javax.swing.JPanel();
         Employee = new javax.swing.JPanel();
         mainMenuBar = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        logOutBtn = new javax.swing.JMenuItem();
+        logOutBtn = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -119,27 +117,13 @@ public class MainPage extends javax.swing.JFrame {
             .addComponent(tabPanePanel, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
-        jMenu1.setText("File");
-        jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu1MouseClicked(evt);
-            }
-        });
-
         logOutBtn.setText("Log Out");
         logOutBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 logOutBtnMouseClicked(evt);
             }
         });
-        logOutBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                logOutBtnActionPerformed(evt);
-            }
-        });
-        jMenu1.add(logOutBtn);
-
-        mainMenuBar.add(jMenu1);
+        mainMenuBar.add(logOutBtn);
 
         setJMenuBar(mainMenuBar);
 
@@ -161,16 +145,10 @@ public class MainPage extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void logOutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutBtnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_logOutBtnActionPerformed
-
-    private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenu1MouseClicked
-
     private void logOutBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logOutBtnMouseClicked
         // TODO add your handling code here:
+        this.setVisible(false);
+        new UserAuth().setVisible(true);
     }//GEN-LAST:event_logOutBtnMouseClicked
 
     /**
@@ -212,9 +190,7 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JPanel Employee;
     private javax.swing.JPanel equipmentTab;
     private javax.swing.JPanel inventoryTab;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JMenuItem logOutBtn;
+    private javax.swing.JMenu logOutBtn;
     private javax.swing.JMenuBar mainMenuBar;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel maintenanceTab;
