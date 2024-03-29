@@ -29,6 +29,15 @@ public class MainPage extends javax.swing.JFrame {
         mainPanel = new javax.swing.JPanel();
         tabPanePanel = new javax.swing.JTabbedPane();
         equipmentTab = new javax.swing.JPanel();
+        lblToolname = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        lstTools = new javax.swing.JList<>();
+        lblTooldescription = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txaTooldescription = new javax.swing.JTextArea();
+        btnCheckavailable = new javax.swing.JButton();
+        btnCheckout = new javax.swing.JButton();
+        btnCheckin = new javax.swing.JButton();
         inventoryTab = new javax.swing.JPanel();
         maintenanceTab = new javax.swing.JPanel();
         reportTab = new javax.swing.JPanel();
@@ -38,15 +47,72 @@ public class MainPage extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        lblToolname.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblToolname.setText("Tool Name:");
+
+        lstTools.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(lstTools);
+
+        lblTooldescription.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblTooldescription.setText("Tool Description:");
+
+        txaTooldescription.setColumns(20);
+        txaTooldescription.setRows(5);
+        jScrollPane2.setViewportView(txaTooldescription);
+
+        btnCheckavailable.setText("Check");
+
+        btnCheckout.setText("Check Out");
+
+        btnCheckin.setText("Check In");
+
         javax.swing.GroupLayout equipmentTabLayout = new javax.swing.GroupLayout(equipmentTab);
         equipmentTab.setLayout(equipmentTabLayout);
         equipmentTabLayout.setHorizontalGroup(
             equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 667, Short.MAX_VALUE)
+            .addGroup(equipmentTabLayout.createSequentialGroup()
+                .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(equipmentTabLayout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(lblToolname)
+                        .addGap(125, 125, 125)
+                        .addComponent(lblTooldescription))
+                    .addGroup(equipmentTabLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(equipmentTabLayout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(btnCheckavailable)
+                        .addGap(127, 127, 127)
+                        .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnCheckin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnCheckout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(285, Short.MAX_VALUE))
         );
         equipmentTabLayout.setVerticalGroup(
             equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 291, Short.MAX_VALUE)
+            .addGroup(equipmentTabLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblToolname)
+                    .addComponent(lblTooldescription))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCheckavailable)
+                    .addComponent(btnCheckout))
+                .addGap(18, 18, 18)
+                .addComponent(btnCheckin)
+                .addContainerGap(50, Short.MAX_VALUE))
         );
 
         tabPanePanel.addTab("Epuipment", equipmentTab);
@@ -59,7 +125,7 @@ public class MainPage extends javax.swing.JFrame {
         );
         inventoryTabLayout.setVerticalGroup(
             inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 291, Short.MAX_VALUE)
+            .addGap(0, 379, Short.MAX_VALUE)
         );
 
         tabPanePanel.addTab("Inventory", inventoryTab);
@@ -72,7 +138,7 @@ public class MainPage extends javax.swing.JFrame {
         );
         maintenanceTabLayout.setVerticalGroup(
             maintenanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 291, Short.MAX_VALUE)
+            .addGap(0, 379, Short.MAX_VALUE)
         );
 
         tabPanePanel.addTab("Maintenance", maintenanceTab);
@@ -85,7 +151,7 @@ public class MainPage extends javax.swing.JFrame {
         );
         reportTabLayout.setVerticalGroup(
             reportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 291, Short.MAX_VALUE)
+            .addGap(0, 379, Short.MAX_VALUE)
         );
 
         tabPanePanel.addTab("Report", reportTab);
@@ -98,7 +164,7 @@ public class MainPage extends javax.swing.JFrame {
         );
         EmployeeLayout.setVerticalGroup(
             EmployeeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 291, Short.MAX_VALUE)
+            .addGap(0, 379, Short.MAX_VALUE)
         );
 
         tabPanePanel.addTab("Employee", Employee);
@@ -188,13 +254,22 @@ public class MainPage extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Employee;
+    private javax.swing.JButton btnCheckavailable;
+    private javax.swing.JButton btnCheckin;
+    private javax.swing.JButton btnCheckout;
     private javax.swing.JPanel equipmentTab;
     private javax.swing.JPanel inventoryTab;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblTooldescription;
+    private javax.swing.JLabel lblToolname;
     private javax.swing.JMenu logOutBtn;
+    private javax.swing.JList<String> lstTools;
     private javax.swing.JMenuBar mainMenuBar;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel maintenanceTab;
     private javax.swing.JPanel reportTab;
     private javax.swing.JTabbedPane tabPanePanel;
+    private javax.swing.JTextArea txaTooldescription;
     // End of variables declaration//GEN-END:variables
 }
