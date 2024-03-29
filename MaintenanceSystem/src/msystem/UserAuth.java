@@ -27,13 +27,31 @@ public class UserAuth extends javax.swing.JFrame {
     private void initComponents() {
 
         tempNextPage = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        lblUsercode = new javax.swing.JLabel();
+        lblPassword = new javax.swing.JLabel();
+        txtUsercode = new javax.swing.JTextField();
+        txtPassword = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        tempNextPage.setText("temp for test main");
+        tempNextPage.setText("Log in");
         tempNextPage.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tempNextPageMouseClicked(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel1.setText("User Authentication");
+
+        lblUsercode.setText("User Code");
+
+        lblPassword.setText("Password");
+
+        txtUsercode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUsercodeActionPerformed(evt);
             }
         });
 
@@ -41,17 +59,40 @@ public class UserAuth extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblPassword)
+                    .addComponent(lblUsercode)
+                    .addComponent(txtUsercode, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(266, Short.MAX_VALUE)
-                .addComponent(tempNextPage)
-                .addContainerGap())
+                .addContainerGap(106, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(tempNextPage)
+                        .addGap(132, 132, 132))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(83, 83, 83))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(271, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(12, 12, 12)
+                .addComponent(lblUsercode)
+                .addGap(11, 11, 11)
+                .addComponent(txtUsercode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lblPassword)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addComponent(tempNextPage)
-                .addContainerGap())
+                .addGap(96, 96, 96))
         );
 
         pack();
@@ -62,6 +103,10 @@ public class UserAuth extends javax.swing.JFrame {
         this.setVisible(false);
         new MainPage().setVisible(true);
     }//GEN-LAST:event_tempNextPageMouseClicked
+
+    private void txtUsercodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsercodeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUsercodeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -99,6 +144,11 @@ public class UserAuth extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel lblPassword;
+    private javax.swing.JLabel lblUsercode;
     private javax.swing.JButton tempNextPage;
+    private javax.swing.JTextField txtPassword;
+    private javax.swing.JTextField txtUsercode;
     // End of variables declaration//GEN-END:variables
 }
