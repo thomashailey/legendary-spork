@@ -38,6 +38,7 @@ public class MainPage extends javax.swing.JFrame {
         btnCheckavailable = new javax.swing.JButton();
         btnCheckout = new javax.swing.JButton();
         btnCheckin = new javax.swing.JButton();
+        btnReportloss = new javax.swing.JButton();
         inventoryTab = new javax.swing.JPanel();
         maintenanceTab = new javax.swing.JPanel();
         reportTab = new javax.swing.JPanel();
@@ -70,6 +71,9 @@ public class MainPage extends javax.swing.JFrame {
 
         btnCheckin.setText("Check In");
 
+        btnReportloss.setBackground(new java.awt.Color(255, 51, 51));
+        btnReportloss.setText("REPORT LOST");
+
         javax.swing.GroupLayout equipmentTabLayout = new javax.swing.GroupLayout(equipmentTab);
         equipmentTab.setLayout(equipmentTabLayout);
         equipmentTabLayout.setHorizontalGroup(
@@ -88,8 +92,10 @@ public class MainPage extends javax.swing.JFrame {
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(equipmentTabLayout.createSequentialGroup()
                         .addGap(23, 23, 23)
-                        .addComponent(btnCheckavailable)
-                        .addGap(127, 127, 127)
+                        .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnCheckavailable)
+                            .addComponent(btnReportloss))
+                        .addGap(124, 124, 124)
                         .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnCheckin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnCheckout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
@@ -110,9 +116,15 @@ public class MainPage extends javax.swing.JFrame {
                 .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCheckavailable)
                     .addComponent(btnCheckout))
-                .addGap(18, 18, 18)
-                .addComponent(btnCheckin)
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(equipmentTabLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCheckin)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, equipmentTabLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                        .addComponent(btnReportloss)
+                        .addGap(33, 33, 33))))
         );
 
         tabPanePanel.addTab("Epuipment", equipmentTab);
@@ -257,6 +269,7 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JButton btnCheckavailable;
     private javax.swing.JButton btnCheckin;
     private javax.swing.JButton btnCheckout;
+    private javax.swing.JButton btnReportloss;
     private javax.swing.JPanel equipmentTab;
     private javax.swing.JPanel inventoryTab;
     private javax.swing.JScrollPane jScrollPane1;
