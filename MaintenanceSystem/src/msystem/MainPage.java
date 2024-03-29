@@ -55,6 +55,13 @@ public class MainPage extends javax.swing.JFrame {
         reportDetailsField = new javax.swing.JTextArea();
         reportPrint = new javax.swing.JButton();
         Employee = new javax.swing.JPanel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        empList = new javax.swing.JList<>();
+        empListLabel = new javax.swing.JLabel();
+        empSearchField = new javax.swing.JTextField();
+        empSearchBtn = new javax.swing.JButton();
+        empAddBtn = new javax.swing.JButton();
+        empRemoveBtn = new javax.swing.JButton();
         mainMenuBar = new javax.swing.JMenuBar();
         logOutBtn = new javax.swing.JMenu();
 
@@ -227,9 +234,9 @@ public class MainPage extends javax.swing.JFrame {
         reportTabLayout.setVerticalGroup(
             reportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(reportTabLayout.createSequentialGroup()
-                .addGap(11, 11, 11)
+                .addGap(5, 5, 5)
                 .addComponent(reportListLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(reportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(reportTabLayout.createSequentialGroup()
                         .addGroup(reportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -246,15 +253,56 @@ public class MainPage extends javax.swing.JFrame {
 
         tabPanePanel.addTab("Report", reportTab);
 
+        empList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane6.setViewportView(empList);
+
+        empListLabel.setText("Employees List:");
+
+        empSearchBtn.setText("Search");
+
+        empAddBtn.setText("Add");
+
+        empRemoveBtn.setText("Remove");
+
         javax.swing.GroupLayout EmployeeLayout = new javax.swing.GroupLayout(Employee);
         Employee.setLayout(EmployeeLayout);
         EmployeeLayout.setHorizontalGroup(
             EmployeeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 714, Short.MAX_VALUE)
+            .addGroup(EmployeeLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(EmployeeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane6)
+                    .addGroup(EmployeeLayout.createSequentialGroup()
+                        .addComponent(empListLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(EmployeeLayout.createSequentialGroup()
+                        .addComponent(empSearchField, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(empSearchBtn)
+                        .addGap(83, 83, 83)
+                        .addComponent(empAddBtn)
+                        .addGap(18, 18, 18)
+                        .addComponent(empRemoveBtn)))
+                .addContainerGap())
         );
         EmployeeLayout.setVerticalGroup(
             EmployeeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 379, Short.MAX_VALUE)
+            .addGroup(EmployeeLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(empListLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(EmployeeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(empSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(empSearchBtn)
+                    .addComponent(empAddBtn)
+                    .addComponent(empRemoveBtn))
+                .addGap(16, 16, 16))
         );
 
         tabPanePanel.addTab("Employee", Employee);
@@ -348,6 +396,12 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JButton btnCheckin;
     private javax.swing.JButton btnCheckout;
     private javax.swing.JButton btnReportloss;
+    private javax.swing.JButton empAddBtn;
+    private javax.swing.JList<String> empList;
+    private javax.swing.JLabel empListLabel;
+    private javax.swing.JButton empRemoveBtn;
+    private javax.swing.JButton empSearchBtn;
+    private javax.swing.JTextField empSearchField;
     private javax.swing.JPanel equipmentTab;
     private javax.swing.JPanel inventoryTab;
     private javax.swing.JLabel jLabel1;
@@ -356,6 +410,7 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel lblTooldescription;
     private javax.swing.JLabel lblToolname;
