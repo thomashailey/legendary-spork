@@ -45,6 +45,15 @@ public class MainPage extends javax.swing.JFrame {
         inventoryTab = new javax.swing.JPanel();
         maintenanceTab = new javax.swing.JPanel();
         reportTab = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        reportList = new javax.swing.JList<>();
+        reportListLabel = new javax.swing.JLabel();
+        reportSearchField = new javax.swing.JTextField();
+        reportSearchBtn = new javax.swing.JButton();
+        reportAccessLogsBtn = new javax.swing.JButton();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        reportDetailsField = new javax.swing.JTextArea();
+        reportPrint = new javax.swing.JButton();
         Employee = new javax.swing.JPanel();
         mainMenuBar = new javax.swing.JMenuBar();
         logOutBtn = new javax.swing.JMenu();
@@ -114,7 +123,7 @@ public class MainPage extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(48, 48, 48))
         );
@@ -129,9 +138,8 @@ public class MainPage extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
-                    .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCheckavailable)
@@ -149,7 +157,7 @@ public class MainPage extends javax.swing.JFrame {
         inventoryTab.setLayout(inventoryTabLayout);
         inventoryTabLayout.setHorizontalGroup(
             inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 667, Short.MAX_VALUE)
+            .addGap(0, 714, Short.MAX_VALUE)
         );
         inventoryTabLayout.setVerticalGroup(
             inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -162,7 +170,7 @@ public class MainPage extends javax.swing.JFrame {
         maintenanceTab.setLayout(maintenanceTabLayout);
         maintenanceTabLayout.setHorizontalGroup(
             maintenanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 667, Short.MAX_VALUE)
+            .addGap(0, 714, Short.MAX_VALUE)
         );
         maintenanceTabLayout.setVerticalGroup(
             maintenanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -171,15 +179,69 @@ public class MainPage extends javax.swing.JFrame {
 
         tabPanePanel.addTab("Maintenance", maintenanceTab);
 
+        reportList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane4.setViewportView(reportList);
+
+        reportListLabel.setText("Report List:");
+
+        reportSearchBtn.setText("Search");
+
+        reportAccessLogsBtn.setText("View Access Logs");
+
+        reportDetailsField.setColumns(20);
+        reportDetailsField.setRows(5);
+        jScrollPane5.setViewportView(reportDetailsField);
+
+        reportPrint.setText("Print");
+
         javax.swing.GroupLayout reportTabLayout = new javax.swing.GroupLayout(reportTab);
         reportTab.setLayout(reportTabLayout);
         reportTabLayout.setHorizontalGroup(
             reportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 667, Short.MAX_VALUE)
+            .addGroup(reportTabLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(reportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(reportTabLayout.createSequentialGroup()
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(reportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(reportTabLayout.createSequentialGroup()
+                                .addComponent(reportSearchField, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(reportSearchBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(reportAccessLogsBtn))
+                            .addComponent(jScrollPane5)))
+                    .addGroup(reportTabLayout.createSequentialGroup()
+                        .addComponent(reportListLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, reportTabLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(reportPrint)))
+                .addContainerGap())
         );
         reportTabLayout.setVerticalGroup(
             reportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 379, Short.MAX_VALUE)
+            .addGroup(reportTabLayout.createSequentialGroup()
+                .addGap(11, 11, 11)
+                .addComponent(reportListLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(reportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(reportTabLayout.createSequentialGroup()
+                        .addGroup(reportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(reportSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(reportSearchBtn)
+                            .addComponent(reportAccessLogsBtn))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane5))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addComponent(reportPrint)
+                .addGap(15, 15, 15))
         );
 
         tabPanePanel.addTab("Report", reportTab);
@@ -188,7 +250,7 @@ public class MainPage extends javax.swing.JFrame {
         Employee.setLayout(EmployeeLayout);
         EmployeeLayout.setHorizontalGroup(
             EmployeeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 667, Short.MAX_VALUE)
+            .addGap(0, 714, Short.MAX_VALUE)
         );
         EmployeeLayout.setVerticalGroup(
             EmployeeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -292,6 +354,8 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel lblTooldescription;
     private javax.swing.JLabel lblToolname;
@@ -300,6 +364,13 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JMenuBar mainMenuBar;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel maintenanceTab;
+    private javax.swing.JButton reportAccessLogsBtn;
+    private javax.swing.JTextArea reportDetailsField;
+    private javax.swing.JList<String> reportList;
+    private javax.swing.JLabel reportListLabel;
+    private javax.swing.JButton reportPrint;
+    private javax.swing.JButton reportSearchBtn;
+    private javax.swing.JTextField reportSearchField;
     private javax.swing.JPanel reportTab;
     private javax.swing.JTabbedPane tabPanePanel;
     private javax.swing.JTextArea txaTooldescription;
