@@ -10,4 +10,36 @@ package msystem;
  */
 public class Employee {
     
+    private void ManageEmployee() {
+        
+    }
+    
+    private void PullEmployees() {
+        
+    }
+    
+    private void SearchEmployees() {
+        
+    }
+    
+    private void PullEmpInfo() {
+        
+    }
+    
+    private void PullReports () {
+        
+    }
+    
+    private void SearchReports() {
+        
+    }
+    
+    private void AccessLogs() {
+        
+    }
+    
+    private void PrintRecords() {
+        
+    }
+    
 }
