@@ -31,7 +31,7 @@ public class UserAuth extends javax.swing.JFrame {
         lblUsercode = new javax.swing.JLabel();
         lblPassword = new javax.swing.JLabel();
         txtUsercode = new javax.swing.JTextField();
-        txtPassword = new javax.swing.JTextField();
+        jpfPassword = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -65,18 +65,18 @@ public class UserAuth extends javax.swing.JFrame {
                 .addGap(83, 83, 83))
             .addGroup(layout.createSequentialGroup()
                 .addGap(126, 126, 126)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(tempNextPage)
-                        .addGap(34, 34, 34))
-                    .addComponent(txtUsercode, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jpfPassword)
+                    .addComponent(txtUsercode, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(47, 47, 47)
                         .addComponent(lblPassword))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(44, 44, 44)
-                        .addComponent(lblUsercode)))
+                        .addComponent(lblUsercode))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(tempNextPage)
+                        .addGap(34, 34, 34)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -91,10 +91,10 @@ public class UserAuth extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(lblPassword)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39)
+                .addComponent(jpfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(tempNextPage)
-                .addContainerGap(55, Short.MAX_VALUE))
+                .addContainerGap(76, Short.MAX_VALUE))
         );
 
         pack();
@@ -147,10 +147,10 @@ public class UserAuth extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPasswordField jpfPassword;
     private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblUsercode;
     private javax.swing.JButton tempNextPage;
-    private javax.swing.JTextField txtPassword;
     private javax.swing.JTextField txtUsercode;
     // End of variables declaration//GEN-END:variables
 }
