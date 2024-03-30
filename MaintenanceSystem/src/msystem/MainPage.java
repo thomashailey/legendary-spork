@@ -453,6 +453,14 @@ public class MainPage extends javax.swing.JFrame {
             }
         });
     }
+    
+    public void AccessEquipmentInfo() {
+        
+    }
+    
+    public void AccessEmployeeInfo() {
+        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Employee;
