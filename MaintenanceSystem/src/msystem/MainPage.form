@@ -464,11 +464,11 @@
                                   <Component id="jScrollPane7" min="-2" pref="564" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="32767" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="jButton2" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="maintSearchEmpBtn" alignment="0" max="32767" attributes="0"/>
                                       <Component id="jTextField1" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="jButton3" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="jButton4" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="jButton5" max="32767" attributes="0"/>
+                                      <Component id="maintSearchCatBtn" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="maintSearchDateBtn" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="maintLogBtn" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                               <Group type="102" attributes="0">
@@ -490,13 +490,13 @@
                               <Group type="102" attributes="0">
                                   <Component id="jTextField1" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                                  <Component id="maintSearchEmpBtn" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="jButton3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="maintSearchCatBtn" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="jButton4" min="-2" max="-2" attributes="0"/>
+                                  <Component id="maintSearchDateBtn" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="jButton5" min="-2" max="-2" attributes="0"/>
+                                  <Component id="maintLogBtn" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Component id="jScrollPane7" min="-2" pref="363" max="-2" attributes="0"/>
                           </Group>
@@ -508,17 +508,17 @@
               <SubComponents>
                 <Component class="javax.swing.JTextField" name="jTextField1">
                 </Component>
-                <Component class="javax.swing.JButton" name="jButton2">
+                <Component class="javax.swing.JButton" name="maintSearchEmpBtn">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Search by Employee ID"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JButton" name="jButton3">
+                <Component class="javax.swing.JButton" name="maintSearchCatBtn">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Search by Category"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JButton" name="jButton4">
+                <Component class="javax.swing.JButton" name="maintSearchDateBtn">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Search by Date"/>
                   </Properties>
@@ -553,7 +553,7 @@
                     </Component>
                   </SubComponents>
                 </Container>
-                <Component class="javax.swing.JButton" name="jButton5">
+                <Component class="javax.swing.JButton" name="maintLogBtn">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="New Log"/>
                   </Properties>
@@ -586,13 +586,11 @@
                                           <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Group type="102" attributes="0">
-                                                  <Component id="reportSearchField" pref="347" max="32767" attributes="0"/>
-                                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                                  <Component id="reportSearchField" max="32767" attributes="0"/>
+                                                  <EmptySpace type="separate" max="-2" attributes="0"/>
                                                   <Component id="reportSearchBtn" min="-2" max="-2" attributes="0"/>
-                                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                                  <Component id="reportAccessLogsBtn" min="-2" max="-2" attributes="0"/>
                                               </Group>
-                                              <Component id="jScrollPane5" max="32767" attributes="0"/>
+                                              <Component id="jScrollPane5" pref="565" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
                                       <Group type="102" attributes="0">
@@ -617,7 +615,6 @@
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="reportSearchField" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="reportSearchBtn" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="reportAccessLogsBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="jScrollPane5" pref="302" max="32767" attributes="0"/>
@@ -667,11 +664,6 @@
                 <Component class="javax.swing.JButton" name="reportSearchBtn">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Search"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JButton" name="reportAccessLogsBtn">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="View Access Logs"/>
                   </Properties>
                 </Component>
                 <Container class="javax.swing.JScrollPane" name="jScrollPane5">
