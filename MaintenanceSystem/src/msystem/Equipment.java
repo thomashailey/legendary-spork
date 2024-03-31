@@ -10,4 +10,32 @@ package msystem;
  */
 public class Equipment {
     
+    private void CheckIn() {
+        
+    }
+    
+    private void CheckOut() {
+        
+    }
+    
+    private void ReportLoss() {
+        
+    }
+    
+    private void CheckStatus() {
+        
+    }
+    
+    private void SearchInventory() {
+        
+    }
+    
+    private void AdjustInventory() {
+        
+    }
+    
+    private void ViewInventory() {
+        
+    }
+    
 }
