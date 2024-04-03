@@ -4,41 +4,55 @@
  */
 package msystem;
 
+import java.sql.SQLException;
+import javax.swing.DefaultListModel;
+
 /**
  *
  * @author thoma
  */
 public class Employee {
     
-    private void ManageEmployee() {
+    public void ManageEmployee() {
         
     }
     
-    private void PullEmployees() {
+    public static void PullEmployees() throws SQLException, ClassNotFoundException {
+        DBConnect db = new DBConnect();
+        db.OpenConnection();
+        
+        DefaultListModel model = new DefaultListModel();
+        try {
+            String sql = "SELECT * FROM user_authoization";
+            
+            
+        }
+        catch(Exception e) {
+            
+        }
+    }
+    
+    public void SearchEmployees() {
         
     }
     
-    private void SearchEmployees() {
+    public void PullEmpInfo() {
         
     }
     
-    private void PullEmpInfo() {
+    public void PullReports () {
         
     }
     
-    private void PullReports () {
+    public void SearchReports() {
         
     }
     
-    private void SearchReports() {
+    public void AccessLogs() {
         
     }
     
-    private void AccessLogs() {
-        
-    }
-    
-    private void PrintRecords() {
+    public void PrintRecords() {
         
     }
     
