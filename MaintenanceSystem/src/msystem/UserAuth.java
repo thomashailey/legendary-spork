@@ -4,6 +4,8 @@
  */
 package msystem;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author thoma
@@ -101,18 +103,46 @@ public class UserAuth extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tempNextPageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tempNextPageMouseClicked
-        // TODO add your handling code here:
-        this.setVisible(false);
-        new MainPage().setVisible(true);
+        // Get user code and password from text fields
+        String userCode = txtUsercode.getText();
+        String password = String.valueOf(jpfPassword.getPassword());
+
+        // Check if user code matches primary key in database
+        if (checkPrimaryKey(userCode)) {
+            // Primary key matches, proceed with authentication
+            authenticateLogin(userCode, password);
+        } else {
+            // Primary key does not match, show error message
+            JOptionPane.showMessageDialog(this, "Invalid User Code", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_tempNextPageMouseClicked
 
     private void txtUsercodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsercodeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtUsercodeActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    // Method to check if user code matches primary key in database
+    private boolean checkPrimaryKey(String userCode) {
+        // Database connection parameters
+        String url = "jdbc:mysql://localhost:3306/ceis400_groupc_maintsys","root","devry123";
+        String username = "your_username";
+        String password = "your_password";
+
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+            String sql = "SELECT * FROM your_table WHERE primary_key_column = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, userCode);
+            ResultSet resultSet = statement.executeQuery();
+            return resultSet.next();
+        }    }
+    
+    // Method to authenticate login with user code and password
+    private void authenticateLogin(String userCode, String password) {
+        // Add authentication logic here
+        // This method is just a placeholder
+        System.out.println("User code: " + userCode + ", Password: " + password);
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -136,7 +166,23 @@ public class UserAuth extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(UserAuth.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+ try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(UserAuth.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(UserAuth.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(UserAuth.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(UserAuth.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -153,4 +199,58 @@ public class UserAuth extends javax.swing.JFrame {
     private javax.swing.JButton tempNextPage;
     private javax.swing.JTextField txtUsercode;
     // End of variables declaration//GEN-END:variables
+
+    private static class SQLException {
+
+        public SQLException() {
+        }
+
+        private void printStackTrace() {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+    }
+
+    private static class ResultSet {
+
+        public ResultSet() {
+        }
+
+        private boolean next() {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+    }
+
+    private static class DriverManager {
+
+        private static Connection getConnection(String url, String username, String password) {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+
+        public DriverManager() {
+        }
+    }
+
+    private static class PreparedStatement {
+
+        public PreparedStatement() {
+        }
+
+        private ResultSet executeQuery() {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+
+        private void setString(int i, String userCode) {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+    }
+
+    private static class Connection {
+
+        public Connection() {
+        }
+
+        private PreparedStatement prepareStatement(String sql) {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+    }
 }
