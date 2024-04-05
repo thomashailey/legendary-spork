@@ -41,17 +41,9 @@ public class Employee {
                 System.out.println("Successfully Accessed DataBase");
             }*/
             while (result.next()) {
-                elements.add(result.getString("name"));
+                elements.add(result.getString("Username"));
             }
-            
-
-            result = stmt.executeQuery();
-            if (result != null) {
-                System.out.println("Successfully Accessed DataBase");
-            }
-            while(result.next()){
-                System.out.println(result.getString("Username"));
-            }
+    
 
         }
         catch(Exception e) {
