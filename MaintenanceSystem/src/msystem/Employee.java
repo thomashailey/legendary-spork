@@ -4,8 +4,10 @@
  */
 package msystem;
 
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.Vector;
 import javax.swing.DefaultListModel;
+import javax.swing.JList;
 
 /**
  *
@@ -13,21 +15,36 @@ import javax.swing.DefaultListModel;
  */
 public class Employee {
     
+    // Global level varriables
+    Connection con = null;
+    PreparedStatement stmt;
+    ResultSet result;
+    
+    
     public void ManageEmployee() {
         
     }
     
-    public static void PullEmployees() throws SQLException, ClassNotFoundException {
+    public Vector PullEmployees() throws SQLException, ClassNotFoundException {
         DBConnect db = new DBConnect();
-        db.OpenConnection();
+        con = db.OpenConnection();
+        Vector<String> elements = new Vector<String>();
+        MainPage main = new MainPage();
         
         DefaultListModel model = new DefaultListModel();
         try {
             String sql = "SELECT * FROM user_authoization";
+            stmt = con.prepareStatement(sql);
             
-<<<<<<< Updated upstream
+            result = stmt.executeQuery();
+            /*if (result != null) {
+                System.out.println("Successfully Accessed DataBase");
+            }*/
+            while (result.next()) {
+                elements.add(result.getString("name"));
+            }
             
-=======
+
             result = stmt.executeQuery();
             if (result != null) {
                 System.out.println("Successfully Accessed DataBase");
@@ -35,7 +52,7 @@ public class Employee {
             while(result.next()){
                 System.out.println(result.getString("Username"));
             }
->>>>>>> Stashed changes
+
         }
         catch(Exception e) {
             
