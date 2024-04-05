@@ -25,7 +25,17 @@ public class Employee {
         try {
             String sql = "SELECT * FROM user_authoization";
             
+<<<<<<< Updated upstream
             
+=======
+            result = stmt.executeQuery();
+            if (result != null) {
+                System.out.println("Successfully Accessed DataBase");
+            }
+            while(result.next()){
+                System.out.println(result.getString("Username"));
+            }
+>>>>>>> Stashed changes
         }
         catch(Exception e) {
             
