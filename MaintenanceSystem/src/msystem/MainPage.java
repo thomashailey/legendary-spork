@@ -9,6 +9,7 @@ package msystem;
  * @author thoma
  */
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -531,8 +532,12 @@ public class MainPage extends javax.swing.JFrame {
     private void loadAllBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loadAllBtnMouseClicked
         // TODO add your handling code here:
         Employee emp = new Employee();
+        ArrayList<String> list = new ArrayList<String>();
         try {
-            emp.PullEmployees();
+            list = emp.PullEmployees();
+            DefaultListModel model = new DefaultListModel();
+            model.addAll(list);
+            empList.setModel(model);
         } catch (SQLException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -540,6 +545,7 @@ public class MainPage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_loadAllBtnMouseClicked
 
+    
     /**
      * @param args the command line arguments
      */

@@ -5,6 +5,7 @@
 package msystem;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
@@ -16,6 +17,7 @@ import javax.swing.JList;
 public class Employee {
     
     // Global level varriables
+    DBConnect db = new DBConnect();
     Connection con = null;
     PreparedStatement stmt;
     ResultSet result;
@@ -25,10 +27,9 @@ public class Employee {
         
     }
     
-    public Vector PullEmployees() throws SQLException, ClassNotFoundException {
-        DBConnect db = new DBConnect();
+    public ArrayList PullEmployees() throws SQLException, ClassNotFoundException {
         con = db.OpenConnection();
-        Vector<String> elements = new Vector<String>();
+        ArrayList<String> elements = new ArrayList<String>();
         MainPage main = new MainPage();
         
         DefaultListModel model = new DefaultListModel();
@@ -37,19 +38,19 @@ public class Employee {
             stmt = con.prepareStatement(sql);
             
             result = stmt.executeQuery();
-            /*if (result != null) {
+            if (result != null) {
                 System.out.println("Successfully Accessed DataBase");
-            }*/
-            while (result.next()) {
-                elements.add(result.getString("name"));
             }
-            
+            while (result.next()) {
+                elements.add(result.getString("Username"));
+            }
         }
         catch(Exception e) {
             
         }
         return elements;
     }
+
     
     public void SearchEmployees() {
         
