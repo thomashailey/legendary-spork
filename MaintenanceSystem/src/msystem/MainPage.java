@@ -8,6 +8,9 @@ package msystem;
  *
  * @author thoma
  */
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import msystem.Employee;
 import msystem.Equipment;
 public class MainPage extends javax.swing.JFrame {
@@ -524,7 +527,14 @@ public class MainPage extends javax.swing.JFrame {
 
     private void loadAllBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loadAllBtnMouseClicked
         // TODO add your handling code here:
-        
+        Employee emp = new Employee();
+        try {
+            emp.PullEmployees();
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_loadAllBtnMouseClicked
 
     /**

@@ -16,6 +16,7 @@ public class Employee {
     // Global level varriables
     Connection con = null;
     PreparedStatement stmt;
+    ResultSet result;
     
     
     public void ManageEmployee() {
@@ -30,6 +31,11 @@ public class Employee {
         try {
             String sql = "SELECT * FROM user_authoization";
             stmt = con.prepareStatement(sql);
+            
+            result = stmt.executeQuery();
+            if (result != null) {
+                System.out.println("Successfully Accessed DataBase");
+            }
             
         }
         catch(Exception e) {
