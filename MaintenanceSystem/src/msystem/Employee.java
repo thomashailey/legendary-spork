@@ -5,9 +5,8 @@
 package msystem;
 
 import java.sql.*;
-import java.util.Vector;
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
+import java.util.ArrayList;
+
 
 /**
  *
@@ -16,6 +15,8 @@ import javax.swing.JList;
 public class Employee {
     
     // Global level varriables
+
+    DBConnect db = new DBConnect();
     Connection con = null;
     PreparedStatement stmt;
     ResultSet result;
@@ -25,31 +26,40 @@ public class Employee {
         
     }
     
-    public void PullEmployees() throws SQLException, ClassNotFoundException {
-        DBConnect db = new DBConnect();
-        con = db.OpenConnection();
-        Vector<String> elements = new Vector<String>();
-        MainPage main = new MainPage();
+
+    public ArrayList PullEmployees() throws SQLException, ClassNotFoundException {
         
-        DefaultListModel model = new DefaultListModel();
+        /*  Set connection to DBConnect OpenConnection() method,
+            Create ArrayList to store DB elements
+        */
+        con = db.OpenConnection();
+        ArrayList<String> elements = new ArrayList<>();
         try {
             String sql = "SELECT * FROM user_authoization";
             stmt = con.prepareStatement(sql);
             
             result = stmt.executeQuery();
-            /*if (result != null) {
+
+            if (result != null) {
                 System.out.println("Successfully Accessed DataBase");
-            }*/
+            }
+            while (result.next()) {
+                elements.add(result.getString("Username"));
+            }
+            /*
             while (result.next()) {
                 System.out.print(result.getString("Username") + ", " + result.getString("UserID"));
-            }
+            }*/
     
+
 
         }
         catch(Exception e) {
             
         }
+        return elements;
     }
+
     
     public void SearchEmployees() {
         //use pull employees to search for specific names
@@ -73,7 +83,8 @@ public class Employee {
     }
     
     public void AccessLogs() {
-        // streatch goal - if we have time to add
+        // stretch goal - if we have time to add
+
         
     }
     
