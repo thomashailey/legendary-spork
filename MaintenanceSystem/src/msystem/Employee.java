@@ -7,6 +7,7 @@ package msystem;
 import java.sql.*;
 import java.util.ArrayList;
 
+
 /**
  *
  * @author thoma
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 public class Employee {
     
     // Global level varriables
+
     DBConnect db = new DBConnect();
     Connection con = null;
     PreparedStatement stmt;
@@ -24,6 +26,7 @@ public class Employee {
         
     }
     
+
     public ArrayList PullEmployees() throws SQLException, ClassNotFoundException {
         
         /*  Set connection to DBConnect OpenConnection() method,
@@ -36,12 +39,20 @@ public class Employee {
             stmt = con.prepareStatement(sql);
             
             result = stmt.executeQuery();
+
             if (result != null) {
                 System.out.println("Successfully Accessed DataBase");
             }
             while (result.next()) {
                 elements.add(result.getString("Username"));
             }
+            /*
+            while (result.next()) {
+                System.out.print(result.getString("Username") + ", " + result.getString("UserID"));
+            }*/
+    
+
+
         }
         catch(Exception e) {
             
@@ -73,6 +84,7 @@ public class Employee {
     
     public void AccessLogs() {
         // stretch goal - if we have time to add
+
         
     }
     
