@@ -4,7 +4,7 @@
  */
 package msystem;
 
-import java.sql.SQLException;
+import java.sql.*;
 import javax.swing.DefaultListModel;
 
 /**
@@ -13,18 +13,23 @@ import javax.swing.DefaultListModel;
  */
 public class Employee {
     
+    // Global level varriables
+    Connection con = null;
+    PreparedStatement stmt;
+    
+    
     public void ManageEmployee() {
         
     }
     
-    public static void PullEmployees() throws SQLException, ClassNotFoundException {
+    public void PullEmployees() throws SQLException, ClassNotFoundException {
         DBConnect db = new DBConnect();
-        db.OpenConnection();
+        con = db.OpenConnection();
         
         DefaultListModel model = new DefaultListModel();
         try {
             String sql = "SELECT * FROM user_authoization";
-            
+            stmt = con.prepareStatement(sql);
             
         }
         catch(Exception e) {
