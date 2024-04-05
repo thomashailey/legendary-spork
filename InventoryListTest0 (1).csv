@@ -1,0 +1,73 @@
+﻿,ITEMID,ITEMNAME,DESCRIPTION,QUANTITY,LOCATON
+S,1,Solder,Lead-Alloy,350,Secondary
+S,2,Solder,Lead-Alloy,200,Primary
+S,3,Solder,Silver-Alloy,600,Secondary
+S,4,Solder,Silver-Alloy,100,Primary
+S,5,Solder,Solid-Core,50,Secondary
+S,6,Solder,Solid-Core,900,Primary
+S,7,Solder,Flux-Core,250,Secondary
+S,8,Solder,Flux-Core,100,Primary
+S,9,Solder,Acid-Core,20,Secondary
+S,10,Solder,Acid-Core,1000,Primary
+S,11,Solder,Rosin-Core,600,Secondary
+S,12,Solder,Rosin-Core,100,Primary
+S,13,Solder,Lead-Free,250,Secondary
+S,14,Solder,Lead-Free,100,Primary
+S,15,Solder,Lead-Based,10,Secondary
+S,16,Solder,Lead-Based,50,Primary
+M,1,Meter Replaceable Part,Wire Piercing Probes,10,Secondary
+M,2,Meter Replaceable Part,Wire Piercing Probes,5,Primary
+M,3,Meter Replaceable Part,Alligator Clips,2000,Secondary
+M,4,Meter Replaceable Part,Alligator Clips,500,Primary
+M,5,Meter Replaceable Part,Test Hook Clips,1000,Secondary
+M,6,Meter Replaceable Part,Test Hook Clips,100,Primary
+M,7,Meter Replaceable Part,Test Tweezer,50,Secondary
+M,8,Meter Replaceable Part,Test Tweezer,10,Primary
+M,9,Meter Replaceable Part,"0.027 inch diameter,90 Degree Back Probe",2,Secondary
+M,10,Meter Replaceable Part,"0.027 inch diameter,90 Degree Back Probe",10,Primary
+M,11,Meter Replaceable Part,"0.027 inch diameter,135 Degree Back Probe",2,Secondary
+M,12,Meter Replaceable Part,"0.027 inch diameter,135 Degree Back Probe",50,Primary
+M,13,Meter Replaceable Part,"0.027 inch diameter,Straight Back Probe",200,Secondary
+M,14,Meter Replaceable Part,"0.027 inch diameter,Straight Back Probe",2000,Primary
+M,15,Meter Replaceable Part,"0.040 inch diameter, 90 Degree Back Probe",400,Secondary
+M,16,Meter Replaceable Part,"0.040 inch diameter, 90 Degree Back Probe",5000,Primary
+M,17,Meter Replaceable Part,"0.040 inch diameter,135 Degree Back Probe",650,Secondary
+M,18,Meter Replaceable Part,"0.040 inch diameter,135 Degree Back Probe",650,Primary
+M,19,Meter Replaceable Part,"0.040 inch diameter,Straight Back Probe",100,Secondary
+M,20,Meter Replaceable Part,"0.040 inch diameter,Straight Back Probe",250,Primary
+M,21,Meter Replaceable Part,nickel-plated copper pen tips,100,Secondary
+M,22,Meter Replaceable Part,nickel-plated copper pen tips,450,Primary
+M,23,Meter Replaceable Part,gold-plated copper pen tips,100,Secondary
+M,24,Meter Replaceable Part,gold-plated copper pen tips,250,Primary
+M,25,Meter Replaceable Part,1KV CAT III 20A; 3ft/39inch Test Extension Lead,1000,Secondary
+M,26,Meter Replaceable Part,1KV CAT III 20A; 3ft/39inch Test Extension Lead,400,Primary
+M,27,Meter Replaceable Part,1000V CAT III 20A CE; 39inch Lead Extension,20,Secondary
+M,28,Meter Replaceable Part,1000V CAT III 20A CE; 39inch Lead Extension,35,Primary
+M,29,Meter Replaceable Part,1000V CAT III 20A; Heavy Duty Test Probes,49,Secondary
+M,30,Meter Replaceable Part,1000V CAT III 20A; Heavy Duty Test Probes,100,Primary
+M,31,Meter Replaceable Part,2MM Banana Jack To 4MM Banana Plug Adaptor,15,Secondary
+M,32,Meter Replaceable Part,2MM Banana Jack To 4MM Banana Plug Adaptor,450,Primary
+M,33,Meter Replaceable Part,2MM Banana Jack To Back Probe Pin,100,Secondary
+M,34,Meter Replaceable Part,2MM Banana Jack To Back Probe Pin,25,Primary
+M,35,Meter Replaceable Part,tip shroud,40,Secondary
+M,36,Meter Replaceable Part,tip shroud,20,Primary
+M,37,Meter Replaceable Part,Banana Plug to Alligator Clip Cable,1000,Secondary
+M,38,Meter Replaceable Part,Banana Plug to Alligator Clip Cable,3000,Primary
+M,39,Meter Replaceable Part,Carrying Case,1,Secondary
+M,40,Meter Replaceable Part,Carrying Case,5,Primary
+M,41,Meter Replaceable Part,Roll-up Storage Pouch,50,Secondary
+M,42,Meter Replaceable Part,Roll-up Storage Pouch,2,Primary
+M,43,Meter Replaceable Part,Hanging Strap,100,Secondary
+M,44,Meter Replaceable Part,Hanging Strap,200,Primary
+PWR,1,Power Supply Replacement Part,12V AC Adapter Power Supply,42,Secondary
+PWR,2,Power Supply Replacement Part,12V AC Adapter Power Supply,30,Primary
+PWR,3,Power Supply Replacement Part,9VDC 500Ma Power Adapter For ESP101 & ESP 102,25,Secondary
+PWR,4,Power Supply Replacement Part,9VDC 500Ma Power Adapter For ESP101 & ESP 102,50,Primary
+PWR,5,Power Supply Replacement Part,Shure PS60US Power Supply Energy Switching,200,Secondary
+PWR,6,Power Supply Replacement Part,Shure PS60US Power Supply Energy Switching,2500,Primary
+PWR,7,Power Supply Replacement Part,Power Supply Cord,40,Secondary
+PWR,8,Power Supply Replacement Part,Power Supply Cord,60,Primary
+PWR,9,Power Supply Replacement Part,Power Supply Board,1500,Secondary
+PWR,10,Power Supply Replacement Part,Power Supply Board,250,Primary
+PWR,11,Power Supply Replacement Part,Power Adapter,1000,Secondary
+PWR,12,Power Supply Replacement Part,Power Adapter,450,Primary
