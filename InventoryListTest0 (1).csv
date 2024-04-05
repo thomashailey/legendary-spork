@@ -1,4 +1,4 @@
-﻿,ITEMID,ITEMNAME,DESCRIPTION,QUANTITY,LOCATON
+﻿ItemIDChar,ItemIDNum,ITEMNAME,DESCRIPTION,QUANTITY,LOCATON
 S,1,Solder,Lead-Alloy,350,Secondary
 S,2,Solder,Lead-Alloy,200,Primary
 S,3,Solder,Silver-Alloy,600,Secondary
@@ -58,7 +58,7 @@ M,40,Meter Replaceable Part,Carrying Case,5,Primary
 M,41,Meter Replaceable Part,Roll-up Storage Pouch,50,Secondary
 M,42,Meter Replaceable Part,Roll-up Storage Pouch,2,Primary
 M,43,Meter Replaceable Part,Hanging Strap,100,Secondary
-M,44,Meter Replaceable Part,Hanging Strap,200,Primary
+PWR,44,Meter Replaceable Part,Hanging Strap,200,Primary
 PWR,1,Power Supply Replacement Part,12V AC Adapter Power Supply,42,Secondary
 PWR,2,Power Supply Replacement Part,12V AC Adapter Power Supply,30,Primary
 PWR,3,Power Supply Replacement Part,9VDC 500Ma Power Adapter For ESP101 & ESP 102,25,Secondary
