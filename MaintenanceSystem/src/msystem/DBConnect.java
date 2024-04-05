@@ -4,22 +4,24 @@
  */
 package msystem;
 
-import com.sun.jdi.connect.spi.Connection;
 import java.io.IOException;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.*;
 
 /**
  *
  * @author thoma
  */
 public class DBConnect {
-    public static void OpenConnection() throws SQLException, ClassNotFoundException {
+    public Connection OpenConnection() throws SQLException, ClassNotFoundException {
         // Load the driver
         Class.forName("com.mysql.cj.jdbc.Driver");
         
         // Create connection
         java.sql.Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ceis400_groupc_maintsys","root","devry123");
+        
+        return connection;
     }
     
     public static void CloseConnection() throws SQLException {

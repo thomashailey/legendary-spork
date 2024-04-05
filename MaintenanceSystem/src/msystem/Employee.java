@@ -25,7 +25,7 @@ public class Employee {
         
     }
     
-    public Vector PullEmployees() throws SQLException, ClassNotFoundException {
+    public void PullEmployees() throws SQLException, ClassNotFoundException {
         DBConnect db = new DBConnect();
         con = db.OpenConnection();
         Vector<String> elements = new Vector<String>();
