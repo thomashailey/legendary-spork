@@ -6,9 +6,6 @@ package msystem;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Vector;
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
 
 /**
  *
@@ -28,11 +25,12 @@ public class Employee {
     }
     
     public ArrayList PullEmployees() throws SQLException, ClassNotFoundException {
-        con = db.OpenConnection();
-        ArrayList<String> elements = new ArrayList<String>();
-        MainPage main = new MainPage();
         
-        DefaultListModel model = new DefaultListModel();
+        /*  Set connection to DBConnect OpenConnection() method,
+            Create ArrayList to store DB elements
+        */
+        con = db.OpenConnection();
+        ArrayList<String> elements = new ArrayList<>();
         try {
             String sql = "SELECT * FROM user_authoization";
             stmt = con.prepareStatement(sql);
@@ -53,15 +51,20 @@ public class Employee {
 
     
     public void SearchEmployees() {
+        //use pull employees to search for specific names
+        // can use str.charAt(-1) in order to pull off last initial
+        // and str.substring(0, -2) to pull only the first name like so
+        //String fName = userID.substring(0,-2);
+        //String lInit = userIS.charAt(-1);
         
     }
     
     public void PullEmpInfo() {
-        
+        //pull employee role and endorsements
     }
     
     public void PullReports () {
-        
+        //pull reports tied to the employee's User ID
     }
     
     public void SearchReports() {
@@ -69,6 +72,7 @@ public class Employee {
     }
     
     public void AccessLogs() {
+        // stretch goal - if we have time to add
         
     }
     
