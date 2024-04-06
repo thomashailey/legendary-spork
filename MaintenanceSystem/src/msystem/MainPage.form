@@ -595,6 +595,8 @@
                                       </Group>
                                       <Group type="102" attributes="0">
                                           <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="reportLoadAllBtn" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
                                           <Component id="reportPrint" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
@@ -622,7 +624,10 @@
                               <Component id="jScrollPane4" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                          <Component id="reportPrint" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="reportPrint" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="reportLoadAllBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -685,6 +690,14 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Print"/>
                   </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="reportLoadAllBtn">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Load All"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="reportLoadAllBtnMouseClicked"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>

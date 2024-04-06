@@ -86,6 +86,7 @@ public class MainPage extends javax.swing.JFrame {
         jScrollPane5 = new javax.swing.JScrollPane();
         reportDetailsField = new javax.swing.JTextArea();
         reportPrint = new javax.swing.JButton();
+        reportLoadAllBtn = new javax.swing.JButton();
         Employee = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
         empList = new javax.swing.JList<>();
@@ -365,6 +366,13 @@ public class MainPage extends javax.swing.JFrame {
 
         reportPrint.setText("Print");
 
+        reportLoadAllBtn.setText("Load All");
+        reportLoadAllBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                reportLoadAllBtnMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout reportTabLayout = new javax.swing.GroupLayout(reportTab);
         reportTab.setLayout(reportTabLayout);
         reportTabLayout.setHorizontalGroup(
@@ -388,6 +396,8 @@ public class MainPage extends javax.swing.JFrame {
                                     .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE)))
                             .addGroup(reportTabLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(reportLoadAllBtn)
+                                .addGap(18, 18, 18)
                                 .addComponent(reportPrint)))))
                 .addContainerGap())
         );
@@ -406,7 +416,9 @@ public class MainPage extends javax.swing.JFrame {
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE))
                     .addComponent(jScrollPane4))
                 .addGap(18, 18, 18)
-                .addComponent(reportPrint)
+                .addGroup(reportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(reportPrint)
+                    .addComponent(reportLoadAllBtn))
                 .addGap(15, 15, 15))
         );
 
@@ -557,6 +569,22 @@ public class MainPage extends javax.swing.JFrame {
         new EditEmployee().setVisible(true);
     }//GEN-LAST:event_empEditBtnMouseClicked
 
+    private void reportLoadAllBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportLoadAllBtnMouseClicked
+        // TODO add your handling code here:
+        Employee emp = new Employee();
+        ArrayList<String> list = new ArrayList<String>();
+        try {
+            list = emp.PullReports();
+            DefaultListModel model = new DefaultListModel();
+            model.addAll(list);
+            reportList.setModel(model);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_reportLoadAllBtnMouseClicked
+
     
     /**
      * @param args the command line arguments
@@ -654,6 +682,7 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JTextArea reportDetailsField;
     private javax.swing.JList<String> reportList;
     private javax.swing.JLabel reportListLabel;
+    private javax.swing.JButton reportLoadAllBtn;
     private javax.swing.JButton reportPrint;
     private javax.swing.JButton reportSearchBtn;
     private javax.swing.JTextField reportSearchField;
