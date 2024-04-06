@@ -11,27 +11,27 @@ package msystem;
 public class Equipment {
     
     public void CheckIn() {
-        
+        // Access database to return equipment
     }
     
     public void CheckOut() {
-        
+        // Access database to assign equipment and check out
     }
     
     public void ReportLoss() {
-        
+        // Report loss of equipment
     }
     
     public void CheckStatus() {
-        
+        // Check status of equipment by 
     }
     
     public void SearchInventory() {
-        
+        // Search inventory for specific item
     }
     
     public void AdjustInventory() {
-        
+        // Add code to add or remove inventory from an employee's account
     }
     
     public void ViewInventory() {
