@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import msystem.Employee;
 import msystem.Equipment;
 public class MainPage extends javax.swing.JFrame {
@@ -359,6 +360,11 @@ public class MainPage extends javax.swing.JFrame {
         reportListLabel.setText("Report List:");
 
         reportSearchBtn.setText("Search");
+        reportSearchBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                reportSearchBtnMouseClicked(evt);
+            }
+        });
 
         reportDetailsField.setColumns(20);
         reportDetailsField.setRows(5);
@@ -578,12 +584,36 @@ public class MainPage extends javax.swing.JFrame {
             DefaultListModel model = new DefaultListModel();
             model.addAll(list);
             reportList.setModel(model);
+            reportSearchField.setText("");
         } catch (SQLException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_reportLoadAllBtnMouseClicked
+
+    private void reportSearchBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportSearchBtnMouseClicked
+        // TODO add your handling code here:
+        Employee emp = new Employee();
+        ArrayList<String> list = new ArrayList<String>();
+        try {
+            int input = Integer.parseInt(reportSearchField.getText());
+            try {
+                list = emp.SearchReports(input);
+                DefaultListModel model = new DefaultListModel();
+                model.addAll(list);
+                reportList.setModel(model);
+            } catch (SQLException ex) {
+                Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid User ID");
+        }
+        
+        
+    }//GEN-LAST:event_reportSearchBtnMouseClicked
 
     
     /**

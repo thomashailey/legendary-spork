@@ -46,10 +46,6 @@ public class Employee {
             while (result.next()) {
                 elements.add(result.getString("Username"));
             }
-            /*
-            while (result.next()) {
-                System.out.print(result.getString("Username") + ", " + result.getString("UserID"));
-            }*/
         }
         catch(Exception e) {
             
@@ -88,12 +84,8 @@ public class Employee {
                 System.out.println("Successfully Accessed DataBase");
             }
             while (result.next()) {
-                elements.add(String.format("%s,%s,   %s", String.format("%10s",result.getString("UserID")), String.format("%12s", result.getString("ReportID")), result.getString("Data")));
+                elements.add(result.getString("ReportID"));
             }
-            /*
-            while (result.next()) {
-                System.out.print(result.getString("Username") + ", " + result.getString("UserID"));
-            }*/
         }
         catch(Exception e) {
             
@@ -101,8 +93,28 @@ public class Employee {
         return elements;
     }
     
-    public void SearchReports() {
-        
+    public ArrayList SearchReports(int userInput) throws SQLException, ClassNotFoundException {
+        con = db.OpenConnection();
+        MainPage mp = new MainPage();
+        ArrayList<String> elements = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM reports WHERE UserID = ? ";
+            stmt = con.prepareStatement(sql);
+            stmt.setInt(1, userInput);
+            
+            result = stmt.executeQuery();
+
+            if (result != null) {
+                System.out.println("Successfully Accessed DataBase");
+            }
+            while (result.next()) {
+                elements.add(result.getString("ReportID"));
+            }
+        }
+        catch(Exception e) {
+            
+        }
+        return elements;
     }
     
     public void AccessLogs() {
