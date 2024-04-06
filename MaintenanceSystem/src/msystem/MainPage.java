@@ -25,6 +25,8 @@ public class MainPage extends javax.swing.JFrame {
      */
     public MainPage() {
         initComponents();
+        AccessReportInfo();
+        AccessEmployeeInfo();
     }
     
 
@@ -97,7 +99,7 @@ public class MainPage extends javax.swing.JFrame {
         empAddBtn = new javax.swing.JButton();
         empRemoveBtn = new javax.swing.JButton();
         empEditBtn = new javax.swing.JButton();
-        loadAllBtn = new javax.swing.JButton();
+        empLoadAllBtn = new javax.swing.JButton();
         mainMenuBar = new javax.swing.JMenuBar();
         logOutBtn = new javax.swing.JMenu();
 
@@ -350,11 +352,6 @@ public class MainPage extends javax.swing.JFrame {
 
         tabPanePanel.addTab("Maintenance", maintenanceTab);
 
-        reportList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane4.setViewportView(reportList);
 
         reportListLabel.setText("Report List:");
@@ -371,6 +368,11 @@ public class MainPage extends javax.swing.JFrame {
         jScrollPane5.setViewportView(reportDetailsField);
 
         reportPrint.setText("Print");
+        reportPrint.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                reportPrintMouseClicked(evt);
+            }
+        });
 
         reportLoadAllBtn.setText("Load All");
         reportLoadAllBtn.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -452,10 +454,10 @@ public class MainPage extends javax.swing.JFrame {
             }
         });
 
-        loadAllBtn.setText("Load All");
-        loadAllBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+        empLoadAllBtn.setText("Load All");
+        empLoadAllBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                loadAllBtnMouseClicked(evt);
+                empLoadAllBtnMouseClicked(evt);
             }
         });
 
@@ -475,7 +477,7 @@ public class MainPage extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(empSearchBtn)
                         .addGap(18, 18, 18)
-                        .addComponent(loadAllBtn)
+                        .addComponent(empLoadAllBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 120, Short.MAX_VALUE)
                         .addComponent(empAddBtn)
                         .addGap(18, 18, 18)
@@ -498,7 +500,7 @@ public class MainPage extends javax.swing.JFrame {
                     .addComponent(empAddBtn)
                     .addComponent(empRemoveBtn)
                     .addComponent(empEditBtn)
-                    .addComponent(loadAllBtn))
+                    .addComponent(empLoadAllBtn))
                 .addGap(16, 16, 16))
         );
 
@@ -552,21 +554,10 @@ public class MainPage extends javax.swing.JFrame {
         new UserAuth().setVisible(true);
     }//GEN-LAST:event_logOutBtnMouseClicked
 
-    private void loadAllBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loadAllBtnMouseClicked
+    private void empLoadAllBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_empLoadAllBtnMouseClicked
         // TODO add your handling code here:
-        Employee emp = new Employee();
-        ArrayList<String> list = new ArrayList<String>();
-        try {
-            list = emp.PullEmployees();
-            DefaultListModel model = new DefaultListModel();
-            model.addAll(list);
-            empList.setModel(model);
-        } catch (SQLException ex) {
-            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_loadAllBtnMouseClicked
+        AccessEmployeeInfo();
+    }//GEN-LAST:event_empLoadAllBtnMouseClicked
 
     private void empEditBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_empEditBtnMouseClicked
         // TODO add your handling code here:
@@ -577,19 +568,7 @@ public class MainPage extends javax.swing.JFrame {
 
     private void reportLoadAllBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportLoadAllBtnMouseClicked
         // TODO add your handling code here:
-        Employee emp = new Employee();
-        ArrayList<String> list = new ArrayList<String>();
-        try {
-            list = emp.PullReports();
-            DefaultListModel model = new DefaultListModel();
-            model.addAll(list);
-            reportList.setModel(model);
-            reportSearchField.setText("");
-        } catch (SQLException ex) {
-            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        AccessReportInfo();
     }//GEN-LAST:event_reportLoadAllBtnMouseClicked
 
     private void reportSearchBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportSearchBtnMouseClicked
@@ -611,9 +590,11 @@ public class MainPage extends javax.swing.JFrame {
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(null, "Please enter a valid User ID");
         }
-        
-        
     }//GEN-LAST:event_reportSearchBtnMouseClicked
+
+    private void reportPrintMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportPrintMouseClicked
+        // TODO add info from details box into a new form that will be saved as a file to the user's device.
+    }//GEN-LAST:event_reportPrintMouseClicked
 
     
     /**
@@ -656,7 +637,34 @@ public class MainPage extends javax.swing.JFrame {
     }
     
     public void AccessEmployeeInfo() {
-        
+        Employee emp = new Employee();
+        ArrayList<String> list = new ArrayList<String>();
+        try {
+            list = emp.PullEmployees();
+            DefaultListModel model = new DefaultListModel();
+            model.addAll(list);
+            empList.setModel(model);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void AccessReportInfo() {
+        Employee emp = new Employee();
+        ArrayList<String> list = new ArrayList<String>();
+        try {
+            list = emp.PullReports();
+            DefaultListModel model = new DefaultListModel();
+            model.addAll(list);
+            reportList.setModel(model);
+            reportSearchField.setText("");
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -673,6 +681,7 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JButton empEditBtn;
     private javax.swing.JList<String> empList;
     private javax.swing.JLabel empListLabel;
+    private javax.swing.JButton empLoadAllBtn;
     private javax.swing.JButton empRemoveBtn;
     private javax.swing.JButton empSearchBtn;
     private javax.swing.JTextField empSearchField;
@@ -699,7 +708,6 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JLabel lblInventoryRecord;
     private javax.swing.JLabel lblTooldescription;
     private javax.swing.JLabel lblToolname;
-    private javax.swing.JButton loadAllBtn;
     private javax.swing.JMenu logOutBtn;
     private javax.swing.JList<String> lstTools;
     private javax.swing.JMenuBar mainMenuBar;

@@ -642,17 +642,6 @@
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
                     <Component class="javax.swing.JList" name="reportList">
-                      <Properties>
-                        <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                          <StringArray count="5">
-                            <StringItem index="0" value="Item 1"/>
-                            <StringItem index="1" value="Item 2"/>
-                            <StringItem index="2" value="Item 3"/>
-                            <StringItem index="3" value="Item 4"/>
-                            <StringItem index="4" value="Item 5"/>
-                          </StringArray>
-                        </Property>
-                      </Properties>
                       <AuxValues>
                         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                       </AuxValues>
@@ -693,6 +682,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Print"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="reportPrintMouseClicked"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="reportLoadAllBtn">
                   <Properties>
@@ -729,7 +721,7 @@
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="empSearchBtn" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="loadAllBtn" min="-2" max="-2" attributes="0"/>
+                                  <Component id="empLoadAllBtn" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace pref="120" max="32767" attributes="0"/>
                                   <Component id="empAddBtn" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -756,7 +748,7 @@
                               <Component id="empAddBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="empRemoveBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="empEditBtn" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="loadAllBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="empLoadAllBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                       </Group>
@@ -819,12 +811,12 @@
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="empEditBtnMouseClicked"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JButton" name="loadAllBtn">
+                <Component class="javax.swing.JButton" name="empLoadAllBtn">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Load All"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="loadAllBtnMouseClicked"/>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="empLoadAllBtnMouseClicked"/>
                   </Events>
                 </Component>
               </SubComponents>
