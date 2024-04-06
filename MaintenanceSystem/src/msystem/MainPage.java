@@ -428,6 +428,11 @@ public class MainPage extends javax.swing.JFrame {
         empRemoveBtn.setText("Remove");
 
         empEditBtn.setText("Edit");
+        empEditBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                empEditBtnMouseClicked(evt);
+            }
+        });
 
         loadAllBtn.setText("Load All");
         loadAllBtn.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -544,6 +549,13 @@ public class MainPage extends javax.swing.JFrame {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_loadAllBtnMouseClicked
+
+    private void empEditBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_empEditBtnMouseClicked
+        // TODO add your handling code here:
+        // Connect to EditEmployee Form
+        this.setVisible(false);
+        new EditEmployee().setVisible(true);
+    }//GEN-LAST:event_empEditBtnMouseClicked
 
     
     /**

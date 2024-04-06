@@ -799,6 +799,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Edit"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="empEditBtnMouseClicked"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="loadAllBtn">
                   <Properties>
