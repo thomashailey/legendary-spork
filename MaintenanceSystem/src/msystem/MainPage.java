@@ -8,8 +8,10 @@ package msystem;
  *
  * @author thoma
  */
+import java.awt.List;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,6 +20,11 @@ import javax.swing.JList;
 import msystem.Employee;
 import msystem.Equipment;
 public class MainPage extends javax.swing.JFrame {
+    
+    DBConnect db = new DBConnect();
+    Connection con = null;
+    PreparedStatement stmt;
+    ResultSet result;
 
     /**
      * Creates new form MainPage
@@ -436,10 +443,25 @@ public class MainPage extends javax.swing.JFrame {
         empSearchBtn.setText("Search");
 
         empAddBtn.setText("Add");
+        empAddBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                empAddBtnMouseClicked(evt);
+            }
+        });
 
         empRemoveBtn.setText("Remove");
 
         empEditBtn.setText("Edit");
+        empEditBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                empEditBtnMouseClicked(evt);
+            }
+        });
+        empEditBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                empEditBtnActionPerformed(evt);
+            }
+        });
 
         loadAllBtn.setText("Load All");
         loadAllBtn.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -557,6 +579,61 @@ public class MainPage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_loadAllBtnMouseClicked
 
+    private void empEditBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_empEditBtnActionPerformed
+        // TODO add your handling code here: DONOTUSE it was me being stupid
+        
+    }//GEN-LAST:event_empEditBtnActionPerformed
+
+    private void empEditBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_empEditBtnMouseClicked
+        // TODO add your handling code here:
+        //this.setVisible(false);
+        new EditEmployee().setVisible(true);
+        String test = empList.getSelectedValue();
+        //trying to split this string into a list using .spit(",")
+        var Test = new ArrayList<String>(Arrays.asList(test.split(",")));
+        for(int x=0;x<Test.size();x++){
+            System.out.println(Test.get(x).trim());
+        }
+        System.out.println(Test);
+        String pullThisUserIdForEdit = Test.get(0).trim();
+        try {
+            con = db.OpenConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            String sql = String.format("SELECT * FROM user_authoization WHERE UserID = %s", pullThisUserIdForEdit);
+            System.out.println(sql);
+            stmt = con.prepareStatement(sql);
+            
+            result = stmt.executeQuery();
+
+            if (result != null) {
+                System.out.println("Successfully Accessed DataBase");
+                while(result.next()){
+                    System.out.println(result.getString("UserID"));
+                    System.out.println(result.getString("Username"));
+                    System.out.println(result.getString("Password"));
+                    System.out.println(result.getString("Role"));
+                    System.out.println(result.getString("Endorsement"));
+                    }
+                //TODO -- pass variables to edit employee 
+                //TODO -- do not pass variables but set up SQL statement for add employee, catch error for incorrect userID
+            }
+        }
+        catch(Exception e) {
+        }
+        
+        
+    }//GEN-LAST:event_empEditBtnMouseClicked
+
+    private void empAddBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_empAddBtnMouseClicked
+        // TODO add your handling code here:
+        new EditEmployee().setVisible(true);
+    }//GEN-LAST:event_empAddBtnMouseClicked
+
     
     /**
      * @param args the command line arguments
@@ -665,4 +742,8 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JTextField txtSearch;
     private javax.swing.JTextField txtSearchRecord;
     // End of variables declaration//GEN-END:variables
+
+    private void setVisisble(boolean b) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

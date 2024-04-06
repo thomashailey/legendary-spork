@@ -50,10 +50,11 @@ public class Employee {
             while (result.next()) {
                 System.out.print(result.getString("Username") + ", " + result.getString("UserID"));
             }*/
-    
-
+            con.close();
+         
 
         }
+        
         catch(Exception e) {
             
         }
