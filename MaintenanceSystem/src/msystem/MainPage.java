@@ -104,6 +104,7 @@ public class MainPage extends javax.swing.JFrame {
         lblToolname.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblToolname.setText("Tool Name:");
 
+        lstTools.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         lstTools.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
@@ -114,7 +115,8 @@ public class MainPage extends javax.swing.JFrame {
         lblTooldescription.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblTooldescription.setText("Tool Description:");
 
-        txaTooldescription.setColumns(20);
+        txaTooldescription.setColumns(30);
+        txaTooldescription.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         txaTooldescription.setRows(5);
         jScrollPane2.setViewportView(txaTooldescription);
 
@@ -131,6 +133,7 @@ public class MainPage extends javax.swing.JFrame {
         jLabel1.setText("Tool Summary:");
 
         jTextArea1.setColumns(20);
+        jTextArea1.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         jTextArea1.setRows(5);
         jScrollPane3.setViewportView(jTextArea1);
 
@@ -156,15 +159,15 @@ public class MainPage extends javax.swing.JFrame {
                 .addComponent(lblToolname)
                 .addGap(125, 125, 125)
                 .addComponent(lblTooldescription)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 281, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(145, 145, 145))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, equipmentTabLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -189,7 +192,7 @@ public class MainPage extends javax.swing.JFrame {
                 .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCheckin)
                     .addComponent(btnReportloss))
-                .addContainerGap(103, Short.MAX_VALUE))
+                .addContainerGap(108, Short.MAX_VALUE))
         );
 
         tabPanePanel.addTab("Epuipment", equipmentTab);
@@ -197,11 +200,13 @@ public class MainPage extends javax.swing.JFrame {
         jLabel2.setText("Inventory:");
 
         txaInventory.setColumns(20);
+        txaInventory.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         txaInventory.setRows(5);
         jScrollPane9.setViewportView(txaInventory);
 
         btnInventorySearch.setText("Search");
 
+        jList2.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         jList2.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
@@ -218,6 +223,7 @@ public class MainPage extends javax.swing.JFrame {
         lblInventoryRecord.setText("Inventory Record");
 
         txaRecord.setColumns(20);
+        txaRecord.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         txaRecord.setRows(5);
         jScrollPane10.setViewportView(txaRecord);
 
@@ -240,7 +246,7 @@ public class MainPage extends javax.swing.JFrame {
                         .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel2)
                             .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, Short.MAX_VALUE)))
+                        .addGap(18, 21, Short.MAX_VALUE)))
                 .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(inventoryTabLayout.createSequentialGroup()
@@ -251,15 +257,15 @@ public class MainPage extends javax.swing.JFrame {
                         .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lblAdjustments))
                 .addGap(18, 18, 18)
-                .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblInventoryRecord)
-                    .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(inventoryTabLayout.createSequentialGroup()
                         .addGap(8, 8, 8)
                         .addComponent(txtSearchRecord, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnSearchRecord)))
-                .addContainerGap(19, Short.MAX_VALUE))
+                        .addComponent(btnSearchRecord))
+                    .addComponent(jScrollPane10))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         inventoryTabLayout.setVerticalGroup(
             inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -282,7 +288,7 @@ public class MainPage extends javax.swing.JFrame {
                     .addComponent(btnDelete)
                     .addComponent(txtSearchRecord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSearchRecord))
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
 
         tabPanePanel.addTab("Inventory", inventoryTab);
@@ -295,6 +301,7 @@ public class MainPage extends javax.swing.JFrame {
 
         jLabel3.setText("Maintenance Logs:");
 
+        jList1.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
@@ -311,9 +318,9 @@ public class MainPage extends javax.swing.JFrame {
             .addGroup(maintenanceTabLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(maintenanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, maintenanceTabLayout.createSequentialGroup()
-                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 564, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, Short.MAX_VALUE)
+                    .addGroup(maintenanceTabLayout.createSequentialGroup()
+                        .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 656, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addGroup(maintenanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(maintSearchEmpBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jTextField1)
@@ -343,11 +350,12 @@ public class MainPage extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(maintLogBtn))
                     .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         tabPanePanel.addTab("Maintenance", maintenanceTab);
 
+        reportList.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         reportList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
@@ -357,9 +365,12 @@ public class MainPage extends javax.swing.JFrame {
 
         reportListLabel.setText("Report List:");
 
+        reportSearchField.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
+
         reportSearchBtn.setText("Search");
 
         reportDetailsField.setColumns(20);
+        reportDetailsField.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         reportDetailsField.setRows(5);
         jScrollPane5.setViewportView(reportDetailsField);
 
@@ -385,7 +396,7 @@ public class MainPage extends javax.swing.JFrame {
                                         .addComponent(reportSearchField)
                                         .addGap(18, 18, 18)
                                         .addComponent(reportSearchBtn))
-                                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE)))
+                                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)))
                             .addGroup(reportTabLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(reportPrint)))))
@@ -412,6 +423,7 @@ public class MainPage extends javax.swing.JFrame {
 
         tabPanePanel.addTab("Report", reportTab);
 
+        empList.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         empList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
@@ -453,7 +465,7 @@ public class MainPage extends javax.swing.JFrame {
                         .addComponent(empSearchBtn)
                         .addGap(18, 18, 18)
                         .addComponent(loadAllBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 120, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 176, Short.MAX_VALUE)
                         .addComponent(empAddBtn)
                         .addGap(18, 18, 18)
                         .addComponent(empEditBtn)

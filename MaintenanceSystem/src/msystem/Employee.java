@@ -44,7 +44,7 @@ public class Employee {
                 System.out.println("Successfully Accessed DataBase");
             }
             while (result.next()) {
-                elements.add(result.getString("Username"));
+                elements.add(String.format("%s,%s,   %s", String.format("%10s",result.getString("UserID")), String.format("%12s", result.getString("Username")), result.getString("Role")));
             }
             /*
             while (result.next()) {
