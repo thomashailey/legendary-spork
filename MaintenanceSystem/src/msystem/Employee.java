@@ -50,9 +50,6 @@ public class Employee {
             while (result.next()) {
                 System.out.print(result.getString("Username") + ", " + result.getString("UserID"));
             }*/
-    
-
-
         }
         catch(Exception e) {
             
@@ -74,8 +71,34 @@ public class Employee {
         //pull employee role and endorsements
     }
     
-    public void PullReports () {
+    public ArrayList PullReports () throws SQLException, ClassNotFoundException {
         //pull reports tied to the employee's User ID
+        /*  Set connection to DBConnect OpenConnection() method,
+            Create ArrayList to store DB elements
+        */
+        con = db.OpenConnection();
+        ArrayList<String> elements = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM reports";
+            stmt = con.prepareStatement(sql);
+            
+            result = stmt.executeQuery();
+
+            if (result != null) {
+                System.out.println("Successfully Accessed DataBase");
+            }
+            while (result.next()) {
+                elements.add(String.format("%s,%s,   %s", String.format("%10s",result.getString("UserID")), String.format("%12s", result.getString("ReportID")), result.getString("Data")));
+            }
+            /*
+            while (result.next()) {
+                System.out.print(result.getString("Username") + ", " + result.getString("UserID"));
+            }*/
+        }
+        catch(Exception e) {
+            
+        }
+        return elements;
     }
     
     public void SearchReports() {
