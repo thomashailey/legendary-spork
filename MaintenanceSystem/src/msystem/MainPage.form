@@ -112,7 +112,7 @@
                           <Component id="lblToolname" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="125" max="-2" attributes="0"/>
                           <Component id="lblTooldescription" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="281" max="32767" attributes="0"/>
+                          <EmptySpace pref="294" max="32767" attributes="0"/>
                           <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="145" max="-2" attributes="0"/>
                       </Group>
@@ -298,7 +298,7 @@
                                       <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Component id="jScrollPane9" alignment="0" min="-2" pref="312" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace type="separate" pref="21" max="32767" attributes="0"/>
+                                  <EmptySpace type="separate" pref="36" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -324,7 +324,7 @@
                               </Group>
                               <Component id="jScrollPane10" alignment="0" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="26" max="32767" attributes="0"/>
+                          <EmptySpace pref="70" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -479,7 +479,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Component id="jScrollPane7" pref="656" max="32767" attributes="0"/>
+                                  <Component id="jScrollPane7" pref="669" max="32767" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="maintSearchEmpBtn" alignment="0" max="32767" attributes="0"/>
@@ -611,7 +611,7 @@
                                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                                   <Component id="reportSearchBtn" min="-2" max="-2" attributes="0"/>
                                               </Group>
-                                              <Component id="jScrollPane5" pref="569" max="32767" attributes="0"/>
+                                              <Component id="jScrollPane5" pref="633" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
                                       <Group type="102" attributes="0">
@@ -741,12 +741,14 @@
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="empSearchField" min="-2" pref="214" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="empFirstNameSearchField" min="-2" pref="119" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="empLastInitSearchField" min="-2" pref="89" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="empSearchBtn" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="loadAllBtn" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace pref="176" max="32767" attributes="0"/>
+                                  <EmptySpace pref="189" max="32767" attributes="0"/>
                                   <Component id="empAddBtn" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="empEditBtn" min="-2" max="-2" attributes="0"/>
@@ -764,15 +766,16 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="empListLabel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="jScrollPane6" pref="341" max="32767" attributes="0"/>
+                          <Component id="jScrollPane6" pref="346" max="32767" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="empSearchField" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="empFirstNameSearchField" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="empSearchBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="empAddBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="empRemoveBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="empEditBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="loadAllBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="empLastInitSearchField" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                       </Group>
@@ -802,6 +805,9 @@
                           </StringArray>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="empListValueChanged"/>
+                      </Events>
                       <AuxValues>
                         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                       </AuxValues>
@@ -813,12 +819,21 @@
                     <Property name="text" type="java.lang.String" value="Employees List:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="empSearchField">
+                <Component class="javax.swing.JTextField" name="empFirstNameSearchField">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="First Name"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="empFirstNameSearchFieldFocusGained"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="empSearchBtn">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Search"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="empSearchBtnMouseClicked"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="empAddBtn">
                   <Properties>
@@ -832,6 +847,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Remove"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="empRemoveBtnMouseClicked"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="empEditBtn">
                   <Properties>
@@ -839,7 +857,6 @@
                   </Properties>
                   <Events>
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="empEditBtnMouseClicked"/>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="empEditBtnActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="loadAllBtn">
@@ -848,6 +865,14 @@
                   </Properties>
                   <Events>
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="loadAllBtnMouseClicked"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="empLastInitSearchField">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Last Initial"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="empLastInitSearchFieldFocusGained"/>
                   </Events>
                 </Component>
               </SubComponents>

@@ -5,12 +5,19 @@
 package msystem;
 
 import java.awt.List;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import static msystem.MainPage.selectingThisEndorsement;
+import static msystem.MainPage.selectingThisPassword;
+import static msystem.MainPage.selectingThisRole;
+import static msystem.MainPage.selectingThisUserID;
+import static msystem.MainPage.selectingThisUsername;
 
 /**
  *
@@ -19,6 +26,11 @@ import javax.swing.JComboBox;
 public class EditEmployee extends javax.swing.JFrame {
     static boolean passwordEdit = false;
     static boolean passAsk = false;
+    String sql = null;
+    DBConnect db = new DBConnect();
+    Connection con = null;
+    PreparedStatement stmt;
+    ResultSet result;
     
     /**
      * Creates new form EditEmployee
@@ -26,6 +38,23 @@ public class EditEmployee extends javax.swing.JFrame {
     public EditEmployee() {
         initComponents();
         passwordEdit = false;
+        
+        System.out.println(MainPage.editEmployee);
+        if(MainPage.editEmployee){
+            editEmpUserIDtxt.setText(MainPage.selectingThisUserID);
+            editEmpUsernametxt.setText(MainPage.selectingThisUsername);
+            editEmpRoleComboBox.setSelectedItem(MainPage.selectingThisRole);
+            editEmpEndorseComboBox.setSelectedItem(MainPage.selectingThisEndorsement);
+            editEmpUserIDtxt.setFocusable(false);
+        }
+        /*
+        System.out.println("This is the edit employee accessing the previous pull");
+        System.out.println(String.format("%12s -- %s", "UserID",selectingThisUserID));
+        System.out.println(String.format("%12s -- %s", "Username", selectingThisUsername));
+        System.out.println(String.format("%12s -- %s", "Password", selectingThisPassword));
+        System.out.println(String.format("%12s -- %s", "Role", selectingThisRole));
+        System.out.println(String.format("%12s -- %s", "Endorsement", selectingThisEndorsement));
+        */
     }
 
     /**
@@ -146,13 +175,69 @@ public class EditEmployee extends javax.swing.JFrame {
     private void editEmpCancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editEmpCancelButtonMouseClicked
         // TODO add your handling code here:
         this.setVisible(false);
+        MainPage.editEmployee = false;
     }//GEN-LAST:event_editEmpCancelButtonMouseClicked
 
     private void editEmpConfirmButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editEmpConfirmButtonMouseClicked
         // TODO add your handling code here:
+        if(MainPage.editEmployee){
+            if(editEmpPasswordtxt.getText().equals("***************")){
+                sql = String.format("UPDATE user_authoization SET Username = '%s', Role = '%s', Endorsement = '%s' WHERE UserID = %s ", 
+                editEmpUsernametxt.getText(), editEmpRoleComboBox.getSelectedItem(), editEmpEndorseComboBox.getSelectedItem(),
+                editEmpUserIDtxt.getText());
+            }
+            else{
+                sql = String.format("UPDATE user_authoization SET Username = '%s', Role = '%s', Endorsement = '%s', Password = '%s; WHERE UserID = %s ", 
+                editEmpUsernametxt.getText(), editEmpRoleComboBox.getSelectedItem(), editEmpEndorseComboBox.getSelectedItem(),
+                editEmpPasswordtxt.getText(), editEmpUserIDtxt.getText());
+            }
+        }
+        else{
+            if(editEmpPasswordtxt.getText().equals("***************")){
+                //password is a placeholder here and is intended to be used as the initial password given to all employees
+                sql = String.format("INSERT INTO user_authoization VALUES('%s', '%s', 'password123', '%s', '%s')", 
+                editEmpUserIDtxt.getText(), editEmpUsernametxt.getText(),
+                editEmpRoleComboBox.getSelectedItem(), editEmpEndorseComboBox.getSelectedItem());
+            }
+            else{
+                //password defined as the specific password the employee has chosen
+                sql = String.format("INSERT INTO user_authoization VALUES('%s', '%s', '%s', '%s', '%s')", 
+                editEmpUserIDtxt.getText(), editEmpUsernametxt.getText(), editEmpPasswordtxt.getText(),
+                editEmpRoleComboBox.getSelectedItem(), editEmpEndorseComboBox.getSelectedItem());
+            }
+        }
         
+        
+        System.out.println(sql);
+        // JOptionPane.showMessageDialog(null, sql);
         // add the edit sql query here
         // and a confirm popup/toast
+        
+        
+        try {
+            con = db.OpenConnection();
+            stmt = con.prepareStatement(sql);
+            stmt.execute();
+            
+            if (result != null) {
+                if(MainPage.editEmployee){
+                    System.out.println(String.format("Successfully Accessed DataBase to edit user %s", editEmpUserIDtxt.getText()));
+                }
+                else{
+                    System.out.println(String.format("Successfully Accessed DataBase to add user %s", editEmpUserIDtxt.getText()));
+                }
+            }
+            /*
+            while (result.next()) {
+                System.out.print(result.getString("Username") + ", " + result.getString("UserID"));
+            }*/
+            con.close();
+            System.out.println("Database closed");
+        }
+        catch(Exception e) {
+            System.out.println(e);
+        }
+        MainPage.editEmployee = false;
         this.setVisible(false);
 
     }//GEN-LAST:event_editEmpConfirmButtonMouseClicked
@@ -178,17 +263,16 @@ public class EditEmployee extends javax.swing.JFrame {
         DefaultComboBoxModel tModel = new DefaultComboBoxModel();
         DefaultComboBoxModel bModel = new DefaultComboBoxModel();
         DefaultComboBoxModel mModel = new DefaultComboBoxModel();
-        DefaultComboBoxModel aModel = new DefaultComboBoxModel();
         DefaultComboBoxModel wModel = new DefaultComboBoxModel();
 
         tModel.addAll(techEndos);
         bModel.addAll(manageEndos);
         mModel.addAll(maintEndos);
-        aModel.addAll(techEndos);
         wModel.addAll(wareEndos);
         
+        //Admin employees have the same endorcements as technicians
         if(editEmpRoleComboBox.getSelectedItem().equals("Admin")){
-            editEmpEndorseComboBox.setModel(aModel);
+            editEmpEndorseComboBox.setModel(tModel);
             editEmpEndorseComboBox.setSelectedIndex(0);
             System.out.println("Admin detected");
         }
@@ -257,10 +341,12 @@ public class EditEmployee extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 
                 new EditEmployee().setVisible(true);
+                
                 
             }
         });
@@ -269,11 +355,11 @@ public class EditEmployee extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton editEmpCancelButton;
     private javax.swing.JButton editEmpConfirmButton;
-    private javax.swing.JComboBox<String> editEmpEndorseComboBox;
+    public static javax.swing.JComboBox<String> editEmpEndorseComboBox;
     private javax.swing.JTextArea editEmpPasswordtxt;
-    private javax.swing.JComboBox<String> editEmpRoleComboBox;
-    private javax.swing.JTextArea editEmpUserIDtxt;
-    private javax.swing.JTextArea editEmpUsernametxt;
+    public static javax.swing.JComboBox<String> editEmpRoleComboBox;
+    public static javax.swing.JTextArea editEmpUserIDtxt;
+    public static javax.swing.JTextArea editEmpUsernametxt;
     public javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
