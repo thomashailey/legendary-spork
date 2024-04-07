@@ -4,7 +4,11 @@ package msystem;
  *
  * @author thoma / vaughnr
  */
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +19,7 @@ public class Equipment {
     private String status;
     private String location;
     private static final List<Equipment> inventory = new ArrayList<>();
+    private static Connection connection = null;
 
     // Constructor
     public Equipment(int ID, String name, String type, String status, String location) {
@@ -25,48 +30,33 @@ public class Equipment {
         this.location = location;
     }
     
-    // Global level varriables
-
-    DBConnect db = new DBConnect();
-    Connection con = null;
-    PreparedStatement stmt;
-    ResultSet result;
-    
-    
-    public ArrayList PullEmployees() throws SQLException, ClassNotFoundException {
+    // Establish database connection
+    private static void connect() {
+        String url = "jdbc:mysql://localhost:3306/ceis400_groupc_maintsys";
+        String username = "root";
+        String password = "devry123";
         
-        /*  Set connection to DBConnect OpenConnection() method,
-            Create ArrayList to store DB elements
-        */
-        con = db.OpenConnection();
-        ArrayList<String> elements = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM user_authoization";
-            stmt = con.prepareStatement(sql);
-            
-            result = stmt.executeQuery();
-
-            if (result != null) {
-                System.out.println("Successfully Accessed DataBase");
-            }
-            while (result.next()) {
-                elements.add(result.getString("Username"));
-            }
-            /*
-            while (result.next()) {
-                System.out.print(result.getString("Username") + ", " + result.getString("UserID"));
-            }*/
-    
-
-
+            connection = DriverManager.getConnection(url, username, password);
+            System.out.println("Connected to the database.");
+        } catch (SQLException e) {
+            System.out.println("Failed to connect to the database.");
         }
-        catch(Exception e) {
-            
-        }
-        return elements;
     }
     
-    // Getters and Setters
+    // Close database connection
+    private static void disconnect(){
+        if (connection != null){
+            try {
+                connection.close();
+                System.out.println("Disconnected from the database.");
+            } catch (SQLException e) {
+            }
+        }
+        
+    }
+    
+     // Getters and Setters
     public int getID() {
         return ID;
     }
@@ -110,16 +100,19 @@ public class Equipment {
     // Check in method
     public void checkIn() {
         setStatus("Available");
+        updateStatusInDatabase();
     }
 
     // Check out method
     public void checkOut() {
         setStatus("Checked Out");
+        updateStatusInDatabase();
     }
 
     // Report loss method
     public void reportLoss() {
         setStatus("Lost");
+        updateStatusInDatabase();
     }
 
     // Check status method
@@ -135,6 +128,23 @@ public class Equipment {
             }
         }
         return null;
+    }
+    
+    // Update equipment status in the database
+    private void updateStatusInDatabase() {
+        connect();
+        try {
+            String sql = "UPDATE equipment SET status = ? WhERE ID = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, getStatus());
+            statement.setInt(2, getID());
+            statement.executeUpdate();
+            System.out.println("Equipment status updated in the database.");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+            disconnect();
+        }
     }
 
     // Adjust inventory method
