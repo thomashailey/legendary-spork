@@ -19,6 +19,9 @@ import javax.swing.JOptionPane;
 import msystem.Employee;
 import msystem.Equipment;
 public class MainPage extends javax.swing.JFrame {
+    
+    Employee emp = new Employee();
+    Equipment equip = new Equipment();
 
     /**
      * Creates new form MainPage
@@ -352,6 +355,11 @@ public class MainPage extends javax.swing.JFrame {
 
         tabPanePanel.addTab("Maintenance", maintenanceTab);
 
+        reportList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                reportListValueChanged(evt);
+            }
+        });
         jScrollPane4.setViewportView(reportList);
 
         reportListLabel.setText("Report List:");
@@ -573,7 +581,6 @@ public class MainPage extends javax.swing.JFrame {
 
     private void reportSearchBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportSearchBtnMouseClicked
         // TODO add your handling code here:
-        Employee emp = new Employee();
         ArrayList<String> list = new ArrayList<String>();
         try {
             int input = Integer.parseInt(reportSearchField.getText());
@@ -595,6 +602,15 @@ public class MainPage extends javax.swing.JFrame {
     private void reportPrintMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportPrintMouseClicked
         // TODO add info from details box into a new form that will be saved as a file to the user's device.
     }//GEN-LAST:event_reportPrintMouseClicked
+
+    private void reportListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_reportListValueChanged
+        // TODO add your handling code here:
+        String item = reportList.getSelectedValue().toString();
+        String response;
+        try {
+            response = emp.ReportDetails(item);
+        }
+    }//GEN-LAST:event_reportListValueChanged
 
     
     /**
@@ -637,7 +653,6 @@ public class MainPage extends javax.swing.JFrame {
     }
     
     public void AccessEmployeeInfo() {
-        Employee emp = new Employee();
         ArrayList<String> list = new ArrayList<String>();
         try {
             list = emp.PullEmployees();
@@ -652,7 +667,6 @@ public class MainPage extends javax.swing.JFrame {
     }
     
     public void AccessReportInfo() {
-        Employee emp = new Employee();
         ArrayList<String> list = new ArrayList<String>();
         try {
             list = emp.PullReports();

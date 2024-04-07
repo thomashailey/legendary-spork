@@ -117,6 +117,11 @@ public class Employee {
         return elements;
     }
     
+    public String ReportDetails(String selectedItem) {
+        String valueReturned = null;
+        return valueReturned;
+    }
+    
     public void AccessLogs() {
         // stretch goal - if we have time to add
 
