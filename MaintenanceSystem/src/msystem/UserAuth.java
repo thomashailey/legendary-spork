@@ -4,12 +4,7 @@
  */
 package msystem;
 
-<<<<<<< Updated upstream
 import javax.swing.JOptionPane;
-=======
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
->>>>>>> Stashed changes
 
 /**
  *
@@ -48,11 +43,6 @@ public class UserAuth extends javax.swing.JFrame {
                 tempNextPageMouseClicked(evt);
             }
         });
-        tempNextPage.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tempNextPageActionPerformed(evt);
-            }
-        });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel1.setText("User Authentication");
@@ -64,12 +54,6 @@ public class UserAuth extends javax.swing.JFrame {
         txtUsercode.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtUsercodeActionPerformed(evt);
-            }
-        });
-
-        jpfPassword.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jpfPasswordActionPerformed(evt);
             }
         });
 
@@ -135,10 +119,8 @@ public class UserAuth extends javax.swing.JFrame {
 
     private void txtUsercodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsercodeActionPerformed
         // TODO add your handling code here:
-        
     }//GEN-LAST:event_txtUsercodeActionPerformed
 
-<<<<<<< Updated upstream
     // Method to check if user code matches primary key in database
     private boolean checkPrimaryKey(String userCode) {
         // Database connection parameters
@@ -161,40 +143,6 @@ public class UserAuth extends javax.swing.JFrame {
         System.out.println("User code: " + userCode + ", Password: " + password);
     }
     
-=======
-    private void tempNextPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tempNextPageActionPerformed
-        // TODO add your handling code here:
-      
-        
-        /**
-        String userCode = txtUsercode.getText();
-        String passw = String.valueOf(jpfPassword.getPassword());
-        
-        PreparedStatement ps;
-        String query = "";
-        
-        
-        try {
-      
-            ps = MyConnection.getConnection().prepareStatement(query);
-            
-            
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(DBConnect.class.getName()).log(Level.Severe, null, ex);
-        
-        }*/ 
-    }//GEN-LAST:event_tempNextPageActionPerformed
-
-    private void jpfPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jpfPasswordActionPerformed
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_jpfPasswordActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
->>>>>>> Stashed changes
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
