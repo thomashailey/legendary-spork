@@ -30,6 +30,7 @@ public class MainPage extends javax.swing.JFrame {
         initComponents();
         AccessReportInfo();
         AccessEmployeeInfo();
+        AccessInventoryInfo();
     }
     
 
@@ -60,9 +61,7 @@ public class MainPage extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         inventoryTab = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jScrollPane9 = new javax.swing.JScrollPane();
-        txaInventory = new javax.swing.JTextArea();
-        txtSearch = new javax.swing.JTextField();
+        txtInvSearch = new javax.swing.JTextField();
         btnInventorySearch = new javax.swing.JButton();
         jScrollPane8 = new javax.swing.JScrollPane();
         jList2 = new javax.swing.JList<>();
@@ -74,6 +73,8 @@ public class MainPage extends javax.swing.JFrame {
         txaRecord = new javax.swing.JTextArea();
         txtSearchRecord = new javax.swing.JTextField();
         btnSearchRecord = new javax.swing.JButton();
+        jScrollPane11 = new javax.swing.JScrollPane();
+        invMainList = new javax.swing.JList<>();
         maintenanceTab = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
         maintSearchEmpBtn = new javax.swing.JButton();
@@ -203,11 +204,12 @@ public class MainPage extends javax.swing.JFrame {
 
         jLabel2.setText("Inventory:");
 
-        txaInventory.setColumns(20);
-        txaInventory.setRows(5);
-        jScrollPane9.setViewportView(txaInventory);
-
         btnInventorySearch.setText("Search");
+        btnInventorySearch.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnInventorySearchMouseClicked(evt);
+            }
+        });
 
         jList2.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -230,6 +232,13 @@ public class MainPage extends javax.swing.JFrame {
 
         btnSearchRecord.setText("Search");
 
+        invMainList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane11.setViewportView(invMainList);
+
         javax.swing.GroupLayout inventoryTabLayout = new javax.swing.GroupLayout(inventoryTab);
         inventoryTab.setLayout(inventoryTabLayout);
         inventoryTabLayout.setHorizontalGroup(
@@ -237,24 +246,22 @@ public class MainPage extends javax.swing.JFrame {
             .addGroup(inventoryTabLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inventoryTabLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnInventorySearch)
-                        .addGap(24, 24, 24))
                     .addGroup(inventoryTabLayout.createSequentialGroup()
-                        .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel2)
-                            .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, Short.MAX_VALUE)))
+                        .addComponent(jLabel2)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inventoryTabLayout.createSequentialGroup()
+                        .addComponent(txtInvSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnInventorySearch))
+                    .addComponent(jScrollPane11, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(18, 18, 18)
                 .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(inventoryTabLayout.createSequentialGroup()
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, inventoryTabLayout.createSequentialGroup()
+                            .addGap(6, 6, 6)
                             .addComponent(btnAdd)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(btnDelete)
-                            .addGap(6, 6, 6))
+                            .addGap(18, 18, 18)
+                            .addComponent(btnDelete))
                         .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lblAdjustments))
                 .addGap(18, 18, 18)
@@ -262,11 +269,10 @@ public class MainPage extends javax.swing.JFrame {
                     .addComponent(lblInventoryRecord)
                     .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(inventoryTabLayout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addComponent(txtSearchRecord, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtSearchRecord, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnSearchRecord)))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addGap(19, 19, 19))
         );
         inventoryTabLayout.setVerticalGroup(
             inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -279,16 +285,16 @@ public class MainPage extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-                    .addComponent(jScrollPane9)
-                    .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE))
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+                    .addComponent(jScrollPane11))
                 .addGap(20, 20, 20)
                 .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtInvSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnInventorySearch)
-                    .addComponent(btnAdd)
                     .addComponent(btnDelete)
                     .addComponent(txtSearchRecord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSearchRecord))
+                    .addComponent(btnSearchRecord)
+                    .addComponent(btnAdd))
                 .addContainerGap(49, Short.MAX_VALUE))
         );
 
@@ -612,6 +618,14 @@ public class MainPage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_reportListValueChanged
 
+    private void btnInventorySearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInventorySearchMouseClicked
+        // TODO add your handling code here:
+        if (txtInvSearch.getText().equals("")) {
+            System.out.println("Search successful");
+            AccessInventoryInfo();
+        }
+    }//GEN-LAST:event_btnInventorySearchMouseClicked
+
     
     /**
      * @param args the command line arguments
@@ -650,6 +664,20 @@ public class MainPage extends javax.swing.JFrame {
     
     public void AccessEquipmentInfo() {
         
+    }
+    
+    public void AccessInventoryInfo() {
+        ArrayList<String> list = new ArrayList<String>();
+        try {
+            list = equip.ViewInventory();
+            DefaultListModel model = new DefaultListModel();
+            model.addAll(list);
+            invMainList.setModel(model);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void AccessEmployeeInfo() {
@@ -712,6 +740,7 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JButton empSearchBtn;
     private javax.swing.JTextField empSearchField;
     private javax.swing.JPanel equipmentTab;
+    private javax.swing.JList<String> invMainList;
     private javax.swing.JPanel inventoryTab;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -720,6 +749,7 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JList<String> jList2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
+    private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -727,7 +757,6 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
-    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblAdjustments;
@@ -752,10 +781,9 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JTextField reportSearchField;
     private javax.swing.JPanel reportTab;
     private javax.swing.JTabbedPane tabPanePanel;
-    private javax.swing.JTextArea txaInventory;
     private javax.swing.JTextArea txaRecord;
     private javax.swing.JTextArea txaTooldescription;
-    private javax.swing.JTextField txtSearch;
+    private javax.swing.JTextField txtInvSearch;
     private javax.swing.JTextField txtSearchRecord;
     // End of variables declaration//GEN-END:variables
 }
