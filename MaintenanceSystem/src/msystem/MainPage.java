@@ -108,6 +108,7 @@ public class MainPage extends javax.swing.JFrame {
         reportDetailsField = new javax.swing.JTextArea();
         reportPrint = new javax.swing.JButton();
         reportLoadAllBtn = new javax.swing.JButton();
+        reportAddButton = new javax.swing.JButton();
         Employee = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
         empList = new javax.swing.JList<>();
@@ -392,6 +393,12 @@ public class MainPage extends javax.swing.JFrame {
         reportListLabel.setText("Report List:");
 
         reportSearchField.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
+        reportSearchField.setText("User ID");
+        reportSearchField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                reportSearchFieldFocusGained(evt);
+            }
+        });
 
         reportSearchBtn.setText("Search");
         reportSearchBtn.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -402,6 +409,7 @@ public class MainPage extends javax.swing.JFrame {
 
         reportDetailsField.setColumns(20);
         reportDetailsField.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
+        reportDetailsField.setLineWrap(true);
         reportDetailsField.setRows(5);
         jScrollPane5.setViewportView(reportDetailsField);
 
@@ -416,6 +424,13 @@ public class MainPage extends javax.swing.JFrame {
         reportLoadAllBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 reportLoadAllBtnMouseClicked(evt);
+            }
+        });
+
+        reportAddButton.setText("Add");
+        reportAddButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                reportAddButtonMouseClicked(evt);
             }
         });
 
@@ -442,6 +457,8 @@ public class MainPage extends javax.swing.JFrame {
                                     .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 633, Short.MAX_VALUE)))
                             .addGroup(reportTabLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(reportAddButton)
+                                .addGap(18, 18, 18)
                                 .addComponent(reportLoadAllBtn)
                                 .addGap(18, 18, 18)
                                 .addComponent(reportPrint)))))
@@ -464,7 +481,8 @@ public class MainPage extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(reportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(reportPrint)
-                    .addComponent(reportLoadAllBtn))
+                    .addComponent(reportLoadAllBtn)
+                    .addComponent(reportAddButton))
                 .addGap(15, 15, 15))
         );
 
@@ -670,11 +688,28 @@ TODO DELETE
 
     private void reportListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_reportListValueChanged
         try {
-            // TODO add your handling code here:
-            ViewReportDetails();
+            // TODO add your handling code here:\
+            String selectedReportID = reportList.getSelectedValue();
+            System.out.println(selectedReportID);
+            String list = emp.ReportDetails(selectedReportID);
+            reportDetailsField.setText(list);
+            //ViewReportDetails();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        /*
+        String list = "Nothing";
+        try {
+            list = emp.ReportDetails(reportList.getSelectedValue());
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
+        reportDetailsField.setText(list);*/
     }//GEN-LAST:event_reportListValueChanged
 
     private void btnInventorySearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInventorySearchMouseClicked
@@ -788,6 +823,16 @@ TODO DELETE
         new EditEmployee().setVisible(true);
     }//GEN-LAST:event_empEditBtnMouseClicked
 
+    private void reportAddButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportAddButtonMouseClicked
+        // TODO add your handling code here:
+        new AddReport().setVisible(true);
+    }//GEN-LAST:event_reportAddButtonMouseClicked
+
+    private void reportSearchFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_reportSearchFieldFocusGained
+        // TODO add your handling code here:
+        reportSearchField.setText("");
+    }//GEN-LAST:event_reportSearchFieldFocusGained
+
     
     /**
      * @param args the command line arguments
@@ -863,14 +908,14 @@ TODO DELETE
             DefaultListModel model = new DefaultListModel();
             model.addAll(list);
             reportList.setModel(model);
-            reportSearchField.setText("");
+            //reportSearchField.setText("");
         } catch (SQLException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }        
     }
-    
+    /*
     public void ViewReportDetails() throws ClassNotFoundException {
         String list = "Nothing";
         try {
@@ -881,7 +926,7 @@ TODO DELETE
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
         reportDetailsField.setText(list);
-    }
+    }*/
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Employee;
@@ -935,6 +980,7 @@ TODO DELETE
     private javax.swing.JButton maintSearchDateBtn;
     private javax.swing.JButton maintSearchEmpBtn;
     private javax.swing.JPanel maintenanceTab;
+    private javax.swing.JButton reportAddButton;
     private javax.swing.JTextArea reportDetailsField;
     private javax.swing.JList<String> reportList;
     private javax.swing.JLabel reportListLabel;

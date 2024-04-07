@@ -235,16 +235,28 @@ public class Employee {
         ArrayList<String> elements = new ArrayList<>();
         String results = "";
         try {
-            String sql = "SELECT * FROM reports WHERE ReportID = ? ";
+            String sql = String.format("SELECT * FROM reports WHERE ReportID = %s", selectedItem);
             stmt = con.prepareStatement(sql);
-            stmt.setInt(1, Integer.parseInt(selectedItem));
+            //stmt.setInt(1, Integer.parseInt(selectedItem));
             
             result = stmt.executeQuery();
-
+            
             if (result != null) {
                 System.out.println("Entry not empty");
+                while(result.next()){
+                    System.out.println(String.format("%s, %s, %s, %s", 
+                        result.getString("ReportID"), result.getString("UserID"), 
+                        result.getString("ReportDate"), result.getString("ReportType")));
+                    results = String.format("Report ID - %s\nUserID    - %s\nReport ID - %s\nType/ Description\n%s", 
+                        result.getString("ReportID"), result.getString("UserID"), 
+                        result.getString("ReportDate"), result.getString("ReportType"));
+                    
+                }
+                
             }
-            results = elements.toString();
+            //results = elements.toString();
+            //System.out.println(results);
+            //System.out.println(elements);
         }
         catch(Exception e) {
             
