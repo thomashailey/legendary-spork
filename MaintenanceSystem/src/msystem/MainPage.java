@@ -604,11 +604,11 @@ public class MainPage extends javax.swing.JFrame {
     }//GEN-LAST:event_reportPrintMouseClicked
 
     private void reportListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_reportListValueChanged
-        // TODO add your handling code here:
-        String item = reportList.getSelectedValue().toString();
-        String response;
         try {
-            response = emp.ReportDetails(item);
+            // TODO add your handling code here:
+            ViewReportDetails();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_reportListValueChanged
 
@@ -679,6 +679,18 @@ public class MainPage extends javax.swing.JFrame {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }        
+    }
+    
+    public void ViewReportDetails() throws ClassNotFoundException {
+        String list = "Nothing";
+        try {
+            list = emp.ReportDetails(reportList.getSelectedValue());
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        reportDetailsField.setText(list);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

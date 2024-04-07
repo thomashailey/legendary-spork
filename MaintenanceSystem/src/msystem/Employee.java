@@ -6,6 +6,7 @@ package msystem;
 
 import java.sql.*;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 
 /**
@@ -112,14 +113,31 @@ public class Employee {
             }
         }
         catch(Exception e) {
-            
+            JOptionPane.showMessageDialog(null, "Incorrect");
         }
         return elements;
     }
     
-    public String ReportDetails(String selectedItem) {
-        String valueReturned = null;
-        return valueReturned;
+    public String ReportDetails(String selectedItem) throws SQLException, ClassNotFoundException {
+        con = db.OpenConnection();
+        ArrayList<String> elements = new ArrayList<>();
+        String results = "I am filler.";
+        try {
+            String sql = "SELECT * FROM reports WHERE ReportID = ? ";
+            stmt = con.prepareStatement(sql);
+            stmt.setInt(1, Integer.parseInt(selectedItem));
+            
+            result = stmt.executeQuery();
+
+            if (result != null) {
+                System.out.println("Entry not empty");
+            }
+            results = elements.toString();
+        }
+        catch(Exception e) {
+            
+        }
+        return results;
     }
     
     public void AccessLogs() {
