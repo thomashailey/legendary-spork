@@ -286,28 +286,25 @@
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="1" attributes="0">
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                  <Component id="txtSearch" min="-2" pref="214" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="btnInventorySearch" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
-                              </Group>
                               <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jScrollPane9" alignment="0" min="-2" pref="312" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace type="separate" pref="36" max="32767" attributes="0"/>
+                                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="txtInvSearch" pref="222" max="32767" attributes="0"/>
+                                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                                  <Component id="btnInventorySearch" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="jScrollPane11" alignment="1" max="32767" attributes="0"/>
                           </Group>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                                  <Group type="102" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
                                       <Component id="btnAdd" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Component id="btnDelete" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="jScrollPane8" min="-2" pref="174" max="-2" attributes="0"/>
                               </Group>
@@ -317,14 +314,13 @@
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="lblInventoryRecord" min="-2" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-                                  <Component id="txtSearchRecord" min="-2" pref="141" max="-2" attributes="0"/>
+                                  <Component id="txtSearchRecord" min="-2" pref="149" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="btnSearchRecord" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Component id="jScrollPane10" alignment="0" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="70" max="32767" attributes="0"/>
+                          <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -340,17 +336,17 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="jScrollPane10" pref="312" max="32767" attributes="0"/>
-                              <Component id="jScrollPane9" max="32767" attributes="0"/>
                               <Component id="jScrollPane8" pref="312" max="32767" attributes="0"/>
+                              <Component id="jScrollPane11" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="txtSearch" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtInvSearch" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnInventorySearch" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnAdd" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnDelete" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtSearchRecord" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnSearchRecord" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnAdd" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace pref="54" max="32767" attributes="0"/>
                       </Group>
@@ -363,30 +359,15 @@
                     <Property name="text" type="java.lang.String" value="Inventory:"/>
                   </Properties>
                 </Component>
-                <Container class="javax.swing.JScrollPane" name="jScrollPane9">
-                  <AuxValues>
-                    <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-                  </AuxValues>
-
-                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                  <SubComponents>
-                    <Component class="javax.swing.JTextArea" name="txaInventory">
-                      <Properties>
-                        <Property name="columns" type="int" value="20"/>
-                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                          <Font name="Cascadia Code" size="12" style="0"/>
-                        </Property>
-                        <Property name="rows" type="int" value="5"/>
-                      </Properties>
-                    </Component>
-                  </SubComponents>
-                </Container>
-                <Component class="javax.swing.JTextField" name="txtSearch">
+                <Component class="javax.swing.JTextField" name="txtInvSearch">
                 </Component>
                 <Component class="javax.swing.JButton" name="btnInventorySearch">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Search"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnInventorySearchMouseClicked"/>
+                  </Events>
                 </Component>
                 <Container class="javax.swing.JScrollPane" name="jScrollPane8">
                   <AuxValues>
@@ -461,6 +442,31 @@
                     <Property name="text" type="java.lang.String" value="Search"/>
                   </Properties>
                 </Component>
+                <Container class="javax.swing.JScrollPane" name="jScrollPane11">
+                  <AuxValues>
+                    <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+                  </AuxValues>
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                  <SubComponents>
+                    <Component class="javax.swing.JList" name="invMainList">
+                      <Properties>
+                        <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
+                          <StringArray count="5">
+                            <StringItem index="0" value="Item 1"/>
+                            <StringItem index="1" value="Item 2"/>
+                            <StringItem index="2" value="Item 3"/>
+                            <StringItem index="3" value="Item 4"/>
+                            <StringItem index="4" value="Item 5"/>
+                          </StringArray>
+                        </Property>
+                      </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                      </AuxValues>
+                    </Component>
+                  </SubComponents>
+                </Container>
               </SubComponents>
             </Container>
             <Container class="javax.swing.JPanel" name="maintenanceTab">
@@ -616,6 +622,8 @@
                                       </Group>
                                       <Group type="102" attributes="0">
                                           <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="reportLoadAllBtn" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
                                           <Component id="reportPrint" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
@@ -643,7 +651,10 @@
                               <Component id="jScrollPane4" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                          <Component id="reportPrint" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="reportPrint" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="reportLoadAllBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -658,20 +669,9 @@
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
                     <Component class="javax.swing.JList" name="reportList">
-                      <Properties>
-                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                          <Font name="Cascadia Code" size="12" style="0"/>
-                        </Property>
-                        <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                          <StringArray count="5">
-                            <StringItem index="0" value="Item 1"/>
-                            <StringItem index="1" value="Item 2"/>
-                            <StringItem index="2" value="Item 3"/>
-                            <StringItem index="3" value="Item 4"/>
-                            <StringItem index="4" value="Item 5"/>
-                          </StringArray>
-                        </Property>
-                      </Properties>
+                      <Events>
+                        <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="reportListValueChanged"/>
+                      </Events>
                       <AuxValues>
                         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                       </AuxValues>
@@ -694,6 +694,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Search"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="reportSearchBtnMouseClicked"/>
+                  </Events>
                 </Component>
                 <Container class="javax.swing.JScrollPane" name="jScrollPane5">
                   <AuxValues>
@@ -717,6 +720,17 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Print"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="reportPrintMouseClicked"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JButton" name="reportLoadAllBtn">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Load All"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="reportLoadAllBtnMouseClicked"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -747,8 +761,10 @@
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="empSearchBtn" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="loadAllBtn" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace pref="189" max="32767" attributes="0"/>
+
+                                  <Component id="empLoadAllBtn" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace pref="120" max="32767" attributes="0"/>
+
                                   <Component id="empAddBtn" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="empEditBtn" min="-2" max="-2" attributes="0"/>
@@ -774,8 +790,9 @@
                               <Component id="empAddBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="empRemoveBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="empEditBtn" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="loadAllBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="empLoadAllBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="empLastInitSearchField" alignment="3" min="-2" max="-2" attributes="0"/>
+
                           </Group>
                           <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                       </Group>
@@ -859,12 +876,12 @@
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="empEditBtnMouseClicked"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JButton" name="loadAllBtn">
+                <Component class="javax.swing.JButton" name="empLoadAllBtn">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Load All"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="loadAllBtnMouseClicked"/>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="empLoadAllBtnMouseClicked"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="empLastInitSearchField">

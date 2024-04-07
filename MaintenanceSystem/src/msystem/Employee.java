@@ -7,6 +7,8 @@ package msystem;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import javax.swing.JOptionPane;
+
 
 
 /**
@@ -49,6 +51,7 @@ public class Employee {
             con.close();
             System.out.println("Database closed");
          
+
 
         }
         
@@ -177,12 +180,76 @@ public class Employee {
         }
     }
     
-    public void PullReports () {
+    public ArrayList PullReports () throws SQLException, ClassNotFoundException {
         //pull reports tied to the employee's User ID
+        /*  Set connection to DBConnect OpenConnection() method,
+            Create ArrayList to store DB elements
+        */
+        con = db.OpenConnection();
+        ArrayList<String> elements = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM reports";
+            stmt = con.prepareStatement(sql);
+            
+            result = stmt.executeQuery();
+
+            if (result != null) {
+                System.out.println("Successfully Accessed Reports DataBase");
+            }
+            while (result.next()) {
+                elements.add(result.getString("ReportID"));
+            }
+        }
+        catch(Exception e) {
+            
+        }
+        return elements;
     }
     
-    public void SearchReports() {
-        
+    public ArrayList SearchReports(int userInput) throws SQLException, ClassNotFoundException {
+        con = db.OpenConnection();
+        MainPage mp = new MainPage();
+        ArrayList<String> elements = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM reports WHERE UserID = ? ";
+            stmt = con.prepareStatement(sql);
+            stmt.setInt(1, userInput);
+            
+            result = stmt.executeQuery();
+
+            if (result != null) {
+                System.out.println("Successfully Accessed DataBase");
+            }
+            while (result.next()) {
+                elements.add(result.getString("ReportID"));
+            }
+        }
+        catch(Exception e) {
+            JOptionPane.showMessageDialog(null, "Incorrect");
+        }
+        return elements;
+    }
+    
+    public String ReportDetails(String selectedItem) throws SQLException, ClassNotFoundException {
+        con = db.OpenConnection();
+        ArrayList<String> elements = new ArrayList<>();
+        String results = "";
+        try {
+            String sql = "SELECT * FROM reports WHERE ReportID = ? ";
+            stmt = con.prepareStatement(sql);
+            stmt.setInt(1, Integer.parseInt(selectedItem));
+            
+            result = stmt.executeQuery();
+
+            if (result != null) {
+                System.out.println("Entry not empty");
+            }
+            results = elements.toString();
+        }
+        catch(Exception e) {
+            
+        }
+        return results;
     }
     
     public void AccessLogs() {

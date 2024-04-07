@@ -4,37 +4,71 @@
  */
 package msystem;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 /**
  *
  * @author thoma
  */
 public class Equipment {
     
+    // Global level Variables
+    DBConnect db = new DBConnect();
+    Connection con = null;
+    PreparedStatement stmt;
+    ResultSet result;
+    
     public void CheckIn() {
-        
+        // Access database to return equipment
     }
     
     public void CheckOut() {
-        
+        // Access database to assign equipment and check out
     }
     
     public void ReportLoss() {
-        
+        // Report loss of equipment
     }
     
     public void CheckStatus() {
-        
+        // Check status of equipment by 
     }
     
     public void SearchInventory() {
-        
+        // Search inventory for specific item
     }
     
     public void AdjustInventory() {
-        
+        // Add code to add or remove inventory from an employee's account
     }
     
-    public void ViewInventory() {
+    public ArrayList ViewInventory() throws SQLException, ClassNotFoundException {
+        /*  Set connection to DBConnect OpenConnection() method,
+            Create ArrayList to store DB elements
+        */
+        con = db.OpenConnection();
+        ArrayList<String> elements = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM inventory";
+            stmt = con.prepareStatement(sql);
+            
+            result = stmt.executeQuery();
+
+            if (result != null) {
+                System.out.println("Successfully Accessed Inventory DataBase");
+            }
+            while (result.next()) {
+                elements.add(result.getString("ItemName"));
+            }
+        }
+        catch(Exception e) {
+            
+        }
+        return elements;
         
     }
     
