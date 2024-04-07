@@ -761,10 +761,8 @@
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="empSearchBtn" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-
                                   <Component id="empLoadAllBtn" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace pref="120" max="32767" attributes="0"/>
-
                                   <Component id="empAddBtn" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="empEditBtn" min="-2" max="-2" attributes="0"/>
@@ -792,7 +790,6 @@
                               <Component id="empEditBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="empLoadAllBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="empLastInitSearchField" alignment="3" min="-2" max="-2" attributes="0"/>
-
                           </Group>
                           <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                       </Group>
