@@ -684,6 +684,7 @@ TODO DELETE
 
     private void reportPrintMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportPrintMouseClicked
         // TODO add info from details box into a new form that will be saved as a file to the user's device.
+        JOptionPane.showMessageDialog(null, "Please connect a printer");
     }//GEN-LAST:event_reportPrintMouseClicked
 
     private void reportListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_reportListValueChanged

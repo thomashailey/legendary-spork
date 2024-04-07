@@ -247,7 +247,7 @@ public class Employee {
                     System.out.println(String.format("%s, %s, %s, %s", 
                         result.getString("ReportID"), result.getString("UserID"), 
                         result.getString("ReportDate"), result.getString("ReportType")));
-                    results = String.format("Report ID - %s\nUserID    - %s\nReport ID - %s\nType/ Description\n%s", 
+                    results = String.format("Report ID   - %s\nUserID      - %s\nReport Date - %s\nType/ Description\n%s", 
                         result.getString("ReportID"), result.getString("UserID"), 
                         result.getString("ReportDate"), result.getString("ReportType"));
                     
