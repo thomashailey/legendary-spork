@@ -7,12 +7,11 @@ import javax.swing.JOptionPane;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 
-<<<<<<< Updated upstream
 import javax.swing.JOptionPane;
-=======
+
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
->>>>>>> Stashed changes
+
 
 /**
  *
@@ -122,15 +121,15 @@ public class UserAuth extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tempNextPageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tempNextPageMouseClicked
-<<<<<<< Updated upstream
+
         // Get user code and password from text fields
-=======
+
         // TODO add your handling code here:
         //this.setVisible(false);
         //new MainPage().setVisible(true);
 
                 // Get user code and password from text fields
->>>>>>> Stashed changes
+
         String userCode = txtUsercode.getText();
         String password = String.valueOf(jpfPassword.getPassword());
 
@@ -142,18 +141,15 @@ public class UserAuth extends javax.swing.JFrame {
             // Primary key does not match, show error message
             JOptionPane.showMessageDialog(this, "Invalid User Code", "Error", JOptionPane.ERROR_MESSAGE);
         }
-<<<<<<< Updated upstream
-=======
+
     }                                         
 
->>>>>>> Stashed changes
+
     }//GEN-LAST:event_tempNextPageMouseClicked
 
     private void txtUsercodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsercodeActionPerformed
         // TODO add your handling code here:
-<<<<<<< Updated upstream
-        
-=======
+
     // Method to check if user code matches primary key in database
 }
     private boolean checkPrimaryKey(String userCode) {
@@ -171,10 +167,10 @@ public class UserAuth extends javax.swing.JFrame {
         }    
 }
 }
->>>>>>> Stashed changes
+
     }//GEN-LAST:event_txtUsercodeActionPerformed
 
-<<<<<<< Updated upstream
+
     // Method to check if user code matches primary key in database
     private boolean checkPrimaryKey(String userCode) {
         // Database connection parameters
@@ -197,11 +193,46 @@ public class UserAuth extends javax.swing.JFrame {
         System.out.println("User code: " + userCode + ", Password: " + password);
     }
     
-=======
+
     private void tempNextPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tempNextPageActionPerformed
         // TODO add your handling code here:
       
+        PreparedStatement ps;
+        ResultSet rs;
+        String uname = txtUsercode.getText();
+        String pass = String.valueOf(jpfPassword.getPassword());
         
+        String query = "SELECT * FROM user_authoization WHERE Username =? AND Password =?";
+        
+        try {
+            ps = MyConnection.getConnection().prepareStatement(query);
+            
+            ps.setString(1, uname);
+            ps.setString(2, pass);
+            
+            rs = ps.executeQuery();
+            
+            if(rs.next())
+            {
+                    HOME_JFrame mf = new HOME_JFrame();
+                    mf.setVisible(true);
+                    mf.pack();
+                    mf.setLocationRelativeTo(null);
+                    mf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                    mf.jLabel1.setText("Welcome < "+uname+" >");
+                    
+                    this.dispose();
+            }
+            else{
+                    JOptionPane.showMessageDialog(null, "Incorrect Username Or Password", "Login Failed", 2);
+                }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }                                             
         /**
         String userCode = txtUsercode.getText();
         String passw = String.valueOf(jpfPassword.getPassword());
@@ -230,7 +261,7 @@ public class UserAuth extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
->>>>>>> Stashed changes
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

@@ -42,7 +42,7 @@ public class Equipment {
 =======
     public ArrayList<String> CheckStatus() throws SQLException, ClassNotFoundException{
         // Check status of equipment by 
-        con = db.OpenConnection();
+        con  = db.OpenConnection();
         ArrayList<String> elements = new ArrayList<>();
         try {
             String sql = "SELECT * FROM equipment WHERE EquipmentIDNum = ?";

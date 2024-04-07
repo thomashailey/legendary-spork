@@ -26,4 +26,8 @@ public class DBConnect {
         java.sql.Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ceis400_groupc_maintsys","root","devry123");
         connection.close();
     }
+
+    java.sql.Connection getConnection() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
