@@ -2,8 +2,9 @@ package msystem;
 
 /**
  *
- * @author thoma
+ * @author thoma / vaughnr
  */
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,48 @@ public class Equipment {
         this.status = status;
         this.location = location;
     }
+    
+    // Global level varriables
 
+    DBConnect db = new DBConnect();
+    Connection con = null;
+    PreparedStatement stmt;
+    ResultSet result;
+    
+    
+    public ArrayList PullEmployees() throws SQLException, ClassNotFoundException {
+        
+        /*  Set connection to DBConnect OpenConnection() method,
+            Create ArrayList to store DB elements
+        */
+        con = db.OpenConnection();
+        ArrayList<String> elements = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM user_authoization";
+            stmt = con.prepareStatement(sql);
+            
+            result = stmt.executeQuery();
+
+            if (result != null) {
+                System.out.println("Successfully Accessed DataBase");
+            }
+            while (result.next()) {
+                elements.add(result.getString("Username"));
+            }
+            /*
+            while (result.next()) {
+                System.out.print(result.getString("Username") + ", " + result.getString("UserID"));
+            }*/
+    
+
+
+        }
+        catch(Exception e) {
+            
+        }
+        return elements;
+    }
+    
     // Getters and Setters
     public int getID() {
         return ID;
