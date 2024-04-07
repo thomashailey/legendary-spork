@@ -42,7 +42,7 @@ public class Employee {
             result = stmt.executeQuery();
 
             if (result != null) {
-                System.out.println("Successfully Accessed DataBase");
+                System.out.println("Successfully Accessed Employee DataBase");
             }
             while (result.next()) {
                 elements.add(result.getString("Username"));
@@ -82,7 +82,7 @@ public class Employee {
             result = stmt.executeQuery();
 
             if (result != null) {
-                System.out.println("Successfully Accessed DataBase");
+                System.out.println("Successfully Accessed Reports DataBase");
             }
             while (result.next()) {
                 elements.add(result.getString("ReportID"));
@@ -121,7 +121,7 @@ public class Employee {
     public String ReportDetails(String selectedItem) throws SQLException, ClassNotFoundException {
         con = db.OpenConnection();
         ArrayList<String> elements = new ArrayList<>();
-        String results = "I am filler.";
+        String results = "";
         try {
             String sql = "SELECT * FROM reports WHERE ReportID = ? ";
             stmt = con.prepareStatement(sql);
