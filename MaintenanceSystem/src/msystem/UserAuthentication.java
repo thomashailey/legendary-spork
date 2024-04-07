@@ -1,3 +1,6 @@
+
+
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -26,10 +29,17 @@ public class UserAuthentication {
     }
     
     private ArrayList<String> AuthenticateUser(String userInput) throws SQLException, ClassNotFoundException{
+<<<<<<< Updated upstream
         MainPage mp = new MainPage();
         ArrayList<String> elements = new ArrayList<>();
         try {
             String sql = "SELECT * FROM user_authoization WHERE Username = ? " + "SELECT * FROM user_authoization WHERE Password = ? ";
+=======
+        UserAuth us = new UserAuth();
+        ArrayList<String> elements = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM user_authoization WHERE Username = %s " + "SELECT * FROM user_authoization WHERE Password = ? ";
+>>>>>>> Stashed changes
             stmt = con.prepareStatement(sql);
             stmt.setString(1, userInput);
             

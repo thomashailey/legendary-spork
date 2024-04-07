@@ -3,6 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package msystem;
+import javax.swing.JOptionPane;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 
 <<<<<<< Updated upstream
 import javax.swing.JOptionPane;
@@ -119,7 +122,15 @@ public class UserAuth extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tempNextPageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tempNextPageMouseClicked
+<<<<<<< Updated upstream
         // Get user code and password from text fields
+=======
+        // TODO add your handling code here:
+        //this.setVisible(false);
+        //new MainPage().setVisible(true);
+
+                // Get user code and password from text fields
+>>>>>>> Stashed changes
         String userCode = txtUsercode.getText();
         String password = String.valueOf(jpfPassword.getPassword());
 
@@ -131,11 +142,36 @@ public class UserAuth extends javax.swing.JFrame {
             // Primary key does not match, show error message
             JOptionPane.showMessageDialog(this, "Invalid User Code", "Error", JOptionPane.ERROR_MESSAGE);
         }
+<<<<<<< Updated upstream
+=======
+    }                                         
+
+>>>>>>> Stashed changes
     }//GEN-LAST:event_tempNextPageMouseClicked
 
     private void txtUsercodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsercodeActionPerformed
         // TODO add your handling code here:
+<<<<<<< Updated upstream
         
+=======
+    // Method to check if user code matches primary key in database
+}
+    private boolean checkPrimaryKey(String userCode) {
+        // Database connection parameters
+        String url = "jdbc:mysql://localhost:3306/ceis400_groupc_maintsys","root","devry123";
+        String username = "your_username";
+        String password = "your_password";
+
+        try (DBConnect connection = DriverManager.getConnection(url, username, password)) {
+            String sql = "SELECT * FROM your_table WHERE primary_key_column = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, userCode);
+            ResultSet resultSet = statement.executeQuery();
+            return resultSet.next();
+        }    
+}
+}
+>>>>>>> Stashed changes
     }//GEN-LAST:event_txtUsercodeActionPerformed
 
 <<<<<<< Updated upstream
@@ -306,3 +342,63 @@ public class UserAuth extends javax.swing.JFrame {
         }
     }
 }
+
+private static class SQLException {
+
+        public SQLException() {
+        }
+
+        private void printStackTrace() {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+    }
+
+    private static class ResultSet {
+
+        public ResultSet() {
+        }
+
+        private boolean next() {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+    }
+
+    private static class DriverManager {
+
+        private static Connection getConnection(String url, String username, String password) {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+
+        public DriverManager() {
+        }
+    }
+
+    private static class PreparedStatement {
+
+        public PreparedStatement() {
+        }
+
+        private ResultSet executeQuery() {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+
+        private void setString(int i, String userCode) {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+    }
+
+    private static class Connection {
+
+        public Connection() {
+        }
+
+        private PreparedStatement prepareStatement(String sql) {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+    }
+}
+
+
+
+
+
