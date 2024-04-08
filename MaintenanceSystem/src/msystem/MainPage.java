@@ -322,10 +322,25 @@ public class MainPage extends javax.swing.JFrame {
         tabPanePanel.addTab("Inventory", inventoryTab);
 
         maintSearchEmpBtn.setText("Search by Employee ID");
+        maintSearchEmpBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                maintSearchEmpBtnActionPerformed(evt);
+            }
+        });
 
         maintSearchCatBtn.setText("Search by Category");
+        maintSearchCatBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                maintSearchCatBtnActionPerformed(evt);
+            }
+        });
 
         maintSearchDateBtn.setText("Search by Date");
+        maintSearchDateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                maintSearchDateBtnActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Maintenance Logs:");
 
@@ -838,6 +853,34 @@ TODO DELETE
         // TODO add your handling code here:
         reportSearchField.setText("");
     }//GEN-LAST:event_reportSearchFieldFocusGained
+
+    private void maintSearchEmpBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maintSearchEmpBtnActionPerformed
+        // TODO add your handling code here:
+        ArrayList<String> list = new ArrayList<String>();
+        try {
+            String input = String.format(jTextField1.getText());
+            try {
+                list = emp.PullEmpInfo(input);
+                DefaultListModel model = new DefaultListModel();
+                model.addAll(list);
+                jList1.setModel(model);
+            } catch (SQLException ex) {
+                Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid User ID");
+        }
+    }//GEN-LAST:event_maintSearchEmpBtnActionPerformed
+
+    private void maintSearchCatBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maintSearchCatBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_maintSearchCatBtnActionPerformed
+
+    private void maintSearchDateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maintSearchDateBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_maintSearchDateBtnActionPerformed
 
     
     /**
