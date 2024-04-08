@@ -38,8 +38,31 @@ public class Equipment {
         // Check status of equipment by 
     }
     
-    public void SearchInventory() {
+    public ArrayList SearchInventory(String item) throws SQLException, ClassNotFoundException {
         // Search inventory for specific item
+        /*  Set connection to DBConnect OpenConnection() method,
+            Create ArrayList to store DB elements
+        */
+        con = db.OpenConnection();
+        ArrayList<String> elements = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM inventory WHERE ItemName = ?";
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1, item);
+            
+            result = stmt.executeQuery();
+
+            if (result != null) {
+                System.out.println("Successfully Accessed Inventory DataBase");
+            }
+            while (result.next()) {
+                elements.add(result.getString("ItemName"));
+            }
+        }
+        catch(Exception e) {
+            
+        }
+        return elements;
     }
     
     public void AdjustInventory() {

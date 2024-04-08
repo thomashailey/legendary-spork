@@ -718,7 +718,12 @@ TODO DELETE
         if (txtInvSearch.getText().equals("")) {
             System.out.println("Search successful");
             AccessInventoryInfo();
+        
         }
+        else{
+            System.out.println("Search successful");
+            SearchInventory();
+    }
     }//GEN-LAST:event_btnInventorySearchMouseClicked
 
     private void empAddBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_empAddBtnMouseClicked
@@ -878,6 +883,21 @@ TODO DELETE
         ArrayList<String> list = new ArrayList<String>();
         try {
             list = equip.ViewInventory();
+            DefaultListModel model = new DefaultListModel();
+            model.addAll(list);
+            invMainList.setModel(model);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void SearchInventory() {
+                ArrayList<String> list = new ArrayList<String>();
+                
+        try {
+            list = equip.SearchInventory(txtInvSearch.getText());
             DefaultListModel model = new DefaultListModel();
             model.addAll(list);
             invMainList.setModel(model);
