@@ -4,12 +4,23 @@
  */
 package msystem;
 
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author thoma
  */
 public class UserAuth extends javax.swing.JFrame {
-
+    DBConnect db = new DBConnect();
+    Connection con = null;
+    PreparedStatement stmt;
+    ResultSet result;
+    String sql = null;
+    boolean passUser = false;
+    
     /**
      * Creates new form UserAuth
      */
@@ -32,6 +43,7 @@ public class UserAuth extends javax.swing.JFrame {
         lblPassword = new javax.swing.JLabel();
         txtUsercode = new javax.swing.JTextField();
         jpfPassword = new javax.swing.JPasswordField();
+        userAuthenByassBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -49,9 +61,21 @@ public class UserAuth extends javax.swing.JFrame {
 
         lblPassword.setText("Password");
 
-        txtUsercode.addActionListener(new java.awt.event.ActionListener() {
+        txtUsercode.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtUsercodeFocusLost(evt);
+            }
+        });
+
+        userAuthenByassBtn.setText("Bypass");
+        userAuthenByassBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                userAuthenByassBtnMouseClicked(evt);
+            }
+        });
+        userAuthenByassBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtUsercodeActionPerformed(evt);
+                userAuthenByassBtnActionPerformed(evt);
             }
         });
 
@@ -65,19 +89,23 @@ public class UserAuth extends javax.swing.JFrame {
                 .addGap(83, 83, 83))
             .addGroup(layout.createSequentialGroup()
                 .addGap(126, 126, 126)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jpfPassword)
-                    .addComponent(txtUsercode, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(47, 47, 47)
-                        .addComponent(lblPassword))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jpfPassword)
+                            .addComponent(txtUsercode, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(47, 47, 47)
+                                .addComponent(lblPassword))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(44, 44, 44)
+                                .addComponent(lblUsercode)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addComponent(lblUsercode))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(tempNextPage)
-                        .addGap(34, 34, 34)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(userAuthenByassBtn)
+                        .addGap(70, 70, 70))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -93,7 +121,9 @@ public class UserAuth extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jpfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(tempNextPage)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tempNextPage)
+                    .addComponent(userAuthenByassBtn))
                 .addContainerGap(76, Short.MAX_VALUE))
         );
 
@@ -102,14 +132,71 @@ public class UserAuth extends javax.swing.JFrame {
 
     private void tempNextPageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tempNextPageMouseClicked
         // TODO add your handling code here:
-        this.setVisible(false);
-        new MainPage().setVisible(true);
+        String userIdToPull = txtUsercode.getText();
+        String userPassToPull = jpfPassword.getText();
+        if(checkPrimaryKey(txtUsercode.getText())){
+            JOptionPane.showMessageDialog(null, "Correct!");
+            sql = String.format("SELECT Password FROM user_authoization WHERE UserID = %s",
+                    userIdToPull);
+            try{
+                con = db.OpenConnection();
+                stmt = con.prepareStatement(sql);
+                result = stmt.executeQuery(sql);
+                while(result.next()){
+                    if(userPassToPull.equals(result.getString("Password"))){
+                        System.out.println("password accepted");
+                        this.setVisible(false);
+                        new MainPage().setVisible(true);
+                    }
+                
+                
+                    else{
+                        System.out.println("passwords do not match");
+                        System.out.println(stmt.executeQuery(sql));
+                    }
+                }
+                con.close();
+            }
+            catch(Exception e){
+                System.out.println(e);
+            }
+        }
+        
     }//GEN-LAST:event_tempNextPageMouseClicked
 
-    private void txtUsercodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsercodeActionPerformed
+    private void txtUsercodeFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUsercodeFocusLost
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtUsercodeActionPerformed
+        if(checkPrimaryKey(txtUsercode.getText())){
+            JOptionPane.showMessageDialog(null, "Correct!");
+        }
+    }//GEN-LAST:event_txtUsercodeFocusLost
 
+    private void userAuthenByassBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userAuthenByassBtnActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        new MainPage().setVisible(true);
+    }//GEN-LAST:event_userAuthenByassBtnActionPerformed
+
+    private void userAuthenByassBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userAuthenByassBtnMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_userAuthenByassBtnMouseClicked
+    private boolean checkPrimaryKey(String userCode){
+        sql = String.format("SELECT * FROM user_authoization WHERE UserID = %s", 
+                userCode);
+        
+        try{
+            con = db.OpenConnection();
+            stmt = con.prepareStatement(sql);
+            passUser = stmt.execute(sql);
+            con.close();
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+        System.out.println(passUser);
+        return passUser;
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -152,5 +239,6 @@ public class UserAuth extends javax.swing.JFrame {
     private javax.swing.JLabel lblUsercode;
     private javax.swing.JButton tempNextPage;
     private javax.swing.JTextField txtUsercode;
+    private javax.swing.JButton userAuthenByassBtn;
     // End of variables declaration//GEN-END:variables
 }
