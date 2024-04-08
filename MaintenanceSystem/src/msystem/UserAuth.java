@@ -167,9 +167,11 @@ public class UserAuth extends javax.swing.JFrame {
 
     private void txtUsercodeFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUsercodeFocusLost
         // TODO add your handling code here:
+        //No longer need the confirm here, was testing if userID exists in db
+        /*
         if(checkPrimaryKey(txtUsercode.getText())){
             JOptionPane.showMessageDialog(null, "Correct!");
-        }
+        }*/
     }//GEN-LAST:event_txtUsercodeFocusLost
 
     private void userAuthenByassBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userAuthenByassBtnActionPerformed
