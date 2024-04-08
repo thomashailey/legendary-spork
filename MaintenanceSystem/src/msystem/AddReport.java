@@ -178,6 +178,7 @@ public class AddReport extends javax.swing.JFrame {
         }
         catch(Exception e) {
             System.out.println(e);
+            System.out.println("AddReport.addReporConfirmBtnMouseClicked");
         }
         MainPage.editEmployee = false;
         this.setVisible(false);

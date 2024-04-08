@@ -57,6 +57,7 @@ public class Employee {
         
         catch(Exception e) {
             System.out.println(e);
+            System.out.println("Employee.PullEmployees");
         }
         return elements;
     }
@@ -116,6 +117,7 @@ public class Employee {
         
         catch(Exception e) {
             System.out.println(e);
+            System.out.println("Employee.SearchEmployees");
         }
         return elements;
         
@@ -154,6 +156,7 @@ public class Employee {
         
         catch(Exception e) {
             System.out.println(e);
+            System.out.println("Employee.PullEmpInfo");
         }
         return elements;
     }
@@ -177,6 +180,7 @@ public class Employee {
         }
         catch(Exception e) {
             System.out.println(e);
+            System.out.println("Employee.RemoveEmpInfo");
         }
     }
     
@@ -201,7 +205,8 @@ public class Employee {
             }
         }
         catch(Exception e) {
-            
+            System.out.println(e);
+            System.out.println("Employee.PullReports");
         }
         return elements;
     }
@@ -226,6 +231,8 @@ public class Employee {
         }
         catch(Exception e) {
             JOptionPane.showMessageDialog(null, "Incorrect");
+            System.out.println(e);
+            System.out.println("Employee.SearchReports");
         }
         return elements;
     }
@@ -259,18 +266,21 @@ public class Employee {
             //System.out.println(elements);
         }
         catch(Exception e) {
+            System.out.println(e);
+            System.out.println("Employee.ReportDetails");
             
         }
         return results;
     }
     
-    public ArrayList PullMaintenanceActivities() throws SQLException, ClassNotFoundException {
+    public ArrayList PullMaintenanceActivities(String selectedItem) throws SQLException, ClassNotFoundException {
 
         con = db.OpenConnection();
         ArrayList<String> elements = new ArrayList<>();
-        try {  sql = "SELECT * FROM maintenance_activities";
+
+        try {  sql = "SELECT * FROM maintenance_activities WHERE UserID = ?";
             stmt = con.prepareStatement(sql);
-            
+            stmt.setInt(1, Integer.parseInt(selectedItem));
             result = stmt.executeQuery();
 
             if (result != null) {
@@ -296,6 +306,7 @@ public class Employee {
         
         catch(Exception e) {
             System.out.println(e);
+            System.out.println("Employee.PullMaintenanceActivities");
         }
         return elements;
 

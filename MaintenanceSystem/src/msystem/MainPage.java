@@ -619,10 +619,7 @@ public class MainPage extends javax.swing.JFrame {
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mainPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(tabPanePanel)
-                .addContainerGap())
+            .addComponent(tabPanePanel, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -860,7 +857,7 @@ TODO DELETE
         try {
             String input = String.format(jTextField1.getText());
             try {
-                list = emp.PullMaintenanceActivities();
+                list = emp.PullMaintenanceActivities(jTextField1.getText());
                 DefaultListModel model = new DefaultListModel();
                 model.addAll(list);
                 jList1.setModel(model);
@@ -876,6 +873,7 @@ TODO DELETE
 
     private void maintSearchCatBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maintSearchCatBtnActionPerformed
         // TODO add your handling code here:
+        // do we even have a category for these? we could change this to a pull all button
     }//GEN-LAST:event_maintSearchCatBtnActionPerformed
 
     private void maintSearchDateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maintSearchDateBtnActionPerformed

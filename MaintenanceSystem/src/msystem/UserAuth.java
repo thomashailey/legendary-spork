@@ -159,6 +159,7 @@ public class UserAuth extends javax.swing.JFrame {
             }
             catch(Exception e){
                 System.out.println(e);
+                System.out.println("UserAuth.tempNextPageMouseClicked");
             }
         }
         
@@ -192,6 +193,7 @@ public class UserAuth extends javax.swing.JFrame {
         }
         catch(Exception e){
             System.out.println(e);
+            System.out.println("UserAuth.checkPrimaryKey");
         }
         System.out.println(passUser);
         return passUser;

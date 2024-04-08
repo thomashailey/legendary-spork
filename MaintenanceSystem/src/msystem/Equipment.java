@@ -60,7 +60,8 @@ public class Equipment {
             }
         }
         catch(Exception e) {
-            
+            System.out.println(e);
+            System.out.println("Equipment.SearchInventory");
         }
         return elements;
     }
@@ -89,7 +90,8 @@ public class Equipment {
             }
         }
         catch(Exception e) {
-            
+            System.out.println(e);
+            System.out.println("Equipment.ViewInventory");
         }
         return elements;
         
