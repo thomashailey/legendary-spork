@@ -860,7 +860,7 @@ TODO DELETE
         try {
             String input = String.format(jTextField1.getText());
             try {
-                list = emp.PullEmpInfo(input);
+                list = emp.PullMaintenanceActivities();
                 DefaultListModel model = new DefaultListModel();
                 model.addAll(list);
                 jList1.setModel(model);

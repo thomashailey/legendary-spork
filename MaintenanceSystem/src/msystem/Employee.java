@@ -264,6 +264,46 @@ public class Employee {
         return results;
     }
     
+    public ArrayList PullMaintenanceActivities() throws SQLException, ClassNotFoundException {
+
+        con = db.OpenConnection();
+        ArrayList<String> elements = new ArrayList<>();
+        try {  sql = "SELECT UserID FROM maintenance_activities";
+            stmt = con.prepareStatement(sql);
+            
+            result = stmt.executeQuery();
+
+            if (result != null) {
+                System.out.println("Successfully Accessed DataBase to pull maintenance activities");
+            }
+            while (result.next()) {
+            elements.add(String.format("%s,%s,   %s", 
+                        String.format("%10s",result.getString("ActivityID")), 
+                        String.format("%12s", result.getString("ActivityDate")),
+                        result.getString("Description")));
+            }
+
+            /*
+            while (result.next()) {
+                System.out.print(result.getString("Username") + ", " + result.getString("UserID"));
+            }*/
+            con.close();
+            System.out.println("Database closed");
+         
+
+
+        }
+        
+        catch(Exception e) {
+            System.out.println(e);
+        }
+        return elements;
+
+
+
+
+}
+    
     public void AccessLogs() {
         // stretch goal - if we have time to add
 
