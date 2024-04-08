@@ -5,18 +5,26 @@
 package msystem;
 
 import javax.swing.JOptionPane;
-
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Collections;
 /**
  *
  * @author thoma
  */
 public class UserAuth extends javax.swing.JFrame {
-
+    DBConnect db = new DBConnect();
+    Connection con = null;
+    PreparedStatement stmt;
+    ResultSet result;
+    String sql = null;
+    
     /**
      * Creates new form UserAuth
      */
     public UserAuth() {
         initComponents();
+
     }
 
     /**
@@ -124,9 +132,28 @@ public class UserAuth extends javax.swing.JFrame {
     // Method to check if user code matches primary key in database
     private boolean checkPrimaryKey(String userCode) {
         // Database connection parameters
-        String url = "jdbc:mysql://localhost:3306/ceis400_groupc_maintsys","root","devry123";
-        String username = "your_username";
-        String password = "your_password";
+        sql = String.format("SELECT * FROM user_authoization WHERE UserID = %s", userCode);
+        con = db.OpenConnection();
+
+
+        try{
+            stmt = con.prepareStatement(sql);
+            result = stmt;
+            if(result!=null){
+                System.out.println("Successfully pulles user ID from database");
+            }
+            while(result.next()){
+            
+        }
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+        return elements;
+        /*
+        String url = "jdbc:mysql://localhost:3306/ceis400_groupc_maintsys";
+        String username = "root";
+        String password = "devry123";
 
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
             String sql = "SELECT * FROM your_table WHERE primary_key_column = ?";
@@ -134,7 +161,8 @@ public class UserAuth extends javax.swing.JFrame {
             statement.setString(1, userCode);
             ResultSet resultSet = statement.executeQuery();
             return resultSet.next();
-        }    }
+        }*/    
+    }
     
     // Method to authenticate login with user code and password
     private void authenticateLogin(String userCode, String password) {
