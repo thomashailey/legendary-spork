@@ -268,7 +268,7 @@ public class Employee {
 
         con = db.OpenConnection();
         ArrayList<String> elements = new ArrayList<>();
-        try {  sql = "SELECT UserID FROM maintenance_activities";
+        try {  sql = "SELECT * FROM maintenance_activities";
             stmt = con.prepareStatement(sql);
             
             result = stmt.executeQuery();
