@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package msystem;
 
 import java.sql.Connection;
@@ -12,8 +8,16 @@ import java.util.ArrayList;
 
 /**
  *
- * @author thoma
+ * @author thoma / vaughnr
  */
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Equipment {
     
     // Global level Variables
@@ -33,9 +37,6 @@ public class Equipment {
     public void ViewEquipment(){
         // 
     }
-    
-
-    
     public void ReportLoss() {
         // Report loss of equipment
     }
@@ -128,4 +129,6 @@ public class Equipment {
         return elements;
     }    
     
+
 }
+
