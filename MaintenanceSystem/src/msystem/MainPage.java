@@ -22,6 +22,8 @@ import javax.swing.JOptionPane;
 import msystem.Employee;
 import msystem.Equipment;
 public class MainPage extends javax.swing.JFrame {
+
+    
     
     DBConnect db = new DBConnect();
     Connection con = null;
@@ -37,6 +39,7 @@ public class MainPage extends javax.swing.JFrame {
     static String selectingThisRole = null;
     static String selectingThisEndorsement = null;
     Equipment equip = new Equipment();
+    static boolean NewLog = false;
 
     /**
      * Creates new form MainPage
@@ -354,6 +357,11 @@ public class MainPage extends javax.swing.JFrame {
         jScrollPane7.setViewportView(jList1);
 
         maintLogBtn.setText("New Log");
+        maintLogBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                maintLogBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout maintenanceTabLayout = new javax.swing.GroupLayout(maintenanceTab);
         maintenanceTab.setLayout(maintenanceTabLayout);
@@ -912,6 +920,26 @@ TODO DELETE
             JOptionPane.showMessageDialog(null, "Please enter a valid Date");
         }
     }//GEN-LAST:event_maintSearchDateBtnActionPerformed
+
+    private void maintLogBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maintLogBtnActionPerformed
+        // TODO add your handling code here:
+        NewLog = true;
+        ArrayList<String> list = new ArrayList<String>();
+        try {
+            list = emp.PullEmpInfo(pullThisUserIdForEdit);
+            selectingThisUserID = pullThisUserIdForEdit;
+            selectingThisUsername = list.get(1);
+            selectingThisPassword = null;
+            selectingThisRole = list.get(2);
+            selectingThisEndorsement = list.get(3);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+        new NewLog().setVisible(true);
+    }//GEN-LAST:event_maintLogBtnActionPerformed
 
     
     /**

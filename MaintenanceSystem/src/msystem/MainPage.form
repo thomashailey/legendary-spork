@@ -589,6 +589,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="New Log"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="maintLogBtnActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
