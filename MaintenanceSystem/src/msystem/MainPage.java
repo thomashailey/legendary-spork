@@ -892,6 +892,25 @@ TODO DELETE
 
     private void maintSearchDateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maintSearchDateBtnActionPerformed
         // TODO add your handling code here:
+        ArrayList<String> list = new ArrayList<String>();
+        
+        try {
+           
+            String input = String.format(jTextField1.getText());
+            try {
+                String pattern = "yyyy-MM-dd";
+                list = emp.PullMaintenanceActivitiesDate(jTextField1.getText());
+                DefaultListModel model = new DefaultListModel();
+                model.addAll(list);
+                jList1.setModel(model);
+            } catch (SQLException ex) {
+                Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid Date");
+        }
     }//GEN-LAST:event_maintSearchDateBtnActionPerformed
 
     
