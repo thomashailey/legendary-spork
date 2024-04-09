@@ -8,22 +8,43 @@ package msystem;
  *
  * @author thoma
  */
+import java.awt.List;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import msystem.Employee;
 import msystem.Equipment;
 public class MainPage extends javax.swing.JFrame {
+    
+    DBConnect db = new DBConnect();
+    Connection con = null;
+    PreparedStatement stmt;
+    ResultSet result;
+    Employee emp = new Employee();
+    static boolean editEmployee = false;
+    String sql = null;
+    static String pullThisUserIdForEdit = null;
+    static String selectingThisUserID = null;
+    static String selectingThisUsername = null;
+    static String selectingThisPassword = null;
+    static String selectingThisRole = null;
+    static String selectingThisEndorsement = null;
+    Equipment equip = new Equipment();
 
     /**
      * Creates new form MainPage
      */
     public MainPage() {
         initComponents();
+        AccessReportInfo();
+        AccessEmployeeInfo();
+        AccessInventoryInfo();
     }
     
 
@@ -52,11 +73,10 @@ public class MainPage extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        equipmentPullAllBtn = new javax.swing.JButton();
         inventoryTab = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jScrollPane9 = new javax.swing.JScrollPane();
-        txaInventory = new javax.swing.JTextArea();
-        txtSearch = new javax.swing.JTextField();
+        txtInvSearch = new javax.swing.JTextField();
         btnInventorySearch = new javax.swing.JButton();
         jScrollPane8 = new javax.swing.JScrollPane();
         jList2 = new javax.swing.JList<>();
@@ -68,6 +88,8 @@ public class MainPage extends javax.swing.JFrame {
         txaRecord = new javax.swing.JTextArea();
         txtSearchRecord = new javax.swing.JTextField();
         btnSearchRecord = new javax.swing.JButton();
+        jScrollPane11 = new javax.swing.JScrollPane();
+        invMainList = new javax.swing.JList<>();
         maintenanceTab = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
         maintSearchEmpBtn = new javax.swing.JButton();
@@ -86,16 +108,19 @@ public class MainPage extends javax.swing.JFrame {
         jScrollPane5 = new javax.swing.JScrollPane();
         reportDetailsField = new javax.swing.JTextArea();
         reportPrint = new javax.swing.JButton();
+        reportLoadAllBtn = new javax.swing.JButton();
+        reportAddButton = new javax.swing.JButton();
         Employee = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
         empList = new javax.swing.JList<>();
         empListLabel = new javax.swing.JLabel();
-        empSearchField = new javax.swing.JTextField();
+        empFirstNameSearchField = new javax.swing.JTextField();
         empSearchBtn = new javax.swing.JButton();
         empAddBtn = new javax.swing.JButton();
         empRemoveBtn = new javax.swing.JButton();
         empEditBtn = new javax.swing.JButton();
-        loadAllBtn = new javax.swing.JButton();
+        empLoadAllBtn = new javax.swing.JButton();
+        empLastInitSearchField = new javax.swing.JTextField();
         mainMenuBar = new javax.swing.JMenuBar();
         logOutBtn = new javax.swing.JMenu();
 
@@ -104,17 +129,24 @@ public class MainPage extends javax.swing.JFrame {
         lblToolname.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblToolname.setText("Tool Name:");
 
+        lstTools.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         lstTools.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
+        });
+        lstTools.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                lstToolsValueChanged(evt);
+            }
         });
         jScrollPane1.setViewportView(lstTools);
 
         lblTooldescription.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblTooldescription.setText("Tool Description:");
 
-        txaTooldescription.setColumns(20);
+        txaTooldescription.setColumns(30);
+        txaTooldescription.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         txaTooldescription.setRows(5);
         jScrollPane2.setViewportView(txaTooldescription);
 
@@ -131,42 +163,55 @@ public class MainPage extends javax.swing.JFrame {
         jLabel1.setText("Tool Summary:");
 
         jTextArea1.setColumns(20);
+        jTextArea1.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         jTextArea1.setRows(5);
         jScrollPane3.setViewportView(jTextArea1);
+
+        equipmentPullAllBtn.setText("Pull All");
+        equipmentPullAllBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                equipmentPullAllBtnMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout equipmentTabLayout = new javax.swing.GroupLayout(equipmentTab);
         equipmentTab.setLayout(equipmentTabLayout);
         equipmentTabLayout.setHorizontalGroup(
             equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(equipmentTabLayout.createSequentialGroup()
-                .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(equipmentTabLayout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(btnCheckavailable))
-                    .addGroup(equipmentTabLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnReportloss)))
-                .addGap(115, 115, 115)
-                .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnCheckout)
-                    .addComponent(btnCheckin, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, equipmentTabLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(lblToolname)
                 .addGap(125, 125, 125)
                 .addComponent(lblTooldescription)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 307, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(145, 145, 145))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, equipmentTabLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addGroup(equipmentTabLayout.createSequentialGroup()
+                .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(equipmentTabLayout.createSequentialGroup()
+                        .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(equipmentTabLayout.createSequentialGroup()
+                                .addGap(23, 23, 23)
+                                .addComponent(btnCheckavailable))
+                            .addGroup(equipmentTabLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(btnReportloss)))
+                        .addGap(115, 115, 115)
+                        .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnCheckout)
+                            .addComponent(btnCheckin, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(equipmentTabLayout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(equipmentPullAllBtn)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         equipmentTabLayout.setVerticalGroup(
             equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -189,19 +234,23 @@ public class MainPage extends javax.swing.JFrame {
                 .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCheckin)
                     .addComponent(btnReportloss))
-                .addContainerGap(103, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(equipmentPullAllBtn)
+                .addContainerGap(67, Short.MAX_VALUE))
         );
 
         tabPanePanel.addTab("Epuipment", equipmentTab);
 
         jLabel2.setText("Inventory:");
 
-        txaInventory.setColumns(20);
-        txaInventory.setRows(5);
-        jScrollPane9.setViewportView(txaInventory);
-
         btnInventorySearch.setText("Search");
+        btnInventorySearch.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnInventorySearchMouseClicked(evt);
+            }
+        });
 
+        jList2.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         jList2.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
@@ -218,10 +267,18 @@ public class MainPage extends javax.swing.JFrame {
         lblInventoryRecord.setText("Inventory Record");
 
         txaRecord.setColumns(20);
+        txaRecord.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         txaRecord.setRows(5);
         jScrollPane10.setViewportView(txaRecord);
 
         btnSearchRecord.setText("Search");
+
+        invMainList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane11.setViewportView(invMainList);
 
         javax.swing.GroupLayout inventoryTabLayout = new javax.swing.GroupLayout(inventoryTab);
         inventoryTab.setLayout(inventoryTabLayout);
@@ -230,36 +287,33 @@ public class MainPage extends javax.swing.JFrame {
             .addGroup(inventoryTabLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inventoryTabLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnInventorySearch)
-                        .addGap(24, 24, 24))
                     .addGroup(inventoryTabLayout.createSequentialGroup()
-                        .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel2)
-                            .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, Short.MAX_VALUE)))
+                        .addComponent(jLabel2)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inventoryTabLayout.createSequentialGroup()
+                        .addComponent(txtInvSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnInventorySearch))
+                    .addComponent(jScrollPane11, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(18, 18, 18)
                 .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(inventoryTabLayout.createSequentialGroup()
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, inventoryTabLayout.createSequentialGroup()
+                            .addGap(6, 6, 6)
                             .addComponent(btnAdd)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(btnDelete)
-                            .addGap(6, 6, 6))
+                            .addGap(18, 18, 18)
+                            .addComponent(btnDelete))
                         .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lblAdjustments))
                 .addGap(18, 18, 18)
-                .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblInventoryRecord)
-                    .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(inventoryTabLayout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addComponent(txtSearchRecord, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtSearchRecord, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnSearchRecord)))
-                .addContainerGap(19, Short.MAX_VALUE))
+                        .addComponent(btnSearchRecord))
+                    .addComponent(jScrollPane10))
+                .addGap(19, 19, 19))
         );
         inventoryTabLayout.setVerticalGroup(
             inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -272,17 +326,17 @@ public class MainPage extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-                    .addComponent(jScrollPane9)
-                    .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE))
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+                    .addComponent(jScrollPane11))
                 .addGap(20, 20, 20)
                 .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtInvSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnInventorySearch)
-                    .addComponent(btnAdd)
                     .addComponent(btnDelete)
                     .addComponent(txtSearchRecord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSearchRecord))
-                .addContainerGap(49, Short.MAX_VALUE))
+                    .addComponent(btnSearchRecord)
+                    .addComponent(btnAdd))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
 
         tabPanePanel.addTab("Inventory", inventoryTab);
@@ -295,6 +349,7 @@ public class MainPage extends javax.swing.JFrame {
 
         jLabel3.setText("Maintenance Logs:");
 
+        jList1.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
@@ -311,9 +366,9 @@ public class MainPage extends javax.swing.JFrame {
             .addGroup(maintenanceTabLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(maintenanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, maintenanceTabLayout.createSequentialGroup()
-                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 564, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, Short.MAX_VALUE)
+                    .addGroup(maintenanceTabLayout.createSequentialGroup()
+                        .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 682, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addGroup(maintenanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(maintSearchEmpBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jTextField1)
@@ -343,27 +398,61 @@ public class MainPage extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(maintLogBtn))
                     .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         tabPanePanel.addTab("Maintenance", maintenanceTab);
 
-        reportList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        reportList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                reportListValueChanged(evt);
+            }
         });
         jScrollPane4.setViewportView(reportList);
 
         reportListLabel.setText("Report List:");
 
+        reportSearchField.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
+        reportSearchField.setText("User ID");
+        reportSearchField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                reportSearchFieldFocusGained(evt);
+            }
+        });
+
         reportSearchBtn.setText("Search");
+        reportSearchBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                reportSearchBtnMouseClicked(evt);
+            }
+        });
 
         reportDetailsField.setColumns(20);
+        reportDetailsField.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
+        reportDetailsField.setLineWrap(true);
         reportDetailsField.setRows(5);
         jScrollPane5.setViewportView(reportDetailsField);
 
         reportPrint.setText("Print");
+        reportPrint.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                reportPrintMouseClicked(evt);
+            }
+        });
+
+        reportLoadAllBtn.setText("Load All");
+        reportLoadAllBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                reportLoadAllBtnMouseClicked(evt);
+            }
+        });
+
+        reportAddButton.setText("Add");
+        reportAddButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                reportAddButtonMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout reportTabLayout = new javax.swing.GroupLayout(reportTab);
         reportTab.setLayout(reportTabLayout);
@@ -385,9 +474,13 @@ public class MainPage extends javax.swing.JFrame {
                                         .addComponent(reportSearchField)
                                         .addGap(18, 18, 18)
                                         .addComponent(reportSearchBtn))
-                                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE)))
+                                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 646, Short.MAX_VALUE)))
                             .addGroup(reportTabLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(reportAddButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(reportLoadAllBtn)
+                                .addGap(18, 18, 18)
                                 .addComponent(reportPrint)))))
                 .addContainerGap())
         );
@@ -406,33 +499,76 @@ public class MainPage extends javax.swing.JFrame {
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE))
                     .addComponent(jScrollPane4))
                 .addGap(18, 18, 18)
-                .addComponent(reportPrint)
+                .addGroup(reportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(reportPrint)
+                    .addComponent(reportLoadAllBtn)
+                    .addComponent(reportAddButton))
                 .addGap(15, 15, 15))
         );
 
         tabPanePanel.addTab("Report", reportTab);
 
+        empList.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         empList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        empList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                empListValueChanged(evt);
+            }
+        });
         jScrollPane6.setViewportView(empList);
 
         empListLabel.setText("Employees List:");
 
+        empFirstNameSearchField.setText("First Name");
+        empFirstNameSearchField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                empFirstNameSearchFieldFocusGained(evt);
+            }
+        });
+
         empSearchBtn.setText("Search");
+        empSearchBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                empSearchBtnMouseClicked(evt);
+            }
+        });
 
         empAddBtn.setText("Add");
+        empAddBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                empAddBtnMouseClicked(evt);
+            }
+        });
 
         empRemoveBtn.setText("Remove");
+        empRemoveBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                empRemoveBtnMouseClicked(evt);
+            }
+        });
 
         empEditBtn.setText("Edit");
-
-        loadAllBtn.setText("Load All");
-        loadAllBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+        empEditBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                loadAllBtnMouseClicked(evt);
+                empEditBtnMouseClicked(evt);
+            }
+        });
+
+        empLoadAllBtn.setText("Load All");
+        empLoadAllBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                empLoadAllBtnMouseClicked(evt);
+            }
+        });
+
+        empLastInitSearchField.setText("Last Initial");
+        empLastInitSearchField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                empLastInitSearchFieldFocusGained(evt);
             }
         });
 
@@ -448,11 +584,13 @@ public class MainPage extends javax.swing.JFrame {
                         .addComponent(empListLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(EmployeeLayout.createSequentialGroup()
-                        .addComponent(empSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addComponent(empFirstNameSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(empLastInitSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(empSearchBtn)
                         .addGap(18, 18, 18)
-                        .addComponent(loadAllBtn)
+                        .addComponent(empLoadAllBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 120, Short.MAX_VALUE)
                         .addComponent(empAddBtn)
                         .addGap(18, 18, 18)
@@ -467,15 +605,16 @@ public class MainPage extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(empListLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(EmployeeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(empSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(empFirstNameSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(empSearchBtn)
                     .addComponent(empAddBtn)
                     .addComponent(empRemoveBtn)
                     .addComponent(empEditBtn)
-                    .addComponent(loadAllBtn))
+                    .addComponent(empLoadAllBtn)
+                    .addComponent(empLastInitSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(16, 16, 16))
         );
 
@@ -529,12 +668,141 @@ public class MainPage extends javax.swing.JFrame {
         new UserAuth().setVisible(true);
     }//GEN-LAST:event_logOutBtnMouseClicked
 
-    private void loadAllBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loadAllBtnMouseClicked
+    private void empLoadAllBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_empLoadAllBtnMouseClicked
         // TODO add your handling code here:
-        Employee emp = new Employee();
+        AccessEmployeeInfo();
+    }//GEN-LAST:event_empLoadAllBtnMouseClicked
+/*
+    private void empEditBtnMouseClicked(java.awt.event.MouseEvent evt) {                                        
+TODO DELETE
+    }                                       
+*/
+    private void reportLoadAllBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportLoadAllBtnMouseClicked
+        // TODO add your handling code here:
+        AccessReportInfo();
+    }//GEN-LAST:event_reportLoadAllBtnMouseClicked
+
+    private void reportSearchBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportSearchBtnMouseClicked
+        // TODO add your handling code here:
         ArrayList<String> list = new ArrayList<String>();
         try {
-            list = emp.PullEmployees();
+            int input = Integer.parseInt(reportSearchField.getText());
+            try {
+                list = emp.SearchReports(input);
+                DefaultListModel model = new DefaultListModel();
+                model.addAll(list);
+                reportList.setModel(model);
+            } catch (SQLException ex) {
+                Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid User ID");
+        }
+    }//GEN-LAST:event_reportSearchBtnMouseClicked
+
+    private void reportPrintMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportPrintMouseClicked
+        // TODO add info from details box into a new form that will be saved as a file to the user's device.
+        JOptionPane.showMessageDialog(null, "Please connect a printer");
+    }//GEN-LAST:event_reportPrintMouseClicked
+
+    private void reportListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_reportListValueChanged
+        try {
+            // TODO add your handling code here:\
+            String selectedReportID = reportList.getSelectedValue();
+            System.out.println(selectedReportID);
+            String list = emp.ReportDetails(selectedReportID);
+            reportDetailsField.setText(list);
+            //ViewReportDetails();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        /*
+        String list = "Nothing";
+        try {
+            list = emp.ReportDetails(reportList.getSelectedValue());
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        reportDetailsField.setText(list);*/
+    }//GEN-LAST:event_reportListValueChanged
+
+    private void btnInventorySearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInventorySearchMouseClicked
+        // TODO add your handling code here:
+        if (txtInvSearch.getText().equals("")) {
+            System.out.println("Search successful");
+            AccessInventoryInfo();
+        
+        }
+        else{
+            System.out.println("Search successful");
+            SearchInventory();
+    }
+    }//GEN-LAST:event_btnInventorySearchMouseClicked
+
+    private void empAddBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_empAddBtnMouseClicked
+        // TODO add your handling code here:
+        new EditEmployee().setVisible(true);
+        EditEmployee.passwordEdit = true;
+    }//GEN-LAST:event_empAddBtnMouseClicked
+
+    private void empRemoveBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_empRemoveBtnMouseClicked
+        // TODO add your handling code here:
+        if(JOptionPane.showInputDialog("Are you sure you want to delete this user? Please enter DELETE to confirm action (case specific)").equals("DELETE")){
+            emp.RemoveEmpInfo(pullThisUserIdForEdit);
+            //sql = String.format("DELETE FROM user_authoization WHERE UserID = %s", pullThisUserIdForEdit);
+            //System.out.println(sql);
+            
+            //JOptionPane.showMessageDialog(null, sql);
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Data not removed, confirmation entered incorrectly");
+        }
+    }//GEN-LAST:event_empRemoveBtnMouseClicked
+
+    private void empListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_empListValueChanged
+        // TODO add your handling code here:
+        //adding all code of selecting item here in order to not run it multiple times via the edit and delete button
+        String test = empList.getSelectedValue();
+        //trying to split this string into a list using .spit(",")
+        if(test != null){
+            var Test = new ArrayList<String>(Arrays.asList(test.split(",")));
+            pullThisUserIdForEdit = Test.get(0).trim();
+            System.out.println(pullThisUserIdForEdit);
+        }
+    }//GEN-LAST:event_empListValueChanged
+
+    private void empSearchBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_empSearchBtnMouseClicked
+        // TODO add your handling code here:
+        String searchFirstNameText = empFirstNameSearchField.getText().trim();
+        String searchLastInitText = empLastInitSearchField.getText().trim();
+        String searchText = null;
+        boolean fName = false;
+        boolean lName = false;
+        
+        if(!searchFirstNameText.equals("") && !searchFirstNameText.equals("First Name")){
+            //System.out.println(searchFirstNameText);
+            fName = true;
+            searchText = searchFirstNameText;
+        }
+        if(!searchLastInitText.equals("") && !searchLastInitText.equals("Last Initial")){
+            //System.out.println(searchLastInitText);
+            lName = true;
+            searchText = String.format("%s%s", searchText, searchLastInitText);
+        }
+        System.out.println(searchText);
+        if(!fName && !lName){
+            return;
+        }
+        ArrayList<String> list = new ArrayList<String>();
+        try {
+            list = emp.SearchEmployees(fName, lName, searchFirstNameText, searchLastInitText);
             DefaultListModel model = new DefaultListModel();
             model.addAll(list);
             empList.setModel(model);
@@ -543,7 +811,115 @@ public class MainPage extends javax.swing.JFrame {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_loadAllBtnMouseClicked
+    }//GEN-LAST:event_empSearchBtnMouseClicked
+
+    private void empFirstNameSearchFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_empFirstNameSearchFieldFocusGained
+        // TODO add your handling code here:
+        if(!empFirstNameSearchField.getText().equals("")){
+            empFirstNameSearchField.setText("");
+        }
+    }//GEN-LAST:event_empFirstNameSearchFieldFocusGained
+
+    private void empLastInitSearchFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_empLastInitSearchFieldFocusGained
+        // TODO add your handling code here:
+        if(!empLastInitSearchField.getText().equals("")){
+            empLastInitSearchField.setText("");
+        }
+    }//GEN-LAST:event_empLastInitSearchFieldFocusGained
+
+    private void empEditBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_empEditBtnMouseClicked
+        // TODO add your handling code here:
+        //TODO add your handling code here:
+        //this.setVisible(false);
+        editEmployee = true;
+        ArrayList<String> list = new ArrayList<String>();
+        try {
+            list = emp.PullEmpInfo(pullThisUserIdForEdit);
+            selectingThisUserID = pullThisUserIdForEdit;
+            selectingThisUsername = list.get(1);
+            selectingThisPassword = null;
+            selectingThisRole = list.get(2);
+            selectingThisEndorsement = list.get(3);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+        new EditEmployee().setVisible(true);
+    }//GEN-LAST:event_empEditBtnMouseClicked
+
+    private void reportAddButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportAddButtonMouseClicked
+        // TODO add your handling code here:
+        new AddReport().setVisible(true);
+    }//GEN-LAST:event_reportAddButtonMouseClicked
+
+    private void reportSearchFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_reportSearchFieldFocusGained
+        // TODO add your handling code here:
+        reportSearchField.setText("");
+    }//GEN-LAST:event_reportSearchFieldFocusGained
+
+    private void equipmentPullAllBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_equipmentPullAllBtnMouseClicked
+        // TODO add your handling code here:
+        System.out.println("Equipment Pull All Btn");
+        sql = "SELECT * FROM equipment";
+        ArrayList<String> elements = new ArrayList<>();
+        try {
+            con = db.OpenConnection();
+            stmt = con.prepareStatement(sql);
+            result = stmt.executeQuery();
+            if(result!=null){
+                System.out.println("Successfully accessed database to pull all equipment.");
+            }
+            while(result.next()){
+                elements.add(String.format("%5s-%4s %s",result.getString("EquipmentIDChar"),result.getString("EquipmentIDNum"),result.getString("EquipmentName")));
+            }
+            con.close();
+            System.out.println("Database closed.");
+        }
+        catch(Exception e) {
+            System.out.println(e);
+            System.out.println("MainPage.equipmentPullAllBtnMouseClicked");
+        }
+        DefaultListModel model = new DefaultListModel();
+        model.addAll(elements);
+        lstTools.setModel(model);        
+    }//GEN-LAST:event_equipmentPullAllBtnMouseClicked
+
+    private void lstToolsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstToolsValueChanged
+        // TODO add your handling code here:
+        String equipPullThisCharacterID = null;
+        String equipPullThisCharacterNum = null;
+        String equipListSelection = lstTools.getSelectedValue().substring(0,10).trim();
+        System.out.println(equipListSelection);
+        if(equipListSelection != null){
+            var equipmentListSelectionToList = new ArrayList<String>(Arrays.asList(equipListSelection.split("-")));
+            System.out.println(equipmentListSelectionToList);
+            equipPullThisCharacterID = equipmentListSelectionToList.get(0).trim();
+            equipPullThisCharacterNum = equipmentListSelectionToList.get(1).trim();
+         
+        }
+        System.out.println(equipPullThisCharacterID);
+        System.out.println(equipPullThisCharacterNum);
+        sql = String.format("SELECT * FROM equipment WHERE EquipmentIDChar = '%s' AND EquipmentIDNum = %s", equipPullThisCharacterID,equipPullThisCharacterNum);
+        try {
+            con = db.OpenConnection();
+            stmt = con.prepareStatement(sql);
+            result = stmt.executeQuery();
+            if(result!=null){
+                System.out.println("Successfully accessed database to pull equipment ID and characger number.");
+            }
+            while(result.next()){
+                String elements;
+                elements = String.format("%5s-%4s %s",result.getString("EquipmentIDChar"),result.getString("EquipmentIDNum"),result.getString("EquipmentName"));
+            }
+        }
+        catch (Exception e){
+            System.out.println(e);
+            System.out.println("MainPage.equipmentIDChar");
+        }
+        
+    }//GEN-LAST:event_lstToolsValueChanged
 
     
     /**
@@ -585,9 +961,75 @@ public class MainPage extends javax.swing.JFrame {
         
     }
     
-    public void AccessEmployeeInfo() {
-        
+    public void AccessInventoryInfo() {
+        ArrayList<String> list = new ArrayList<String>();
+        try {
+            list = equip.ViewInventory();
+            DefaultListModel model = new DefaultListModel();
+            model.addAll(list);
+            invMainList.setModel(model);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
+    
+    public void SearchInventory() {
+                ArrayList<String> list = new ArrayList<String>();
+                
+        try {
+            list = equip.SearchInventory(txtInvSearch.getText());
+            DefaultListModel model = new DefaultListModel();
+            model.addAll(list);
+            invMainList.setModel(model);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void AccessEmployeeInfo() {
+        ArrayList<String> list = new ArrayList<String>();
+        try {
+            list = emp.PullEmployees();
+            DefaultListModel model = new DefaultListModel();
+            model.addAll(list);
+            empList.setModel(model);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void AccessReportInfo() {
+        ArrayList<String> list = new ArrayList<String>();
+        try {
+            list = emp.PullReports();
+            DefaultListModel model = new DefaultListModel();
+            model.addAll(list);
+            reportList.setModel(model);
+            //reportSearchField.setText("");
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+    }
+    /*
+    public void ViewReportDetails() throws ClassNotFoundException {
+        String list = "Nothing";
+        try {
+            list = emp.ReportDetails(reportList.getSelectedValue());
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        reportDetailsField.setText(list);
+    }*/
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Employee;
@@ -601,12 +1043,16 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JButton btnSearchRecord;
     private javax.swing.JButton empAddBtn;
     private javax.swing.JButton empEditBtn;
+    private javax.swing.JTextField empFirstNameSearchField;
+    private javax.swing.JTextField empLastInitSearchField;
     private javax.swing.JList<String> empList;
     private javax.swing.JLabel empListLabel;
+    private javax.swing.JButton empLoadAllBtn;
     private javax.swing.JButton empRemoveBtn;
     private javax.swing.JButton empSearchBtn;
-    private javax.swing.JTextField empSearchField;
+    private javax.swing.JButton equipmentPullAllBtn;
     private javax.swing.JPanel equipmentTab;
+    private javax.swing.JList<String> invMainList;
     private javax.swing.JPanel inventoryTab;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -615,6 +1061,7 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JList<String> jList2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
+    private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -622,14 +1069,12 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
-    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblAdjustments;
     private javax.swing.JLabel lblInventoryRecord;
     private javax.swing.JLabel lblTooldescription;
     private javax.swing.JLabel lblToolname;
-    private javax.swing.JButton loadAllBtn;
     private javax.swing.JMenu logOutBtn;
     private javax.swing.JList<String> lstTools;
     private javax.swing.JMenuBar mainMenuBar;
@@ -639,18 +1084,23 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JButton maintSearchDateBtn;
     private javax.swing.JButton maintSearchEmpBtn;
     private javax.swing.JPanel maintenanceTab;
+    private javax.swing.JButton reportAddButton;
     private javax.swing.JTextArea reportDetailsField;
     private javax.swing.JList<String> reportList;
     private javax.swing.JLabel reportListLabel;
+    private javax.swing.JButton reportLoadAllBtn;
     private javax.swing.JButton reportPrint;
     private javax.swing.JButton reportSearchBtn;
     private javax.swing.JTextField reportSearchField;
     private javax.swing.JPanel reportTab;
     private javax.swing.JTabbedPane tabPanePanel;
-    private javax.swing.JTextArea txaInventory;
     private javax.swing.JTextArea txaRecord;
     private javax.swing.JTextArea txaTooldescription;
-    private javax.swing.JTextField txtSearch;
+    private javax.swing.JTextField txtInvSearch;
     private javax.swing.JTextField txtSearchRecord;
     // End of variables declaration//GEN-END:variables
+
+    private void setVisisble(boolean b) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
