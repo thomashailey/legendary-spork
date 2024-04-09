@@ -309,8 +309,35 @@ public class Employee {
             System.out.println("Employee.PullMaintenanceActivities");
         }
         return elements;
+    }
+    
+    
+public ArrayList PullAllMaintenanceActivities() throws SQLException, ClassNotFoundException {
 
+       con = db.OpenConnection();
+        ArrayList<String> elements = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM maintenance_activities";
+            stmt = con.prepareStatement(sql);
+            
+            result = stmt.executeQuery();
 
+            if (result != null) {
+                System.out.println("Successfully Accessed Maintenance DataBase");
+            }
+            while (result.next()) {
+                elements.add(String.format("%s,%s,   %s, %s",
+                        String.format("%10s",result.getString("ActivityID")),
+                        String.format("%12s", result.getString("UserID")),
+                        String.format("%12s", result.getString("ActivityDate")),
+                        result.getString("Description")));
+            }
+        
+           }catch(Exception e) {
+            System.out.println(e);
+            System.out.println("Employee.PullMaintenanceActivities");
+        }
+        return elements;
 
 
 }

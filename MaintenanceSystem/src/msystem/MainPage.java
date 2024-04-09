@@ -13,6 +13,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
+import java.lang.String;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
@@ -92,7 +93,7 @@ public class MainPage extends javax.swing.JFrame {
         maintenanceTab = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
         maintSearchEmpBtn = new javax.swing.JButton();
-        maintSearchCatBtn = new javax.swing.JButton();
+        maintPullAll = new javax.swing.JButton();
         maintSearchDateBtn = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane7 = new javax.swing.JScrollPane();
@@ -328,10 +329,10 @@ public class MainPage extends javax.swing.JFrame {
             }
         });
 
-        maintSearchCatBtn.setText("Search by Category");
-        maintSearchCatBtn.addActionListener(new java.awt.event.ActionListener() {
+        maintPullAll.setText("Pull All Logs");
+        maintPullAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                maintSearchCatBtnActionPerformed(evt);
+                maintPullAllActionPerformed(evt);
             }
         });
 
@@ -367,7 +368,7 @@ public class MainPage extends javax.swing.JFrame {
                         .addGroup(maintenanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(maintSearchEmpBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jTextField1)
-                            .addComponent(maintSearchCatBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(maintPullAll, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(maintSearchDateBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(maintLogBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(maintenanceTabLayout.createSequentialGroup()
@@ -387,7 +388,7 @@ public class MainPage extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(maintSearchEmpBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(maintSearchCatBtn)
+                        .addComponent(maintPullAll)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(maintSearchDateBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -871,10 +872,23 @@ TODO DELETE
         }
     }//GEN-LAST:event_maintSearchEmpBtnActionPerformed
 
-    private void maintSearchCatBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maintSearchCatBtnActionPerformed
+    private void maintPullAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maintPullAllActionPerformed
         // TODO add your handling code here:
-        // do we even have a category for these? we could change this to a pull all button
-    }//GEN-LAST:event_maintSearchCatBtnActionPerformed
+        // do we even have a category for these? we could change this to a pull all button >>>>Love it
+        ArrayList<String> list = new ArrayList<String>();
+        try {
+            list = emp.PullAllMaintenanceActivities();
+            DefaultListModel model = new DefaultListModel();
+            model.addAll(list);
+            jList1.setModel(model);
+            //reportSearchField.setText("");
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+    
+    }//GEN-LAST:event_maintPullAllActionPerformed
 
     private void maintSearchDateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maintSearchDateBtnActionPerformed
         // TODO add your handling code here:
@@ -1038,7 +1052,7 @@ TODO DELETE
     private javax.swing.JMenuBar mainMenuBar;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JButton maintLogBtn;
-    private javax.swing.JButton maintSearchCatBtn;
+    private javax.swing.JButton maintPullAll;
     private javax.swing.JButton maintSearchDateBtn;
     private javax.swing.JButton maintSearchEmpBtn;
     private javax.swing.JPanel maintenanceTab;

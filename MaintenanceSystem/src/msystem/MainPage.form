@@ -486,7 +486,7 @@
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="maintSearchEmpBtn" alignment="0" max="32767" attributes="0"/>
                                       <Component id="jTextField1" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="maintSearchCatBtn" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="maintPullAll" alignment="0" max="32767" attributes="0"/>
                                       <Component id="maintSearchDateBtn" alignment="0" max="32767" attributes="0"/>
                                       <Component id="maintLogBtn" max="32767" attributes="0"/>
                                   </Group>
@@ -512,7 +512,7 @@
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="maintSearchEmpBtn" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="maintSearchCatBtn" min="-2" max="-2" attributes="0"/>
+                                  <Component id="maintPullAll" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="maintSearchDateBtn" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="32767" attributes="0"/>
@@ -536,12 +536,12 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="maintSearchEmpBtnActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JButton" name="maintSearchCatBtn">
+                <Component class="javax.swing.JButton" name="maintPullAll">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Search by Category"/>
+                    <Property name="text" type="java.lang.String" value="Pull All Logs"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="maintSearchCatBtnActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="maintPullAllActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="maintSearchDateBtn">
