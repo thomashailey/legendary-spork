@@ -958,7 +958,17 @@ TODO DELETE
     }
     
     public void AccessEquipmentInfo() {
-        
+             ArrayList<String> list = new ArrayList<String>();
+        try {
+            list = equip.ViewEquipment();
+            DefaultListModel model = new DefaultListModel();
+            model.addAll(list);
+            lstTools.setModel(model);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }   
     }
     
     public void AccessInventoryInfo() {
@@ -976,7 +986,7 @@ TODO DELETE
     }
     
     public void SearchInventory() {
-                ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> list = new ArrayList<String>();
                 
         try {
             list = equip.SearchInventory(txtInvSearch.getText());
