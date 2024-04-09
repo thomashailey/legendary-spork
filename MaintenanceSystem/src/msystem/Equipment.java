@@ -23,6 +23,7 @@ public class Equipment {
     // Global level Variables
     DBConnect db = new DBConnect();
     Connection con = null;
+    String sql = null;
     PreparedStatement stmt;
     ResultSet result;
     
@@ -32,10 +33,6 @@ public class Equipment {
     
     public void CheckOut() {
         // Access database to assign equipment and check out
-    }
-    
-    public void ViewEquipment(){
-        // 
     }
     public void ReportLoss() {
         // Report loss of equipment
@@ -52,10 +49,11 @@ public class Equipment {
         */
         con = db.OpenConnection();
         ArrayList<String> elements = new ArrayList<>();
+        String itemToAdd = null;
         try {
-            String sql = "SELECT * FROM inventory WHERE ItemName = ?";
+            sql = String.format("SELECT * FROM inventory WHERE ItemName LIKE '%%%s%%' OR Description LIKE '%%%s%%'", item, item);
             stmt = con.prepareStatement(sql);
-            stmt.setString(1, item);
+            //stmt.setString(1, item);
             
             result = stmt.executeQuery();
 
@@ -63,10 +61,15 @@ public class Equipment {
                 System.out.println("Successfully Accessed Inventory DataBase");
             }
             while (result.next()) {
-                elements.add(result.getString("ItemName"));
+                itemToAdd = String.format("%s -- %s", result.getString("ItemName"), result.getString("Description"));
+                if(!elements.contains(itemToAdd)){
+                    elements.add(itemToAdd);
+                }
             }
         }
         catch(Exception e) {
+            System.out.println(e);
+            System.out.println("Equipment.ViewInventory");
             
         }
         return elements;
@@ -80,23 +83,29 @@ public class Equipment {
         /*  Set connection to DBConnect OpenConnection() method,
             Create ArrayList to store DB elements
         */
+        //need to find a way to ensure that dupe items are not added to the list, then pull both when the request is bigger than the primary
         con = db.OpenConnection();
         ArrayList<String> elements = new ArrayList<>();
+        String itemToAdd = null;
         try {
-            String sql = "SELECT * FROM inventory";
+            sql = "SELECT * FROM inventory";
             stmt = con.prepareStatement(sql);
             
             result = stmt.executeQuery();
-
+            
             if (result != null) {
                 System.out.println("Successfully Accessed Inventory DataBase");
             }
             while (result.next()) {
-                elements.add(result.getString("ItemName"));
+                itemToAdd = String.format("%s -- %s", result.getString("ItemName"), result.getString("Description"));
+                if(!elements.contains(itemToAdd)){
+                    elements.add(itemToAdd);
+                }
             }
         }
         catch(Exception e) {
-            
+            System.out.println(e);
+            System.out.println("Equipment.ViewInventory");
         }
         return elements;
         
@@ -110,7 +119,7 @@ public class Equipment {
         con = db.OpenConnection();
         ArrayList<String> elements = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM equipment WHERE ItemName = ?";
+            sql = "SELECT * FROM equipment WHERE ItemName = ?";
             stmt = con.prepareStatement(sql);
             stmt.setString(1, item);
             

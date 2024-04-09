@@ -323,9 +323,9 @@
                               <Group type="103" alignment="0" groupAlignment="1" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                                      <Component id="btnAdd" min="-2" max="-2" attributes="0"/>
+                                      <Component id="btnInventoryAdd" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="btnDelete" min="-2" max="-2" attributes="0"/>
+                                      <Component id="btnInventoryRequest" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="jScrollPane8" min="-2" pref="174" max="-2" attributes="0"/>
                               </Group>
@@ -337,7 +337,7 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="txtSearchRecord" min="-2" pref="149" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="btnSearchRecord" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnInventoryRecordSearch" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Component id="jScrollPane10" alignment="0" max="32767" attributes="0"/>
                           </Group>
@@ -364,10 +364,10 @@
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="txtInvSearch" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnInventorySearch" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnDelete" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnInventoryRequest" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtSearchRecord" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnSearchRecord" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnAdd" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnInventoryRecordSearch" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnInventoryAdd" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace pref="54" max="32767" attributes="0"/>
                       </Group>
@@ -418,14 +418,14 @@
                     </Component>
                   </SubComponents>
                 </Container>
-                <Component class="javax.swing.JButton" name="btnAdd">
+                <Component class="javax.swing.JButton" name="btnInventoryAdd">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Add"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JButton" name="btnDelete">
+                <Component class="javax.swing.JButton" name="btnInventoryRequest">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Delete"/>
+                    <Property name="text" type="java.lang.String" value="Request"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblAdjustments">
@@ -458,7 +458,7 @@
                 </Container>
                 <Component class="javax.swing.JTextField" name="txtSearchRecord">
                 </Component>
-                <Component class="javax.swing.JButton" name="btnSearchRecord">
+                <Component class="javax.swing.JButton" name="btnInventoryRecordSearch">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Search"/>
                   </Properties>
