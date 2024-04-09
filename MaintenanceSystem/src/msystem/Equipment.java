@@ -24,11 +24,17 @@ public class Equipment {
     
     public void CheckIn() {
         // Access database to return equipment
-    }
+     }
     
     public void CheckOut() {
         // Access database to assign equipment and check out
     }
+    
+    public void ViewEquipment(){
+        // 
+    }
+    
+
     
     public void ReportLoss() {
         // Report loss of equipment
@@ -94,5 +100,32 @@ public class Equipment {
         return elements;
         
     }
+    
+ public ArrayList ViewEquipment(String item) throws SQLException, ClassNotFoundException {
+        // Search inventory for specific item
+        /*  Set connection to DBConnect OpenConnection() method,
+            Create ArrayList to store DB elements
+        */
+        con = db.OpenConnection();
+        ArrayList<String> elements = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM equipment WHERE ItemName = ?";
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1, item);
+            
+            result = stmt.executeQuery();
+
+            if (result != null) {
+                System.out.println("Successfully Accessed Equipment DataBase");
+            }
+            while (result.next()) {
+                elements.add(result.getString("ItemName"));
+            }
+        }
+        catch(Exception e) {
+            
+        }
+        return elements;
+    }    
     
 }
