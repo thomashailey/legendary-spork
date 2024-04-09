@@ -259,8 +259,18 @@ public class MainPage extends javax.swing.JFrame {
         jScrollPane8.setViewportView(jList2);
 
         btnInventoryAdd.setText("Add");
+        btnInventoryAdd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnInventoryAddMouseClicked(evt);
+            }
+        });
 
         btnInventoryRequest.setText("Request");
+        btnInventoryRequest.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnInventoryRequestMouseClicked(evt);
+            }
+        });
 
         lblAdjustments.setText("Adjustments:");
 
@@ -920,6 +930,16 @@ TODO DELETE
         }
         
     }//GEN-LAST:event_lstToolsValueChanged
+
+    private void btnInventoryAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInventoryAddMouseClicked
+        // TODO add your handling code here:
+        new EditInventory(true).setVisible(true);
+    }//GEN-LAST:event_btnInventoryAddMouseClicked
+
+    private void btnInventoryRequestMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInventoryRequestMouseClicked
+        // TODO add your handling code here:
+        new EditInventory(false).setVisible(true);
+    }//GEN-LAST:event_btnInventoryRequestMouseClicked
 
     
     /**

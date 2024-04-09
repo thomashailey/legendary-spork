@@ -74,6 +74,9 @@ public class Equipment {
         }
         return elements;
     }
+    public void searchInventoryForEdit(){
+        
+    }
     
     public void AdjustInventory() {
         // Add code to add or remove inventory from an employee's account
