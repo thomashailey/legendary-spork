@@ -78,7 +78,7 @@ public class Equipment {
     }
     public ArrayList searchInventoryForEdit(String selectedItemName, String selectedDescription){
         //use this in order to pull the inventory item from both locations
-        //var list = new ArrayList<String>(Arrays.asList(MainPage.invMainList.getText().split(" -- ")));
+        //return is passed into EditInventory to show what the 2 locations have
         
         
         sql = String.format("SELECT * FROM inventory WHERE ItemName = '%s' AND Description = '%s'",
@@ -90,7 +90,6 @@ public class Equipment {
             result = stmt.executeQuery();
             if(result != null){
                 System.out.println("Successfully accessed database to pull inventory from user selection");
-                int x=0;
                 while(result.next()){
                     Collections.addAll(elements, result.getString("ItemIDChar"), result.getString("ItemIDNum"),
                             result.getString("ItemName"), result.getString("Description"),
@@ -106,8 +105,17 @@ public class Equipment {
         return elements;
     }
     
-    public void AdjustInventory() {
+    public void addToInventory() {
         // Add code to add or remove inventory from an employee's account
+    }
+    
+    public void requestNewInventory(){
+        // adding a request directly to the inventory request as there is no current inventory for this item, will pass values the user inputs
+    }
+    
+    public void requestCurrentInventory(){
+        // adding a request against current inventory, will pull values from inventory table
+        
     }
     
     public ArrayList ViewInventory() throws SQLException, ClassNotFoundException {

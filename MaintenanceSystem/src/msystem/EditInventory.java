@@ -19,6 +19,7 @@ public class EditInventory extends javax.swing.JFrame {
         initComponents();
         editInventoryNewRequestRadio.setSelected(newItem);
         if(add && !newItem){
+            //with adding into inventory we do not need to set against new or current inventory, it will scan current inventory first, then requests to make sure someone isnt waiting for it
             editInventoryNewRequestRadio.setVisible(false);
             editInventoryCurrentInventoryRadio.setVisible(false);
         }
@@ -28,6 +29,7 @@ public class EditInventory extends javax.swing.JFrame {
             editInventoryDescriptionTxt.setText(values.get(3).toString());
             
             if(values.get(11).toString().equals("Primary")){
+                //pulling and aadjusting the pull values to match where they should be displayed
                 editInventoryPromaryIDChar.setText(values.get(6).toString());
                 editInventoryPromaryIDNum.setText(values.get(7).toString());
                 editInventoryPromaryQAvailable.setText(values.get(10).toString());
@@ -51,12 +53,12 @@ public class EditInventory extends javax.swing.JFrame {
             }
             
             
-            
+            //Test statement below, uncomment to check what values are being passed in
+            /*
             for(int x=0;x<values.size();x++){
                 System.out.println(values.get(x));
-                //System.out.println(values.get(x).split("||"));
-                //System.out.println(attempt25);
-            }
+                
+            }*/
         }
         //editInventoryNameTxt.setEditable(false);
         //editInventoryDescriptionTxt.setEditable(false);
