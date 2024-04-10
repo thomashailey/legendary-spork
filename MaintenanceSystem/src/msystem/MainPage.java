@@ -45,6 +45,7 @@ public class MainPage extends javax.swing.JFrame {
         AccessReportInfo();
         AccessEmployeeInfo();
         AccessInventoryInfo();
+        AccessEquipmentInfo();
     }
     
 
@@ -66,7 +67,6 @@ public class MainPage extends javax.swing.JFrame {
         lblTooldescription = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txaTooldescription = new javax.swing.JTextArea();
-        btnCheckavailable = new javax.swing.JButton();
         btnCheckout = new javax.swing.JButton();
         btnCheckin = new javax.swing.JButton();
         btnReportloss = new javax.swing.JButton();
@@ -150,8 +150,6 @@ public class MainPage extends javax.swing.JFrame {
         txaTooldescription.setRows(5);
         jScrollPane2.setViewportView(txaTooldescription);
 
-        btnCheckavailable.setText("Check");
-
         btnCheckout.setText("Check Out");
 
         btnCheckin.setText("Check In");
@@ -167,7 +165,7 @@ public class MainPage extends javax.swing.JFrame {
         jTextArea1.setRows(5);
         jScrollPane3.setViewportView(jTextArea1);
 
-        equipmentPullAllBtn.setText("Pull All");
+        equipmentPullAllBtn.setText("View Available Equipment");
         equipmentPullAllBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 equipmentPullAllBtnMouseClicked(evt);
@@ -178,40 +176,32 @@ public class MainPage extends javax.swing.JFrame {
         equipmentTab.setLayout(equipmentTabLayout);
         equipmentTabLayout.setHorizontalGroup(
             equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, equipmentTabLayout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(lblToolname)
-                .addGap(125, 125, 125)
-                .addComponent(lblTooldescription)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 307, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(145, 145, 145))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, equipmentTabLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
             .addGroup(equipmentTabLayout.createSequentialGroup()
-                .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(equipmentTabLayout.createSequentialGroup()
                         .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1)
                             .addGroup(equipmentTabLayout.createSequentialGroup()
-                                .addGap(23, 23, 23)
-                                .addComponent(btnCheckavailable))
-                            .addGroup(equipmentTabLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(btnReportloss)))
-                        .addGap(115, 115, 115)
+                                .addComponent(lblToolname)
+                                .addGap(0, 172, Short.MAX_VALUE)))
+                        .addGap(18, 18, 18)
                         .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnCheckout)
-                            .addComponent(btnCheckin, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblTooldescription))
+                        .addGap(18, 18, 18)
+                        .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(equipmentTabLayout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(equipmentPullAllBtn)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(equipmentPullAllBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnCheckin, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCheckout)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnReportloss)))
+                .addContainerGap())
         );
         equipmentTabLayout.setVerticalGroup(
             equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -222,21 +212,17 @@ public class MainPage extends javax.swing.JFrame {
                     .addComponent(lblTooldescription)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
+                .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3)
                     .addComponent(jScrollPane2)
-                    .addComponent(jScrollPane3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCheckavailable)
-                    .addComponent(btnCheckout))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCheckout)
                     .addComponent(btnCheckin)
-                    .addComponent(btnReportloss))
-                .addGap(18, 18, 18)
-                .addComponent(equipmentPullAllBtn)
-                .addContainerGap(67, Short.MAX_VALUE))
+                    .addComponent(btnReportloss)
+                    .addComponent(equipmentPullAllBtn))
+                .addContainerGap())
         );
 
         tabPanePanel.addTab("Epuipment", equipmentTab);
@@ -291,7 +277,7 @@ public class MainPage extends javax.swing.JFrame {
                         .addComponent(jLabel2)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inventoryTabLayout.createSequentialGroup()
-                        .addComponent(txtInvSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
+                        .addComponent(txtInvSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
                         .addComponent(btnInventorySearch))
                     .addComponent(jScrollPane11, javax.swing.GroupLayout.Alignment.TRAILING))
@@ -474,7 +460,7 @@ public class MainPage extends javax.swing.JFrame {
                                         .addComponent(reportSearchField)
                                         .addGap(18, 18, 18)
                                         .addComponent(reportSearchBtn))
-                                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 646, Short.MAX_VALUE)))
+                                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 648, Short.MAX_VALUE)))
                             .addGroup(reportTabLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(reportAddButton)
@@ -591,7 +577,7 @@ public class MainPage extends javax.swing.JFrame {
                         .addComponent(empSearchBtn)
                         .addGap(18, 18, 18)
                         .addComponent(empLoadAllBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 120, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 203, Short.MAX_VALUE)
                         .addComponent(empAddBtn)
                         .addGap(18, 18, 18)
                         .addComponent(empEditBtn)
@@ -856,76 +842,60 @@ public class MainPage extends javax.swing.JFrame {
     }//GEN-LAST:event_reportSearchFieldFocusGained
 
     private void equipmentPullAllBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_equipmentPullAllBtnMouseClicked
-        // TODO add your handling code here:
-        System.out.println("Equipment Pull All Btn");
-        sql = "SELECT * FROM equipment";
-        ArrayList<String> elements = new ArrayList<>();
-        try {
-            con = db.OpenConnection();
-            stmt = con.prepareStatement(sql);
-            result = stmt.executeQuery();
-            if(result!=null){
-                System.out.println("Successfully accessed database to pull all equipment.");
-            }
-            while(result.next()){
-                elements.add(String.format("%5s-%4s %s",result.getString("EquipmentIDChar"),result.getString("EquipmentIDNum"),result.getString("EquipmentName")));
-            }
-            con.close();
-            System.out.println("Database closed.");
-        }
-        catch(Exception e) {
-            System.out.println(e);
-            System.out.println("MainPage.equipmentPullAllBtnMouseClicked");
-        }
-        DefaultListModel model = new DefaultListModel();
-        model.addAll(elements);
-        lstTools.setModel(model);        
+        AccessEquipmentInfo();        
     }//GEN-LAST:event_equipmentPullAllBtnMouseClicked
 
     private void lstToolsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstToolsValueChanged
         // TODO add your handling code here:
-        String equipPullThisCharacterID = null;
-        String equipPullThisCharacterNum = null;
-        String equipListSelection = lstTools.getSelectedValue().substring(0,10).trim();
-        System.out.println(equipListSelection);
-        if(equipListSelection != null){
-            var equipmentListSelectionToList = new ArrayList<String>(Arrays.asList(equipListSelection.split("-")));
-            System.out.println(equipmentListSelectionToList);
-            equipPullThisCharacterID = equipmentListSelectionToList.get(0).trim();
-            equipPullThisCharacterNum = equipmentListSelectionToList.get(1).trim();
-         
+//        String equipPullThisCharacterID = null;
+//        String equipPullThisCharacterNum = null;
+//        String equipListSelection = lstTools.getSelectedValue().substring(0,10).trim();
+//        System.out.println(equipListSelection);
+//        if(equipListSelection != null){
+//            var equipmentListSelectionToList = new ArrayList<String>(Arrays.asList(equipListSelection.split("-")));
+//            System.out.println(equipmentListSelectionToList);
+//            equipPullThisCharacterID = equipmentListSelectionToList.get(0).trim();
+//            equipPullThisCharacterNum = equipmentListSelectionToList.get(1).trim();
+//         
+//        }
+//        System.out.println(equipPullThisCharacterID);
+//        System.out.println(equipPullThisCharacterNum);
+//        sql = String.format("SELECT * FROM equipment WHERE EquipmentIDChar = '%s' AND EquipmentIDNum = %s", equipPullThisCharacterID,equipPullThisCharacterNum);
+//        try {
+//            con = db.OpenConnection();
+//            stmt = con.prepareStatement(sql);
+//            result = stmt.executeQuery();
+//            if(result!=null){
+//                System.out.println("Successfully accessed database to pull equipment ID and characger number.");
+//            }
+//            while(result.next()){
+//                String elements;
+//                elements = String.format("%5s-%4s %s",result.getString("EquipmentIDChar"),result.getString("EquipmentIDNum"),result.getString("EquipmentName"));
+//                System.out.println(elements);
+//            }
+//            
+//            //System.out.println(elements);
+//            /*
+//            If you uncomment this print statement you can see that it cannot see the elements variable
+//            this is not a big deal since you are only pulling one item and pushing it into the description field,
+//            but if it was something like the previous method it would only ever display one item at a time since you are also initilizing that variable in the same while loop
+//            As much as possible initalize variables at the beginning of the method and outside of any loops or blocks
+//            
+//            add the set text line and this method should work as intended, just need the string to be formatted correctly after that
+//            */
+//        }
+//        catch (Exception e){
+//            System.out.println(e);
+//            System.out.println("MainPage.equipmentIDChar");
+//        }
+                //adding all code of selecting item here in order to not run it multiple times via the edit and delete button
+        String test = lstTools.getSelectedValue();
+        //trying to split this string into a list using .spit(",")
+        if(test != null){
+            var Test = new ArrayList<String>(Arrays.asList(test.split(",")));
+            pullThisUserIdForEdit = Test.get(0).trim();
+            System.out.println(pullThisUserIdForEdit);
         }
-        System.out.println(equipPullThisCharacterID);
-        System.out.println(equipPullThisCharacterNum);
-        sql = String.format("SELECT * FROM equipment WHERE EquipmentIDChar = '%s' AND EquipmentIDNum = %s", equipPullThisCharacterID,equipPullThisCharacterNum);
-        try {
-            con = db.OpenConnection();
-            stmt = con.prepareStatement(sql);
-            result = stmt.executeQuery();
-            if(result!=null){
-                System.out.println("Successfully accessed database to pull equipment ID and characger number.");
-            }
-            while(result.next()){
-                String elements;
-                elements = String.format("%5s-%4s %s",result.getString("EquipmentIDChar"),result.getString("EquipmentIDNum"),result.getString("EquipmentName"));
-                System.out.println(elements);
-            }
-            
-            //System.out.println(elements);
-            /*
-            If you uncomment this print statement you can see that it cannot see the elements variable
-            this is not a big deal since you are only pulling one item and pushing it into the description field,
-            but if it was something like the previous method it would only ever display one item at a time since you are also initilizing that variable in the same while loop
-            As much as possible initalize variables at the beginning of the method and outside of any loops or blocks
-            
-            add the set text line and this method should work as intended, just need the string to be formatted correctly after that
-            */
-        }
-        catch (Exception e){
-            System.out.println(e);
-            System.out.println("MainPage.equipmentIDChar");
-        }
-        
     }//GEN-LAST:event_lstToolsValueChanged
 
     
@@ -1051,7 +1021,6 @@ public class MainPage extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Employee;
     private javax.swing.JButton btnAdd;
-    private javax.swing.JButton btnCheckavailable;
     private javax.swing.JButton btnCheckin;
     private javax.swing.JButton btnCheckout;
     private javax.swing.JButton btnDelete;
