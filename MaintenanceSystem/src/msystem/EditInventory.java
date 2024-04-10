@@ -15,8 +15,13 @@ public class EditInventory extends javax.swing.JFrame {
     /**
      * Creates new form EditInventory
      */
-    public EditInventory(boolean add, ArrayList values) {
+    public EditInventory(boolean add, boolean newItem, ArrayList values) {
         initComponents();
+        editInventoryNewRequestRadio.setSelected(newItem);
+        if(add && !newItem){
+            editInventoryNewRequestRadio.setVisible(false);
+            editInventoryCurrentInventoryRadio.setVisible(false);
+        }
         if(!add){
             
             editInventoryNameTxt.setText(values.get(2).toString());
@@ -260,7 +265,7 @@ public class EditInventory extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EditInventory(false, MainPage.nullArray).setVisible(true);
+                new EditInventory(false, false, MainPage.nullArray).setVisible(true);
             }
         });
     }
