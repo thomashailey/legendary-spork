@@ -4,22 +4,58 @@
  */
 package msystem;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  *
  * @author never
  */
 public class EditInventory extends javax.swing.JFrame {
-
     /**
      * Creates new form EditInventory
      */
-    public EditInventory(boolean add) {
+    public EditInventory(boolean add, ArrayList values) {
+        initComponents();
         if(!add){
             
+            editInventoryNameTxt.setText(values.get(2).toString());
+            editInventoryDescriptionTxt.setText(values.get(3).toString());
+            
+            if(values.get(11).toString().equals("Primary")){
+                editInventoryPromaryIDChar.setText(values.get(6).toString());
+                editInventoryPromaryIDNum.setText(values.get(7).toString());
+                editInventoryPromaryQAvailable.setText(values.get(10).toString());
+                editInventoryPromaryQRequested.setText("0");
+                
+                editInventorySecondaryIDChar.setText(values.get(0).toString());
+                editInventorySecondaryIDNum.setText(values.get(1).toString());
+                editInventorySeccondaryQAvailable.setText(values.get(4).toString());
+                editInventorySecondaryQRequested.setText("0");
+            }
+            else{
+                editInventorySecondaryIDChar.setText(values.get(6).toString());
+                editInventorySecondaryIDNum.setText(values.get(7).toString());
+                editInventorySeccondaryQAvailable.setText(values.get(10).toString());
+                editInventorySecondaryQRequested.setText("0");
+                
+                editInventoryPromaryIDChar.setText(values.get(0).toString());
+                editInventoryPromaryIDNum.setText(values.get(1).toString());
+                editInventoryPromaryQAvailable.setText(values.get(4).toString());
+                editInventoryPromaryQRequested.setText("0");
+            }
+            
+            
+            
+            for(int x=0;x<values.size();x++){
+                System.out.println(values.get(x));
+                //System.out.println(values.get(x).split("||"));
+                //System.out.println(attempt25);
+            }
         }
-        editInventoryNameTxt.setEditable(false);
-        editInventoryDescriptionTxt.setEditable(false);
-        initComponents();
+        //editInventoryNameTxt.setEditable(false);
+        //editInventoryDescriptionTxt.setEditable(false);
+        
     }
 
     /**
@@ -32,43 +68,29 @@ public class EditInventory extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        editInventoryNameTxt = new javax.swing.JTextPane();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        editInventoryDescriptionTxt = new javax.swing.JTextPane();
         editInventoryNewRequestRadio = new javax.swing.JRadioButton();
         editInventoryCurrentInventoryRadio = new javax.swing.JRadioButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        editInventoryPromaryQAvailable = new javax.swing.JTextPane();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        editInventoryPromaryIDChar = new javax.swing.JTextPane();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        editInventoryPromaryIDNum = new javax.swing.JTextPane();
-        jScrollPane6 = new javax.swing.JScrollPane();
-        editInventorySeccondaryQAvailable = new javax.swing.JTextPane();
-        jScrollPane7 = new javax.swing.JScrollPane();
-        editInventorySecondaryIDChar = new javax.swing.JTextPane();
-        jScrollPane8 = new javax.swing.JScrollPane();
-        editInventorySecondaryIDNum = new javax.swing.JTextPane();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jScrollPane9 = new javax.swing.JScrollPane();
-        editInventoryPromaryQRequested = new javax.swing.JTextPane();
-        jScrollPane10 = new javax.swing.JScrollPane();
-        editInventorySecondaryQRequested = new javax.swing.JTextPane();
         jLabel7 = new javax.swing.JLabel();
         editInventoryConfirmBtn = new javax.swing.JButton();
         editInventoryCancelBtn = new javax.swing.JButton();
+        editInventoryNameTxt = new javax.swing.JTextField();
+        editInventoryDescriptionTxt = new javax.swing.JTextField();
+        editInventoryPromaryIDChar = new javax.swing.JTextField();
+        editInventorySecondaryIDChar = new javax.swing.JTextField();
+        editInventoryPromaryIDNum = new javax.swing.JTextField();
+        editInventorySecondaryIDNum = new javax.swing.JTextField();
+        editInventoryPromaryQAvailable = new javax.swing.JTextField();
+        editInventoryPromaryQRequested = new javax.swing.JTextField();
+        editInventorySeccondaryQAvailable = new javax.swing.JTextField();
+        editInventorySecondaryQRequested = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jScrollPane1.setViewportView(editInventoryNameTxt);
-
-        jScrollPane2.setViewportView(editInventoryDescriptionTxt);
 
         buttonGroup1.add(editInventoryNewRequestRadio);
         editInventoryNewRequestRadio.setText("New Request");
@@ -83,28 +105,11 @@ public class EditInventory extends javax.swing.JFrame {
 
         jLabel3.setText("Primary");
 
-        jScrollPane3.setViewportView(editInventoryPromaryQAvailable);
-
-        jScrollPane4.setViewportView(editInventoryPromaryIDChar);
-
-        editInventoryPromaryIDNum.setAutoscrolls(false);
-        jScrollPane5.setViewportView(editInventoryPromaryIDNum);
-
-        jScrollPane6.setViewportView(editInventorySeccondaryQAvailable);
-
-        jScrollPane7.setViewportView(editInventorySecondaryIDChar);
-
-        jScrollPane8.setViewportView(editInventorySecondaryIDNum);
-
         jLabel4.setText("Secondary");
 
         jLabel5.setText("Inventory ID");
 
         jLabel6.setText("Available");
-
-        jScrollPane9.setViewportView(editInventoryPromaryQRequested);
-
-        jScrollPane10.setViewportView(editInventorySecondaryQRequested);
 
         jLabel7.setText("Request");
 
@@ -126,88 +131,82 @@ public class EditInventory extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jScrollPane2)
-                        .addComponent(jLabel1)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel4))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(4, 4, 4))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGap(93, 93, 93)
-                                    .addComponent(jLabel5)))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(editInventoryCurrentInventoryRadio)
-                            .addGap(74, 74, 74)
-                            .addComponent(editInventoryConfirmBtn)
-                            .addGap(45, 45, 45)
-                            .addComponent(editInventoryCancelBtn)))
-                    .addComponent(editInventoryNewRequestRadio, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(19, 19, 19))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(editInventoryPromaryIDChar)
+                                    .addComponent(editInventorySecondaryIDChar))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(editInventoryPromaryIDNum)
+                                    .addComponent(editInventorySecondaryIDNum)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(93, 93, 93)
+                                .addComponent(jLabel5)))
+                        .addGap(24, 24, 24)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(editInventoryPromaryQAvailable, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(editInventorySeccondaryQAvailable, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(editInventoryPromaryQRequested)
+                            .addComponent(editInventorySecondaryQRequested))
+                        .addGap(13, 13, 13))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(editInventoryCurrentInventoryRadio)
+                                .addGap(74, 74, 74)
+                                .addComponent(editInventoryConfirmBtn)
+                                .addGap(45, 45, 45)
+                                .addComponent(editInventoryCancelBtn))
+                            .addComponent(editInventoryNewRequestRadio, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(editInventoryNameTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(editInventoryDescriptionTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jScrollPane4, jScrollPane7});
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jScrollPane5, jScrollPane8});
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jScrollPane10, jScrollPane3, jScrollPane6, jScrollPane9});
-
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(editInventoryNameTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(editInventoryDescriptionTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(14, 14, 14)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(editInventoryPromaryIDChar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(editInventoryPromaryIDNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(editInventoryPromaryQAvailable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(editInventoryPromaryQRequested, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(jLabel5)
                     .addComponent(jLabel6))
-                .addGap(12, 12, 12)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(9, 9, 9)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(editInventorySecondaryIDChar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(editInventorySecondaryIDNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(editInventorySeccondaryQAvailable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(editInventorySecondaryQRequested, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(34, 34, 34)
                 .addComponent(editInventoryNewRequestRadio)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -217,12 +216,6 @@ public class EditInventory extends javax.swing.JFrame {
                     .addComponent(editInventoryCancelBtn))
                 .addContainerGap())
         );
-
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jScrollPane4, jScrollPane7});
-
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jScrollPane5, jScrollPane8});
-
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jScrollPane10, jScrollPane3, jScrollPane6, jScrollPane9});
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -267,7 +260,7 @@ public class EditInventory extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EditInventory(false).setVisible(true);
+                new EditInventory(false, MainPage.nullArray).setVisible(true);
             }
         });
     }
@@ -277,17 +270,17 @@ public class EditInventory extends javax.swing.JFrame {
     private javax.swing.JButton editInventoryCancelBtn;
     private javax.swing.JButton editInventoryConfirmBtn;
     private javax.swing.JRadioButton editInventoryCurrentInventoryRadio;
-    private javax.swing.JTextPane editInventoryDescriptionTxt;
-    private javax.swing.JTextPane editInventoryNameTxt;
+    private javax.swing.JTextField editInventoryDescriptionTxt;
+    private javax.swing.JTextField editInventoryNameTxt;
     private javax.swing.JRadioButton editInventoryNewRequestRadio;
-    private javax.swing.JTextPane editInventoryPromaryIDChar;
-    private javax.swing.JTextPane editInventoryPromaryIDNum;
-    private javax.swing.JTextPane editInventoryPromaryQAvailable;
-    private javax.swing.JTextPane editInventoryPromaryQRequested;
-    private javax.swing.JTextPane editInventorySeccondaryQAvailable;
-    private javax.swing.JTextPane editInventorySecondaryIDChar;
-    private javax.swing.JTextPane editInventorySecondaryIDNum;
-    private javax.swing.JTextPane editInventorySecondaryQRequested;
+    private javax.swing.JTextField editInventoryPromaryIDChar;
+    private javax.swing.JTextField editInventoryPromaryIDNum;
+    private javax.swing.JTextField editInventoryPromaryQAvailable;
+    private javax.swing.JTextField editInventoryPromaryQRequested;
+    private javax.swing.JTextField editInventorySeccondaryQAvailable;
+    private javax.swing.JTextField editInventorySecondaryIDChar;
+    private javax.swing.JTextField editInventorySecondaryIDNum;
+    private javax.swing.JTextField editInventorySecondaryQRequested;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -295,15 +288,5 @@ public class EditInventory extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane10;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JScrollPane jScrollPane7;
-    private javax.swing.JScrollPane jScrollPane8;
-    private javax.swing.JScrollPane jScrollPane9;
     // End of variables declaration//GEN-END:variables
 }

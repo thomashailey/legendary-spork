@@ -36,6 +36,7 @@ public class MainPage extends javax.swing.JFrame {
     static String selectingThisRole = null;
     static String selectingThisEndorsement = null;
     Equipment equip = new Equipment();
+    static ArrayList<String> nullArray = new ArrayList<>();
 
     /**
      * Creates new form MainPage
@@ -933,12 +934,23 @@ TODO DELETE
 
     private void btnInventoryAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInventoryAddMouseClicked
         // TODO add your handling code here:
-        new EditInventory(true).setVisible(true);
+        
+        new EditInventory(true, nullArray).setVisible(true);
     }//GEN-LAST:event_btnInventoryAddMouseClicked
 
     private void btnInventoryRequestMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInventoryRequestMouseClicked
         // TODO add your handling code here:
-        new EditInventory(false).setVisible(true);
+        ArrayList<String> requestedInv = new ArrayList<String>(Arrays.asList(invMainList.getSelectedValue().split(" -- ")));
+        ArrayList<String> list = new ArrayList<>();
+        System.out.println(requestedInv);
+        try{
+            list = equip.searchInventoryForEdit(requestedInv.get(0), requestedInv.get(1));
+        }
+        catch(Exception e){
+            System.out.println(e);
+            System.out.println("MainPage.btnInventoryRequestMouseClicked");
+        }
+        new EditInventory(false, list).setVisible(true);
     }//GEN-LAST:event_btnInventoryRequestMouseClicked
 
     

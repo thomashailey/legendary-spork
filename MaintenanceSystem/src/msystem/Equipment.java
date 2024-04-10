@@ -16,6 +16,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Equipment {
@@ -74,8 +76,34 @@ public class Equipment {
         }
         return elements;
     }
-    public void searchInventoryForEdit(){
+    public ArrayList searchInventoryForEdit(String selectedItemName, String selectedDescription){
+        //use this in order to pull the inventory item from both locations
+        //var list = new ArrayList<String>(Arrays.asList(MainPage.invMainList.getText().split(" -- ")));
         
+        
+        sql = String.format("SELECT * FROM inventory WHERE ItemName = '%s' AND Description = '%s'",
+                selectedItemName, selectedDescription);
+        ArrayList<String> elements = new ArrayList<>();
+        try{
+            con = db.OpenConnection();
+            stmt = con.prepareStatement(sql);
+            result = stmt.executeQuery();
+            if(result != null){
+                System.out.println("Successfully accessed database to pull inventory from user selection");
+                int x=0;
+                while(result.next()){
+                    Collections.addAll(elements, result.getString("ItemIDChar"), result.getString("ItemIDNum"),
+                            result.getString("ItemName"), result.getString("Description"),
+                            result.getString("Quantity"), result.getString("Location"));
+                    
+                }
+            }
+        }
+        catch(Exception e){
+            System.out.println(e);
+            System.out.println("Equipment.searchInventoryForEdit");
+        }
+        return elements;
     }
     
     public void AdjustInventory() {
