@@ -672,11 +672,7 @@ public class MainPage extends javax.swing.JFrame {
         // TODO add your handling code here:
         AccessEmployeeInfo();
     }//GEN-LAST:event_empLoadAllBtnMouseClicked
-/*
-    private void empEditBtnMouseClicked(java.awt.event.MouseEvent evt) {                                        
-TODO DELETE
-    }                                       
-*/
+
     private void reportLoadAllBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportLoadAllBtnMouseClicked
         // TODO add your handling code here:
         AccessReportInfo();
@@ -912,7 +908,18 @@ TODO DELETE
             while(result.next()){
                 String elements;
                 elements = String.format("%5s-%4s %s",result.getString("EquipmentIDChar"),result.getString("EquipmentIDNum"),result.getString("EquipmentName"));
+                System.out.println(elements);
             }
+            
+            //System.out.println(elements);
+            /*
+            If you uncomment this print statement you can see that it cannot see the elements variable
+            this is not a big deal since you are only pulling one item and pushing it into the description field,
+            but if it was something like the previous method it would only ever display one item at a time since you are also initilizing that variable in the same while loop
+            As much as possible initalize variables at the beginning of the method and outside of any loops or blocks
+            
+            add the set text line and this method should work as intended, just need the string to be formatted correctly after that
+            */
         }
         catch (Exception e){
             System.out.println(e);
