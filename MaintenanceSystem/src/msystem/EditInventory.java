@@ -12,6 +12,7 @@ import java.util.Arrays;
  * @author never
  */
 public class EditInventory extends javax.swing.JFrame {
+    
     /**
      * Creates new form EditInventory
      */

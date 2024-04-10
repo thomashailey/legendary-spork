@@ -683,11 +683,7 @@ public class MainPage extends javax.swing.JFrame {
         // TODO add your handling code here:
         AccessEmployeeInfo();
     }//GEN-LAST:event_empLoadAllBtnMouseClicked
-/*
-    private void empEditBtnMouseClicked(java.awt.event.MouseEvent evt) {                                        
-TODO DELETE
-    }                                       
-*/
+
     private void reportLoadAllBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportLoadAllBtnMouseClicked
         // TODO add your handling code here:
         AccessReportInfo();
