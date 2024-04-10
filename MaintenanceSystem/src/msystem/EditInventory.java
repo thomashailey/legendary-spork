@@ -12,11 +12,14 @@ import java.util.Arrays;
  * @author never
  */
 public class EditInventory extends javax.swing.JFrame {
-    
+    boolean one;
+    boolean two;
     /**
      * Creates new form EditInventory
      */
     public EditInventory(boolean add, boolean newItem, ArrayList values) {
+        one = add;
+        two = newItem;
         initComponents();
         editInventoryNewRequestRadio.setSelected(newItem);
         if(add && !newItem){
@@ -102,10 +105,20 @@ public class EditInventory extends javax.swing.JFrame {
 
         buttonGroup1.add(editInventoryNewRequestRadio);
         editInventoryNewRequestRadio.setText("New Request");
+        editInventoryNewRequestRadio.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                editInventoryNewRequestRadioMouseClicked(evt);
+            }
+        });
 
         buttonGroup1.add(editInventoryCurrentInventoryRadio);
         editInventoryCurrentInventoryRadio.setSelected(true);
         editInventoryCurrentInventoryRadio.setText("Current Inventory");
+        editInventoryCurrentInventoryRadio.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                editInventoryCurrentInventoryRadioMouseClicked(evt);
+            }
+        });
 
         jLabel1.setText("Inventory Name");
 
@@ -230,6 +243,16 @@ public class EditInventory extends javax.swing.JFrame {
 
     private void editInventoryConfirmBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editInventoryConfirmBtnMouseClicked
         // TODO add your handling code here:
+        if(one && !two){
+            System.out.println("add");
+        }
+        else if((one && two) || (editInventoryNewRequestRadio.isSelected())){
+            System.out.println("request new inventory");
+        }
+        else if(!one && !two){
+            System.out.println("request current inventory");
+        }
+        
         this.setVisible(false);
     }//GEN-LAST:event_editInventoryConfirmBtnMouseClicked
 
@@ -237,6 +260,14 @@ public class EditInventory extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.setVisible(false);
     }//GEN-LAST:event_editInventoryCancelBtnMouseClicked
+
+    private void editInventoryNewRequestRadioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editInventoryNewRequestRadioMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editInventoryNewRequestRadioMouseClicked
+
+    private void editInventoryCurrentInventoryRadioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editInventoryCurrentInventoryRadioMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editInventoryCurrentInventoryRadioMouseClicked
 
     /**
      * @param args the command line arguments

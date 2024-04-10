@@ -142,6 +142,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="New Request"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="editInventoryNewRequestRadioMouseClicked"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JRadioButton" name="editInventoryCurrentInventoryRadio">
       <Properties>
@@ -151,6 +154,9 @@
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="Current Inventory"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="editInventoryCurrentInventoryRadioMouseClicked"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>

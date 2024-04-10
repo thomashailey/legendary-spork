@@ -185,8 +185,8 @@ public class AddReport extends javax.swing.JFrame {
 
     private void addReportConfirmBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addReportConfirmBtnMouseClicked
         // TODO add your handling code here:
-        //TODO add sql add statement here
-        sql = String.format("INSERT INTO reports(UserID, ReportDate, ReportType, Data) VALUES(%s, '%s', '%s', \"%s\")", 
+        //TODO checking against the date code, add error checking
+        sql = String.format("INSERT INTO reports(UserID, ReportDate, ReportType, Data) VALUES(%s, '%s', \"%s\", \"%s\")", 
                 addReportUserIdTxt.getText(), addReportDateTxt.getText(), addReportTypeTxt.getText(), addReportMainReportTxtBox.getText());
         //JOptionPane.showMessageDialog(null, sql);
         try {
