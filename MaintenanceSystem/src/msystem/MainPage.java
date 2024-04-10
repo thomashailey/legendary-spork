@@ -847,55 +847,52 @@ public class MainPage extends javax.swing.JFrame {
 
     private void lstToolsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstToolsValueChanged
         // TODO add your handling code here:
-//        String equipPullThisCharacterID = null;
-//        String equipPullThisCharacterNum = null;
-//        String equipListSelection = lstTools.getSelectedValue().substring(0,10).trim();
-//        System.out.println(equipListSelection);
-//        if(equipListSelection != null){
-//            var equipmentListSelectionToList = new ArrayList<String>(Arrays.asList(equipListSelection.split("-")));
-//            System.out.println(equipmentListSelectionToList);
-//            equipPullThisCharacterID = equipmentListSelectionToList.get(0).trim();
-//            equipPullThisCharacterNum = equipmentListSelectionToList.get(1).trim();
-//         
-//        }
-//        System.out.println(equipPullThisCharacterID);
-//        System.out.println(equipPullThisCharacterNum);
-//        sql = String.format("SELECT * FROM equipment WHERE EquipmentIDChar = '%s' AND EquipmentIDNum = %s", equipPullThisCharacterID,equipPullThisCharacterNum);
-//        try {
-//            con = db.OpenConnection();
-//            stmt = con.prepareStatement(sql);
-//            result = stmt.executeQuery();
-//            if(result!=null){
-//                System.out.println("Successfully accessed database to pull equipment ID and characger number.");
-//            }
-//            while(result.next()){
-//                String elements;
-//                elements = String.format("%5s-%4s %s",result.getString("EquipmentIDChar"),result.getString("EquipmentIDNum"),result.getString("EquipmentName"));
-//                System.out.println(elements);
-//            }
-//            
-//            //System.out.println(elements);
-//            /*
-//            If you uncomment this print statement you can see that it cannot see the elements variable
-//            this is not a big deal since you are only pulling one item and pushing it into the description field,
-//            but if it was something like the previous method it would only ever display one item at a time since you are also initilizing that variable in the same while loop
-//            As much as possible initalize variables at the beginning of the method and outside of any loops or blocks
-//            
-//            add the set text line and this method should work as intended, just need the string to be formatted correctly after that
-//            */
-//        }
-//        catch (Exception e){
-//            System.out.println(e);
-//            System.out.println("MainPage.equipmentIDChar");
-//        }
-                //adding all code of selecting item here in order to not run it multiple times via the edit and delete button
-        String test = lstTools.getSelectedValue();
-        //trying to split this string into a list using .spit(",")
-        if(test != null){
-            var Test = new ArrayList<String>(Arrays.asList(test.split(",")));
-            pullThisUserIdForEdit = Test.get(0).trim();
-            System.out.println(pullThisUserIdForEdit);
+        String equipPullThisCharacterID = null;
+        String equipPullThisCharacterNum = null;
+        String equipListSelection = lstTools.getSelectedValue().substring(0,10).trim();
+        System.out.println(equipListSelection);
+        if(equipListSelection != null){
+            var equipmentListSelectionToList = new ArrayList<String>(Arrays.asList(equipListSelection.split("-")));
+            System.out.println(equipmentListSelectionToList);
+            equipPullThisCharacterID = equipmentListSelectionToList.get(0).trim();
+            equipPullThisCharacterNum = equipmentListSelectionToList.get(1).trim();
+         
         }
+        System.out.println(equipPullThisCharacterID);
+        System.out.println(equipPullThisCharacterNum);
+        sql = String.format("SELECT * FROM equipment WHERE EquipmentIDChar = '%s' AND EquipmentIDNum = %s", equipPullThisCharacterID,equipPullThisCharacterNum);
+        try {
+            con = db.OpenConnection();
+            stmt = con.prepareStatement(sql);
+            result = stmt.executeQuery();
+            if(result!=null){
+                System.out.println("Successfully accessed database to pull equipment ID and characger number.");
+            }
+            while(result.next()){
+                String elements;
+                elements = String.format("%5s-%4s %s",result.getString("EquipmentIDChar"),result.getString("EquipmentIDNum"),result.getString("EquipmentName"));
+                System.out.println(elements);
+            }
+            
+            //System.out.println(elements);
+            /*
+            If you uncomment this print statement you can see that it cannot see the elements variable
+            this is not a big deal since you are only pulling one item and pushing it into the description field,
+            but if it was something like the previous method it would only ever display one item at a time since you are also initilizing that variable in the same while loop
+            As much as possible initalize variables at the beginning of the method and outside of any loops or blocks
+            
+            add the set text line and this method should work as intended, just need the string to be formatted correctly after that
+            */
+        }
+        catch (Exception e){
+            System.out.println(e);
+            System.out.println("MainPage.equipmentIDChar");
+        }
+        
+        
+        // TODO: gather EquipmentName and Description from selected list item and
+//        feed it into ViewEquipmentDetails(Name, Description). Return the details
+//        of the item and display them in txaTooldescription
     }//GEN-LAST:event_lstToolsValueChanged
 
     

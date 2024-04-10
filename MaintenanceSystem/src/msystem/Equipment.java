@@ -47,16 +47,26 @@ public class Equipment {
         return elements;   
      }
     
-    public ArrayList<String> CheckOut() throws SQLException, ClassNotFoundException {
+    public ArrayList<String> CheckOut(String equipName, String equipDescrip) throws SQLException, ClassNotFoundException {
         // Access database to assign equipment and check out        
         con = db.OpenConnection();
         ArrayList<String> elements = new ArrayList<>();
         String itemToAdd = null;
         try {
-            String sql = "SELECT * FROM equipment";
+            String sql = "SELECT * FROM equipment WHERE Status = ? AND EquipmentName = ? AND Description = ? LIMIT 1;";
             stmt = con.prepareStatement(sql);
+            stmt.setString(1, "Available");
+            stmt.setString(2, equipName);
+            stmt.setString(3, equipDescrip);
             
             result = stmt.executeQuery();
+            
+//            TODO: Need to finish checkout process
+//            Use item fields to change equipment_checkout table to reflect 
+//            state of checked equipment. Above code will use selected item
+//            from list to find first available equipment in the database and 
+//            allow user to check it out under their account
+            
             
             if (result != null) {
                 System.out.println("Successfully Accessed Equipment DataBase");
@@ -111,6 +121,42 @@ public class Equipment {
                 itemToAdd = String.format("%s -- %s", result.getString("EquipmentName"), result.getString("Description"));
                 if(!elements.contains(itemToAdd)){
                     elements.add(itemToAdd);
+                }
+            }
+        }
+        catch(Exception e) {
+            System.out.println(e);
+            System.out.println("Equipment.ViewEquipment");
+        }
+        return elements;
+        
+    }
+    
+    public ArrayList ViewEquipmentDetails(String equipName, String equipDescrip) throws SQLException, ClassNotFoundException {
+        /*  Set connection to DBConnect OpenConnection() method,
+            Create ArrayList to store DB elements
+        */
+        //need to find a way to ensure that dupe items are not added to the list, then pull both when the request is bigger than the primary
+        con = db.OpenConnection();
+        ArrayList<String> elements = new ArrayList<>();
+        String itemToAdd = null;
+        try {
+            String sql = "SELECT * FROM equipment";
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1, "Available");
+            stmt.setString(2, equipName);
+            stmt.setString(3, equipDescrip);
+            
+            result = stmt.executeQuery();
+            
+            if (result != null) {
+                System.out.println("Successfully Accessed Equipment DataBase -- Details");
+            }
+            while (result.next()) {
+                itemToAdd = String.format("%s -- %s", result.getString("EquipmentName"), result.getString("Description"));
+                if(!elements.contains(itemToAdd)){
+                    elements.add(itemToAdd);
+                    elements.add(result.getInt("EquipmentIDChar"), result.getString("EquipmentIDNum"));
                 }
             }
         }
