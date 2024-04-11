@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Equipment {
     
@@ -61,6 +62,29 @@ public class Equipment {
             
             result = stmt.executeQuery();
             
+            if (result.next()) {
+                //Get the ID of the equipment
+                int equipmentId = result.getInt("ID");
+                
+                //Change the status of the equipment to checked out
+                String updateSql = "UPDATE equipment SET Status = ? WHERE ID = ?";
+                PreparedStatement updateStmt = con.prepareStatement(updateSql);
+                updateStmt.setString(1, "CheckedOut");
+                updateStmt.setInt(2, equipmentId);
+                updateStmt.executeUpdate();
+                
+                itemToAdd = equipName;
+                
+            }
+        }finally{
+            // Close resources
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            
 //            TODO: Need to finish checkout process
 //            Use item fields to change equipment_checkout table to reflect 
 //            state of checked equipment. Above code will use selected item
@@ -77,11 +101,9 @@ public class Equipment {
                     elements.add(itemToAdd);
                 }
             }
+        
         }
-        catch(Exception e) {
-            System.out.println(e);
-            System.out.println("Equipment.Checkout");
-        }
+        elements.add(itemToAdd);
         return elements;
         
     }
@@ -107,6 +129,7 @@ public class Equipment {
         //need to find a way to ensure that dupe items are not added to the list, then pull both when the request is bigger than the primary
         con = db.OpenConnection();
         ArrayList<String> elements = new ArrayList<>();
+        HashSet<String> uniqueItems = new HashSet<>(); // HashSet to store unique items 
         String itemToAdd = null;
         try {
             String sql = "SELECT * FROM equipment";
@@ -118,7 +141,18 @@ public class Equipment {
                 System.out.println("Successfully Accessed Equipment DataBase");
             }
             while (result.next()) {
-                itemToAdd = String.format("%s -- %s", result.getString("EquipmentName"), result.getString("Description"));
+                String itemName = result.getString("EquipmentName");
+                String itemDescription = result.getString("Description");
+                String.format("%s -- %s", itemName, itemDescription);
+                
+                if(!uniqueItems.contains(itemToAdd)) {
+                    uniqueItems.add(itemToAdd);
+                    elements.add(itemToAdd);
+                } else{
+                    // If the item is a duplicate, add it again to ensure both primay
+                    // and duplicate items ae retieved
+                    elements.add(itemToAdd);
+                }
                 if(!elements.contains(itemToAdd)){
                     elements.add(itemToAdd);
                 }
@@ -127,6 +161,13 @@ public class Equipment {
         catch(Exception e) {
             System.out.println(e);
             System.out.println("Equipment.ViewEquipment");
+        }finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
         }
         return elements;
         
@@ -199,8 +240,42 @@ public class Equipment {
         return elements;
     }
     
-    public void AdjustInventory() {
-        // Add code to add or remove inventory from an employee's account
+    public void AdjustInventory(String itemName, int quantity, boolean add) throws SQLException, ClassNotFoundException {
+        // Added code to add or remove inventory from an employee's account
+        con = db.OpenConnection();
+        try {
+            String sqlSelect = "SELECT * FROM inventory WHERE ItemName = ?";
+            stmt = con.prepareStatement(sqlSelect);
+            stmt.setString(1, itemName);
+            result = stmt.executeQuery();
+            
+            if (result.next()) {
+                int currentQuantity = result.getInt("Quantity");
+                int newQuantity = add ? currentQuantity + quantity : currentQuantity - quantity;
+                if (newQuantity >= 0) {
+                    String sqlUpdate = "UPDATE inventory SET Quantity = ? WHERE ItemName = ?";
+                    PreparedStatement updateStmt = con.prepareStatement(sqlUpdate);
+                    updateStmt.setInt(1, newQuantity);
+                    updateStmt.setString(2, itemName);
+                    updateStmt.executeUpdate();
+                    System.out.println("Inventory adjusted successfully.");
+            } else {
+                    System.out.println("Error: Not enough inventory to remove");
+            }
+        } else {
+            System.out.println("Error: Item not found in inventory.");
+        }
+    } catch (SQLException e) {
+        System.out.println("SQL Error: " + e.getMessage());
+            } finally {
+                if (stmt != null){
+                    stmt.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+           
+        }
     }
     
     public ArrayList ViewInventory() throws SQLException, ClassNotFoundException {
@@ -248,11 +323,21 @@ public class Equipment {
                 System.out.println("Successfully Accessed Equipment DataBase");
             }
             while (result.next()) {
-                elements.add(result.getString("ItemName"));
+                String itemName = result.getString("ItemName");
+                String itemDescription = result.getString("Description");
+                String equipmentInfo = String.format("%s -- %s", itemName, itemDescription);
+                elements.add(equipmentInfo);
             }
         }
         catch(Exception e) {
-            
+            System.out.println("SQL Error: " + e.getMessage());
+        }finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
         }
         return elements;
     }    
