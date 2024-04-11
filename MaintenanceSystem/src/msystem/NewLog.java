@@ -141,7 +141,36 @@ public class NewLog extends javax.swing.JFrame {
 
     private void btnConfirmLogMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConfirmLogMouseClicked
         // TODO add your handling code here:
-
+        
+        
+        /**Other Test
+        sql = String.format("INSERT INTO maintenance_activities (UserID, ActivityDate, Description) VALUES (%s, '%s', '%s')", 
+                jtfUserId.getText(), jtfActivityDate.getText(), jtfDescription.getText());
+        //JOptionPane.showMessageDialog(null, sql);
+        try {
+            con = db.OpenConnection();
+            stmt = con.prepareStatement(sql);
+            stmt.execute();
+            
+            if (result != null) {
+                System.out.println("Successfully Accessed DataBase to add log");
+            }
+            
+            con.close();
+            System.out.println("Database closed");
+        }
+        catch(Exception e) {
+            System.out.println(e);
+            System.out.println("Addlog.ConfrimLogMouseClicked");
+        }
+        MainPage.editEmployee = false;
+        this.setVisible(false);
+        * 
+        Other Test*/
+        
+        
+        
+        //Main Test
         ArrayList<String> list = new ArrayList<String>();
         try {
             // Pull all maintenance activities
@@ -169,11 +198,44 @@ public class NewLog extends javax.swing.JFrame {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
+         
+        //Main Test*/
 
         /**
-         * sql = String.format("INSERT INTO maintenance_activities(UserID,
-         * ActivityDate, Description) VALUES(%s, '%s', '%s')",
-         * jtfUserId.getText(), jtfActivityDate.getText(),
+         * Test 1 ArrayList<String> list = new ArrayList<String>(); try { int
+         * userInput = 0; // Pull all maintenance activities list =
+         * emp.ConfirmNewLog(userInput);
+         *
+         * // Construct the SQL INSERT statement String sql =
+         * String.format("INSERT INTO maintenance_activities (UserID,
+         * ActivityDate, Description) VALUES (?, ?, ?)");
+         *
+         * // Establish connection and execute the INSERT statement try
+         * (Connection con = db.OpenConnection(); PreparedStatement stmt =
+         * con.prepareStatement(sql)) {
+         *
+         * // Set values for the parameters in the prepared statement
+         * stmt.setString(1, jtfUserId.getText()); stmt.setString(2,
+         * jtfActivityDate.getText()); stmt.setString(3,
+         * jtfDescription.getText());
+         *
+         * // Execute the INSERT statement stmt.executeUpdate();
+         *
+         * // Log success message System.out.println(String.format("Successfully
+         * inserted log for user %s", jtfUserId.getText())); } } catch
+         * (SQLException ex) {
+         * Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null,
+         * ex); } catch (ClassNotFoundException ex) {
+         * Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null,
+         * ex); }
+         *
+         *
+         * Test 1
+         */
+        /**
+         * ?? prob delete sql = String.format("INSERT INTO
+         * maintenance_activities(UserID, ActivityDate, Description) VALUES(%s,
+         * '%s', '%s')", jtfUserId.getText(), jtfActivityDate.getText(),
          * jtfDescription.getText()); //JOptionPane.showMessageDialog(null,
          * sql); try { con = db.OpenConnection(); stmt =
          * con.prepareStatement(sql); stmt.execute();

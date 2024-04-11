@@ -25,6 +25,7 @@ public class Employee {
     ResultSet result;
     String sql = null;
     
+    
     public ArrayList PullEmployees() throws SQLException, ClassNotFoundException {
         
         /*  Set connection to DBConnect OpenConnection() method,
@@ -375,14 +376,16 @@ public ArrayList PullMaintenanceActivitiesDate(String selectedItem) throws SQLEx
         }
         return elements;
     }
-        public ArrayList ConfirmNewLog(String selectedItem) throws SQLException, ClassNotFoundException {
+        
+
+public ArrayList ConfirmNewLog(int userInput) throws SQLException, ClassNotFoundException {
 
         con = db.OpenConnection();
         ArrayList<String> elements = new ArrayList<>();
 
         try {  sql = "SELECT * FROM maintenance_activities WHERE ActivityDate = ?";
             stmt = con.prepareStatement(sql);
-            stmt.setString(1, selectedItem);
+            stmt.setInt(1, userInput);
             result = stmt.executeQuery();
 
             if (result != null) {
