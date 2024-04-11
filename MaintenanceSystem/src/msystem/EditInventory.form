@@ -79,8 +79,14 @@
                               <Component id="editInventoryCancelBtn" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Component id="editInventoryNewRequestRadio" alignment="0" min="-2" pref="118" max="-2" attributes="0"/>
-                          <Component id="editInventoryNameTxt" min="-2" pref="237" max="-2" attributes="0"/>
-                          <Component id="editInventoryDescriptionTxt" alignment="0" min="-2" pref="370" max="-2" attributes="0"/>
+                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Component id="editInventoryNameTxt" min="-2" pref="237" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="editInventorySearchInventory" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="editInventoryDescriptionTxt" alignment="0" min="-2" pref="370" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace min="19" max="32767" attributes="0"/>
                   </Group>
@@ -94,7 +100,10 @@
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="editInventoryNameTxt" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="editInventoryNameTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="editInventorySearchInventory" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -228,6 +237,15 @@
     <Component class="javax.swing.JTextField" name="editInventorySeccondaryQAvailable">
     </Component>
     <Component class="javax.swing.JTextField" name="editInventorySecondaryQRequested">
+    </Component>
+    <Component class="javax.swing.JButton" name="editInventorySearchInventory">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Search Inventory"/>
+        <Property name="toolTipText" type="java.lang.String" value="Searches inventory based on Inventory ID"/>
+      </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="editInventorySearchInventoryMouseClicked"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

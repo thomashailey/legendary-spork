@@ -6,6 +6,7 @@ package msystem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  *
@@ -14,49 +15,26 @@ import java.util.Arrays;
 public class EditInventory extends javax.swing.JFrame {
     boolean one;
     boolean two;
+    Equipment equip = new Equipment();
+
     /**
      * Creates new form EditInventory
      */
     public EditInventory(boolean add, boolean newItem, ArrayList values) {
-        one = add;
+                one = add;
         two = newItem;
         initComponents();
         editInventoryNewRequestRadio.setSelected(newItem);
         if(add && !newItem){
-            //with adding into inventory we do not need to set against new or current inventory, it will scan current inventory first, then requests to make sure someone isnt waiting for it
+            //with adding into inventory we do not need to set against new or current inventory,
+            //it will scan current inventory first, then requests to make sure someone isnt waiting for it
             editInventoryNewRequestRadio.setVisible(false);
             editInventoryCurrentInventoryRadio.setVisible(false);
+            jLabel7.setText("To Add");
         }
         if(!add){
-            
-            editInventoryNameTxt.setText(values.get(2).toString());
-            editInventoryDescriptionTxt.setText(values.get(3).toString());
-            
-            if(values.get(11).toString().equals("Primary")){
-                //pulling and aadjusting the pull values to match where they should be displayed
-                editInventoryPromaryIDChar.setText(values.get(6).toString());
-                editInventoryPromaryIDNum.setText(values.get(7).toString());
-                editInventoryPromaryQAvailable.setText(values.get(10).toString());
-                editInventoryPromaryQRequested.setText("0");
-                
-                editInventorySecondaryIDChar.setText(values.get(0).toString());
-                editInventorySecondaryIDNum.setText(values.get(1).toString());
-                editInventorySeccondaryQAvailable.setText(values.get(4).toString());
-                editInventorySecondaryQRequested.setText("0");
-            }
-            else{
-                editInventorySecondaryIDChar.setText(values.get(6).toString());
-                editInventorySecondaryIDNum.setText(values.get(7).toString());
-                editInventorySeccondaryQAvailable.setText(values.get(10).toString());
-                editInventorySecondaryQRequested.setText("0");
-                
-                editInventoryPromaryIDChar.setText(values.get(0).toString());
-                editInventoryPromaryIDNum.setText(values.get(1).toString());
-                editInventoryPromaryQAvailable.setText(values.get(4).toString());
-                editInventoryPromaryQRequested.setText("0");
-            }
-            
-            
+            changeFocus(false);
+            setTextBoxValues(values);
             //Test statement below, uncomment to check what values are being passed in
             /*
             for(int x=0;x<values.size();x++){
@@ -64,8 +42,7 @@ public class EditInventory extends javax.swing.JFrame {
                 
             }*/
         }
-        //editInventoryNameTxt.setEditable(false);
-        //editInventoryDescriptionTxt.setEditable(false);
+       
         
     }
 
@@ -100,6 +77,7 @@ public class EditInventory extends javax.swing.JFrame {
         editInventoryPromaryQRequested = new javax.swing.JTextField();
         editInventorySeccondaryQAvailable = new javax.swing.JTextField();
         editInventorySecondaryQRequested = new javax.swing.JTextField();
+        editInventorySearchInventory = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -145,6 +123,14 @@ public class EditInventory extends javax.swing.JFrame {
         editInventoryCancelBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 editInventoryCancelBtnMouseClicked(evt);
+            }
+        });
+
+        editInventorySearchInventory.setText("Search Inventory");
+        editInventorySearchInventory.setToolTipText("Searches inventory based on Inventory ID");
+        editInventorySearchInventory.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                editInventorySearchInventoryMouseClicked(evt);
             }
         });
 
@@ -194,8 +180,12 @@ public class EditInventory extends javax.swing.JFrame {
                                 .addGap(45, 45, 45)
                                 .addComponent(editInventoryCancelBtn))
                             .addComponent(editInventoryNewRequestRadio, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(editInventoryNameTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(editInventoryDescriptionTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(editInventoryNameTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(editInventorySearchInventory))
+                                .addComponent(editInventoryDescriptionTxt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -204,7 +194,9 @@ public class EditInventory extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(editInventoryNameTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(editInventoryNameTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(editInventorySearchInventory))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -240,17 +232,85 @@ public class EditInventory extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
+    private void setTextBoxValues(ArrayList values){
+        editInventoryNameTxt.setText(values.get(2).toString());
+        editInventoryDescriptionTxt.setText(values.get(3).toString());
+        if(values.get(11).toString().equals("Primary")){
+            //pulling and aadjusting the pull values to match where they should be displayed
+            editInventoryPromaryIDChar.setText(values.get(6).toString());
+            editInventoryPromaryIDNum.setText(values.get(7).toString());
+            editInventoryPromaryQAvailable.setText(values.get(10).toString());
+            editInventoryPromaryQRequested.setText("0");
 
+            editInventorySecondaryIDChar.setText(values.get(0).toString());
+            editInventorySecondaryIDNum.setText(values.get(1).toString());
+            editInventorySeccondaryQAvailable.setText(values.get(4).toString());
+            editInventorySecondaryQRequested.setText("0");
+        }
+        else{
+            editInventorySecondaryIDChar.setText(values.get(6).toString());
+            editInventorySecondaryIDNum.setText(values.get(7).toString());
+            editInventorySeccondaryQAvailable.setText(values.get(10).toString());
+            editInventorySecondaryQRequested.setText("0");
+
+            editInventoryPromaryIDChar.setText(values.get(0).toString());
+            editInventoryPromaryIDNum.setText(values.get(1).toString());
+            editInventoryPromaryQAvailable.setText(values.get(4).toString());
+            editInventoryPromaryQRequested.setText("0");
+        }
+    }
+    
+    private void changeFocus(boolean yesNo){
+        editInventoryNameTxt.setFocusable(yesNo);
+        editInventoryDescriptionTxt.setFocusable(yesNo);
+        
+        editInventoryPromaryIDChar.setFocusable(yesNo);
+        editInventoryPromaryIDNum.setFocusable(yesNo);
+        editInventoryPromaryQAvailable.setFocusable(yesNo);
+
+        editInventorySecondaryIDChar.setFocusable(yesNo);
+        editInventorySecondaryIDNum.setFocusable(yesNo);
+        editInventorySeccondaryQAvailable.setFocusable(yesNo);
+    }
     private void editInventoryConfirmBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editInventoryConfirmBtnMouseClicked
         // TODO add your handling code here:
+        ArrayList primaryInventoryItem = new ArrayList<>();
+        ArrayList secondaryInventoryItem = new ArrayList<>();
         if(one && !two){
             System.out.println("add");
+            Collections.addAll(primaryInventoryItem, 
+                    editInventoryPromaryIDChar.getText(),editInventoryPromaryIDNum.getText(), 
+                    editInventoryNameTxt.getText(), editInventoryDescriptionTxt.getText(), 
+                    editInventoryPromaryQRequested.getText(), 
+                    "Primary");
+            Collections.addAll(secondaryInventoryItem, 
+                    editInventorySecondaryIDChar.getText(), editInventorySecondaryIDNum.getText(), 
+                    editInventoryNameTxt.getText(), editInventoryDescriptionTxt.getText(),
+                    editInventorySecondaryQRequested.getText(), 
+                    "Secondary");
+            equip.addToInventory(primaryInventoryItem);
+            equip.addToInventory(secondaryInventoryItem);
+            
         }
         else if((one && two) || (editInventoryNewRequestRadio.isSelected())){
             System.out.println("request new inventory");
+            
         }
         else if(!one && !two){
             System.out.println("request current inventory");
+            Collections.addAll(primaryInventoryItem, 
+                    editInventoryPromaryIDChar.getText(),editInventoryPromaryIDNum.getText(), 
+                    editInventoryNameTxt.getText(), editInventoryDescriptionTxt.getText(), 
+                    editInventoryPromaryQRequested.getText(), editInventoryPromaryQAvailable.getText(),
+                    "Primary");
+            Collections.addAll(secondaryInventoryItem, 
+                    editInventorySecondaryIDChar.getText(), editInventorySecondaryIDNum.getText(), 
+                    editInventoryNameTxt.getText(), editInventoryDescriptionTxt.getText(),
+                    editInventorySecondaryQRequested.getText(), editInventorySeccondaryQAvailable.getText(),
+                    "Secondary");
+            equip.requestCurrentInventory(primaryInventoryItem);
+            equip.requestCurrentInventory(secondaryInventoryItem);
         }
         
         this.setVisible(false);
@@ -268,6 +328,20 @@ public class EditInventory extends javax.swing.JFrame {
     private void editInventoryCurrentInventoryRadioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editInventoryCurrentInventoryRadioMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_editInventoryCurrentInventoryRadioMouseClicked
+
+    private void editInventorySearchInventoryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editInventorySearchInventoryMouseClicked
+        // TODO add your handling code here:
+        ArrayList<String> list = new ArrayList<>();
+        if(!editInventoryPromaryIDChar.getText().equals("") && !editInventoryPromaryIDNum.getText().equals("")){
+            list = equip.searchInventoryFromEdit(editInventoryPromaryIDChar.getText(), editInventoryPromaryIDNum.getText() );
+        }
+        else if(!editInventorySecondaryIDChar.getText().equals("") && !editInventorySecondaryIDNum.getText().equals("")){
+            list = equip.searchInventoryFromEdit(editInventorySecondaryIDChar.getText(), editInventorySecondaryIDNum.getText());
+        }
+        setTextBoxValues(list);
+        System.out.println(list);
+        
+    }//GEN-LAST:event_editInventorySearchInventoryMouseClicked
 
     /**
      * @param args the command line arguments
@@ -316,6 +390,7 @@ public class EditInventory extends javax.swing.JFrame {
     private javax.swing.JTextField editInventoryPromaryIDNum;
     private javax.swing.JTextField editInventoryPromaryQAvailable;
     private javax.swing.JTextField editInventoryPromaryQRequested;
+    private javax.swing.JButton editInventorySearchInventory;
     private javax.swing.JTextField editInventorySeccondaryQAvailable;
     private javax.swing.JTextField editInventorySecondaryIDChar;
     private javax.swing.JTextField editInventorySecondaryIDNum;
