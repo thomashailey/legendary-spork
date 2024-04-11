@@ -7,15 +7,22 @@ package msystem;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import msystem.Employee;
 
 /**
  *
  * @author mista
  */
 public class NewLog extends javax.swing.JFrame {
+
     String pattern = "yyyy-MM-dd";
     SimpleDateFormat simpleDate = new SimpleDateFormat(pattern);
     String currentDate = simpleDate.format(new Date());
@@ -25,21 +32,24 @@ public class NewLog extends javax.swing.JFrame {
     PreparedStatement stmt;
     ResultSet result;
     int numberOfCharactersInBox = 0;
+    Employee emp = new Employee();
+
     /**
      * Creates new form NewLog
      */
     public NewLog() {
         initComponents();
-    
+
         System.out.println(currentDate);
-        
+
         System.out.println(MainPage.NewLog);
-        if(MainPage.NewLog){
+        if (MainPage.NewLog) {
             jtfUserId.setText(MainPage.selectingThisUserID);
             jtfActivityDate.setText(MainPage.selectingThisUsername);
             jtfDescription.setText(MainPage.selectingThisUserID);
+        }
     }
-    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -87,18 +97,22 @@ public class NewLog extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jtfDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtUserIDLog)
-                    .addComponent(txtActivityDateLog)
-                    .addComponent(txtDescriptonLog)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jtfUserId, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jtfActivityDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnConfirmLog)
-                        .addGap(98, 98, 98)
-                        .addComponent(btnCancelLog)))
-                .addContainerGap(150, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtfDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtUserIDLog)
+                            .addComponent(txtActivityDateLog)
+                            .addComponent(txtDescriptonLog))
+                        .addContainerGap(191, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jtfUserId, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtfActivityDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnConfirmLog)
+                            .addComponent(btnCancelLog))
+                        .addGap(45, 45, 45))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -106,20 +120,20 @@ public class NewLog extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addComponent(txtUserIDLog)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jtfUserId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jtfUserId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnConfirmLog))
                 .addGap(18, 18, 18)
                 .addComponent(txtActivityDateLog)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jtfActivityDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jtfActivityDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCancelLog))
                 .addGap(18, 18, 18)
                 .addComponent(txtDescriptonLog)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jtfDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnConfirmLog)
-                    .addComponent(btnCancelLog))
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         pack();
@@ -127,35 +141,59 @@ public class NewLog extends javax.swing.JFrame {
 
     private void btnConfirmLogMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConfirmLogMouseClicked
         // TODO add your handling code here:
-        sql = String.format("INSERT INTO maintenance_activities(UserID, ActivityDate, Description) VALUES(%s, '%s', '%s')", 
-                jtfUserId.getText(), jtfActivityDate.getText(), jtfDescription.getText());
-        //JOptionPane.showMessageDialog(null, sql);
+
+        ArrayList<String> list = new ArrayList<String>();
         try {
-            con = db.OpenConnection();
-            stmt = con.prepareStatement(sql);
-            stmt.execute();
-            
-            if (result != null) {
-                System.out.println("Successfully Accessed DataBase to add new log");
+            // Pull all maintenance activities
+            list = emp.PullAllMaintenanceActivities();
+
+            // Construct the SQL INSERT statement
+            String sql = String.format("INSERT INTO maintenance_activities (UserID, ActivityDate, Description) VALUES (?, ?, ?)");
+
+            // Establish connection and execute the INSERT statement
+            try (Connection con = db.OpenConnection(); PreparedStatement stmt = con.prepareStatement(sql)) {
+
+                // Set values for the parameters in the prepared statement
+                stmt.setString(1, jtfUserId.getText());
+                stmt.setString(2, jtfActivityDate.getText());
+                stmt.setString(3, jtfDescription.getText());
+
+                // Execute the INSERT statement
+                stmt.executeUpdate();
+
+                // Log success message
+                System.out.println(String.format("Successfully inserted log for user %s", jtfUserId.getText()));
             }
-            /*
-            while (result.next()) {
-                System.out.print(result.getString("Username") + ", " + result.getString("UserID"));
-            }*/
-            con.close();
-            System.out.println("Database closed");
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
-        catch(Exception e) {
-            System.out.println(e);
-            System.out.println("AddLog.btnConfirmLogActionPerformed");
-        }
-        MainPage.editEmployee = false;
-        this.setVisible(false);
+
+        /**
+         * sql = String.format("INSERT INTO maintenance_activities(UserID,
+         * ActivityDate, Description) VALUES(%s, '%s', '%s')",
+         * jtfUserId.getText(), jtfActivityDate.getText(),
+         * jtfDescription.getText()); //JOptionPane.showMessageDialog(null,
+         * sql); try { con = db.OpenConnection(); stmt =
+         * con.prepareStatement(sql); stmt.execute();
+         *
+         * if (result != null) { System.out.println("Successfully Accessed
+         * DataBase to add new log"); }
+         *
+         * con.close(); System.out.println("Database closed"); } catch(Exception
+         * e) { System.out.println(e);
+         * System.out.println("AddLog.btnConfirmLogActionPerformed"); }
+         * MainPage.editEmployee = false; this.setVisible(false);
+         *
+         *
+         */
     }//GEN-LAST:event_btnConfirmLogMouseClicked
 
     private void btnCancelLogMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelLogMouseClicked
         // TODO add your handling code here:
         this.setVisible(false);
+        MainPage.editEmployee = false;
     }//GEN-LAST:event_btnCancelLogMouseClicked
 
     /**

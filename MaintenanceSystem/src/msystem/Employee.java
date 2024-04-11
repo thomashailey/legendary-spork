@@ -375,7 +375,40 @@ public ArrayList PullMaintenanceActivitiesDate(String selectedItem) throws SQLEx
         }
         return elements;
     }
-        
+        public ArrayList ConfirmNewLog(String selectedItem) throws SQLException, ClassNotFoundException {
+
+        con = db.OpenConnection();
+        ArrayList<String> elements = new ArrayList<>();
+
+        try {  sql = "SELECT * FROM maintenance_activities WHERE ActivityDate = ?";
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1, selectedItem);
+            result = stmt.executeQuery();
+
+            if (result != null) {
+                System.out.println("Successfully Accessed DataBase to pull maintenance activities");
+            }
+            while (result.next()) {
+            elements.add(String.format("%s,%s,   %s", 
+                        String.format("%10s",result.getString("ActivityID")), 
+                        String.format("%12s", result.getString("UserID")),
+                        result.getString("Description")));
+            }
+
+            /*
+            while (result.next()) {
+                System.out.print(result.getString("Username") + ", " + result.getString("UserID"));
+            }*/
+            con.close();
+            System.out.println("Database closed");
+         
+        }
+        catch(Exception e) {
+            System.out.println(e);
+            System.out.println("Employee.PullMaintenanceActivities");
+        }
+        return elements;
+    }
         
 
     public void AccessLogs() {

@@ -357,6 +357,11 @@ public class MainPage extends javax.swing.JFrame {
         jScrollPane7.setViewportView(jList1);
 
         maintLogBtn.setText("New Log");
+        maintLogBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                maintLogBtnMouseClicked(evt);
+            }
+        });
         maintLogBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 maintLogBtnActionPerformed(evt);
@@ -455,6 +460,11 @@ public class MainPage extends javax.swing.JFrame {
         reportAddButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 reportAddButtonMouseClicked(evt);
+            }
+        });
+        reportAddButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reportAddButtonActionPerformed(evt);
             }
         });
 
@@ -940,6 +950,18 @@ TODO DELETE
        
         new NewLog().setVisible(true);
     }//GEN-LAST:event_maintLogBtnActionPerformed
+
+    private void reportAddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportAddButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_reportAddButtonActionPerformed
+
+    private void maintLogBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_maintLogBtnMouseClicked
+        // TODO add your handling code here:
+        
+       
+        new NewLog().setVisible(true);
+        
+    }//GEN-LAST:event_maintLogBtnMouseClicked
 
     
     /**

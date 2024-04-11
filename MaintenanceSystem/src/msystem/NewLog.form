@@ -26,21 +26,28 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jtfDescription" min="-2" pref="203" max="-2" attributes="0"/>
-                  <Component id="txtUserIDLog" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtActivityDateLog" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtDescriptonLog" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                      <Component id="jtfUserId" alignment="0" max="32767" attributes="0"/>
-                      <Component id="jtfActivityDate" alignment="0" pref="123" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jtfDescription" min="-2" pref="203" max="-2" attributes="0"/>
+                          <Component id="txtUserIDLog" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtActivityDateLog" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtDescriptonLog" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="191" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="btnConfirmLog" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="98" max="-2" attributes="0"/>
-                      <Component id="btnCancelLog" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="jtfUserId" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jtfActivityDate" alignment="0" pref="123" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="btnConfirmLog" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnCancelLog" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="150" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -50,21 +57,22 @@
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
               <Component id="txtUserIDLog" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jtfUserId" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jtfUserId" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnConfirmLog" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="txtActivityDateLog" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jtfActivityDate" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jtfActivityDate" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnCancelLog" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="txtDescriptonLog" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jtfDescription" min="-2" pref="80" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnConfirmLog" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnCancelLog" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace pref="13" max="32767" attributes="0"/>
+              <EmptySpace pref="52" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
