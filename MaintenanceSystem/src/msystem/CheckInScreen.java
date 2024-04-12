@@ -221,15 +221,6 @@ public class CheckInScreen extends javax.swing.JFrame {
                             result.getString("EquipmentIDNum"));
                 }
                 
-                System.out.println(populateList.get(0));
-                
-//                ArrayList<String> equipmentOptions = new ArrayList<>();
-//                Collections.addAll(equipmentOptions, populateList.toString());
-//                DefaultComboBoxModel equipmentModel = new DefaultComboBoxModel();
-//                equipmentModel.addAll(equipmentOptions);
-//                checkinEquipDropdown.setModel(equipmentModel);
-//                checkinEquipDropdown.setSelectedIndex(0);
-                
                 
             } catch (SQLException ex) {
                 Logger.getLogger(CheckOutScreen.class.getName()).log(Level.SEVERE, null, ex);
@@ -302,7 +293,7 @@ public class CheckInScreen extends javax.swing.JFrame {
             }
             
         }
-
+        
     }//GEN-LAST:event_checkinCheckInBtnMouseClicked
 
     /**
