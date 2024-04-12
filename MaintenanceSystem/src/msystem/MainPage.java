@@ -28,6 +28,7 @@ public class MainPage extends javax.swing.JFrame {
     ResultSet result;
     Employee emp = new Employee();
     static boolean editEmployee = false;
+    static boolean editEquipment = false;
     String sql = null;
     static String pullThisUserIdForEdit = null;
     static String selectingThisUserID = null;
@@ -35,6 +36,12 @@ public class MainPage extends javax.swing.JFrame {
     static String selectingThisPassword = null;
     static String selectingThisRole = null;
     static String selectingThisEndorsement = null;
+    
+    static String getEquipmentName = null;
+    static String getEquipmentChar = null;
+    static String getEquipmentNum = null;
+    static String getEquipmentDescrip = null;
+    
     Equipment equip = new Equipment();
 
     /**
@@ -929,6 +936,42 @@ public class MainPage extends javax.swing.JFrame {
 
     private void btnCheckoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCheckoutMouseClicked
         // TODO add your handling code here:
+        editEquipment = true;
+        // Initialize variables
+        String name = "";
+        String description = "";
+        String equipListSelection = lstTools.getSelectedValue();
+        String[] list;
+        ArrayList<String> elements = new ArrayList();
+        
+        // set array to selected value, split by '--'
+        // pull the first item to name, second to description
+        try {
+            // call the pullequipmentinfo method from equipment class,
+            if (lstTools.isSelectionEmpty()) {
+                getEquipmentChar = "";
+                getEquipmentNum = "";
+                getEquipmentName = "";
+                getEquipmentDescrip = "";
+            }
+            else {
+                list = equipListSelection.split("--");
+                name = list[0].trim();
+                description = list[1].trim();
+                
+                elements = equip.PullEquipInfo(name, description);
+                getEquipmentChar = elements.get(0);
+                getEquipmentNum = elements.get(1);
+                getEquipmentName = elements.get(2);
+                getEquipmentDescrip = elements.get(3);
+            }
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
         new CheckOutScreen().setVisible(true);
     }//GEN-LAST:event_btnCheckoutMouseClicked
 

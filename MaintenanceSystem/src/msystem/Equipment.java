@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 
 public class Equipment {
@@ -86,6 +87,38 @@ public class Equipment {
         return elements;
         
     }
+    
+    public ArrayList PullEquipInfo(String equipName, String equipDescrip) throws SQLException, ClassNotFoundException {
+        //pull employee role and endorsements
+        //TODO -- move pull employee information for edit employee here
+        
+        /*  Set connection to DBConnect OpenConnection() method,
+            Create ArrayList to store DB elements
+        */
+        con = db.OpenConnection();
+        ArrayList<String> elements = new ArrayList<String>();
+        try {
+            String sql = String.format("SELECT * FROM equipment WHERE EquipmentName = \'%s\' AND Description = \'%s\' AND Status = \'Available\' LIMIT 1", equipName, equipDescrip);
+            stmt = con.prepareStatement(sql);
+            
+            result = stmt.executeQuery();
+
+            if (result != null) {
+                System.out.println(String.format("Successfully Accessed DataBase to pull equipment: %s - %s", equipName, equipDescrip));
+            }
+            while (result.next()) {
+                Collections.addAll(elements, result.getString("EquipmentIDChar"), result.getString("EquipmentIDNum"), result.getString("EquipmentName"), result.getString("Description"));
+            }
+            con.close();
+            System.out.println("Database closed");
+        }   
+        catch(Exception e) {
+            System.out.println(e);
+        }
+        return elements;
+    }
+    
+    
     
     public void AdjustEquipment(){
         // 
