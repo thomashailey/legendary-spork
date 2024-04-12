@@ -715,6 +715,7 @@ public class MainPage extends javax.swing.JFrame {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
         reportDetailsField.setText(list);*/
+        
     }//GEN-LAST:event_reportListValueChanged
 
     private void btnInventorySearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInventorySearchMouseClicked
@@ -847,9 +848,22 @@ public class MainPage extends javax.swing.JFrame {
         AccessEquipmentInfo();        
     }//GEN-LAST:event_equipmentPullAllBtnMouseClicked
 
+    private void equipLostBtnMouseClicked(java.awt.event.MouseEvent evt) throws SQLException {
+        if(JOptionPane.showInputDialog("Are you sure you want to report this equipment lost? Please enter LOST to confirm action (case specific)").equals("LOST")){
+            equip.ReportLoss(int equipNum,);
+            //sql=String.format
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Equipment not lost, confirmation enteredd incorrectly");
+        }
+    }
+    
+    
     private void lstToolsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstToolsValueChanged
         //TODO add a null catch here since it errors pretty heavily once the "view available equipment" button is pressed
         // if selection is not null do all of this
+        if (lstTools.getSelectedValue() != null){
+        }
         
         // Initialize variables
         String name = "";

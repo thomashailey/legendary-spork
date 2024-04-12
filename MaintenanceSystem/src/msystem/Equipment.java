@@ -112,8 +112,35 @@ public class Equipment {
         // 
     }
 
-    public void ReportLoss() {
-        // Report loss of equipment
+    public void ReportLoss(String equipName, String equipDescrip) throws SQLException, ClassNotFoundException {
+              // Report loss of equipment
+        con = db.OpenConnection();
+        try {
+            // Update the status of the equipment to "Lost" in the database
+            String sql = "UPDATE equipment SET Status = ? WHERE EquipmentName = ? AND Description = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, "Lost");
+            stmt.setString(2, equipName);
+            stmt.setString(3, equipDescrip);
+            
+            int rowsAffected = stmt.executeUpdate();
+            
+            if (rowsAffected > 0) {
+                System.out.println("Equipment reported as lost successfully.");
+            } else {
+                System.out.println("Failed to report equipment as lost.");
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+  
     }
     
     /**
