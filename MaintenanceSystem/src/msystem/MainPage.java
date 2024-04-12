@@ -87,6 +87,7 @@ public class MainPage extends javax.swing.JFrame {
         invMainList = new javax.swing.JList<>();
         jScrollPane9 = new javax.swing.JScrollPane();
         mainPageInvRequestsLst = new javax.swing.JList<>();
+        inventoryPullOnlyUnfulfilledBtn = new javax.swing.JButton();
         maintenanceTab = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
         maintSearchEmpBtn = new javax.swing.JButton();
@@ -180,7 +181,7 @@ public class MainPage extends javax.swing.JFrame {
                 .addComponent(lblToolname)
                 .addGap(125, 125, 125)
                 .addComponent(lblTooldescription)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 334, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 392, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(145, 145, 145))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, equipmentTabLayout.createSequentialGroup()
@@ -289,6 +290,13 @@ public class MainPage extends javax.swing.JFrame {
         });
         jScrollPane9.setViewportView(mainPageInvRequestsLst);
 
+        inventoryPullOnlyUnfulfilledBtn.setText("Pull only unfulfilled");
+        inventoryPullOnlyUnfulfilledBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                inventoryPullOnlyUnfulfilledBtnMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout inventoryTabLayout = new javax.swing.GroupLayout(inventoryTab);
         inventoryTab.setLayout(inventoryTabLayout);
         inventoryTabLayout.setHorizontalGroup(
@@ -313,7 +321,9 @@ public class MainPage extends javax.swing.JFrame {
                     .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(inventoryTabLayout.createSequentialGroup()
                             .addComponent(btnInventoryRequest)
-                            .addGap(185, 185, 185)
+                            .addGap(104, 104, 104)
+                            .addComponent(inventoryPullOnlyUnfulfilledBtn)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(btnInventoryRecordSearch))
                         .addComponent(jScrollPane9))
                     .addComponent(lblInventoryRecord))
@@ -336,7 +346,8 @@ public class MainPage extends javax.swing.JFrame {
                     .addComponent(btnInventorySearch)
                     .addComponent(btnInventoryRequest)
                     .addComponent(btnInventoryRecordSearch)
-                    .addComponent(btnInventoryAdd))
+                    .addComponent(btnInventoryAdd)
+                    .addComponent(inventoryPullOnlyUnfulfilledBtn))
                 .addContainerGap(54, Short.MAX_VALUE))
         );
 
@@ -368,7 +379,7 @@ public class MainPage extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(maintenanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(maintenanceTabLayout.createSequentialGroup()
-                        .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 709, Short.MAX_VALUE)
+                        .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 767, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
                         .addGroup(maintenanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(maintSearchEmpBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -475,7 +486,7 @@ public class MainPage extends javax.swing.JFrame {
                                         .addComponent(reportSearchField)
                                         .addGap(18, 18, 18)
                                         .addComponent(reportSearchBtn))
-                                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 673, Short.MAX_VALUE)))
+                                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 731, Short.MAX_VALUE)))
                             .addGroup(reportTabLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(reportAddButton)
@@ -592,7 +603,7 @@ public class MainPage extends javax.swing.JFrame {
                         .addComponent(empSearchBtn)
                         .addGap(18, 18, 18)
                         .addComponent(empLoadAllBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 229, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 287, Short.MAX_VALUE)
                         .addComponent(empAddBtn)
                         .addGap(18, 18, 18)
                         .addComponent(empEditBtn)
@@ -986,6 +997,40 @@ public class MainPage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnInventoryRecordSearchMouseClicked
 
+    private void inventoryPullOnlyUnfulfilledBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inventoryPullOnlyUnfulfilledBtnMouseClicked
+        // TODO add your handling code here:
+        if(inventoryPullOnlyUnfulfilledBtn.getText().equals("Pull Only Unfulfilled")){
+            ArrayList<String> list = new ArrayList<String>();
+            try {
+                list = equip.ViewInventoryRequests(true);
+                DefaultListModel model = new DefaultListModel();
+                model.addAll(list);
+                mainPageInvRequestsLst.setModel(model);
+
+            }
+            catch(Exception e){
+                System.out.println(e);
+                System.out.println("MainPage.inventoryPullOnlyUnfulfilledBtnMouseClicked - if");
+            }
+            inventoryPullOnlyUnfulfilledBtn.setText("Pull All");
+        }
+        else{
+            ArrayList<String> list = new ArrayList<String>();
+            try {
+                list = equip.ViewInventoryRequests(false);
+                DefaultListModel model = new DefaultListModel();
+                model.addAll(list);
+                mainPageInvRequestsLst.setModel(model);
+
+            }
+            catch(Exception e){
+                System.out.println(e);
+                System.out.println("MainPage.inventoryPullOnlyUnfulfilledBtnMouseClicked - else");
+            }
+            inventoryPullOnlyUnfulfilledBtn.setText("Pull Only Unfulfilled");
+        }
+    }//GEN-LAST:event_inventoryPullOnlyUnfulfilledBtnMouseClicked
+
     
     /**
      * @param args the command line arguments
@@ -1035,7 +1080,7 @@ public class MainPage extends javax.swing.JFrame {
             DefaultListModel model2 = new DefaultListModel();
             model.addAll(list);
             invMainList.setModel(model);
-            list2 = equip.ViewInventoryRequests();
+            list2 = equip.ViewInventoryRequests(false);
             model2.addAll(list2);
             mainPageInvRequestsLst.setModel(model2);
         } catch (SQLException ex) {
@@ -1123,6 +1168,7 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JButton equipmentPullAllBtn;
     private javax.swing.JPanel equipmentTab;
     private javax.swing.JList<String> invMainList;
+    private javax.swing.JButton inventoryPullOnlyUnfulfilledBtn;
     private javax.swing.JPanel inventoryTab;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

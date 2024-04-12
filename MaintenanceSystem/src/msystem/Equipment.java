@@ -189,6 +189,8 @@ public class Equipment {
     
     public void requestCurrentInventory(ArrayList requestedCurrentInventory){
         String sql2 = null;
+        Connection con2 = null;
+        PreparedStatement stmt2;
         // adding a request against current inventory, will pull values from inventory table
         //requested vs number in inventory
         //0=IDCHAR, 1=IDNUM, 2=ITEMNAME, 3=ITEMDESC, 4=REQUESTamt, 5=AMTinINVENTORY, 6=LOCATION
@@ -196,18 +198,20 @@ public class Equipment {
             //requested amount larger than the amount currently in inventory, adding an unfulfilled request to inventory_requests
             int remainingInventoryRequired = Integer.parseInt(requestedCurrentInventory.get(4).toString()) - Integer.parseInt(requestedCurrentInventory.get(5).toString());
             System.out.println(remainingInventoryRequired);
-            
+            requestNewInventory(requestedCurrentInventory, remainingInventoryRequired);
+
             sql = String.format("UPDATE inventory SET Quantity = 0 WHERE ItemIDChar = \"%s\" and ItemIDNum = %s", 
                      requestedCurrentInventory.get(0), requestedCurrentInventory.get(1));
+            
             sql2 = String.format("INSERT INTO inventory_request(ItemIDChar, ItemIDNum, UserIDRequested,"
                     + " ItemName, Description, Quantity, Destination, Fulfilled) VALUES(\"%s\", %s, %s, \"%s\", \"%s\", %s, \"%s\", %s)",
                     requestedCurrentInventory.get(0), requestedCurrentInventory.get(1), 
                     123, requestedCurrentInventory.get(2), 
-                    requestedCurrentInventory.get(3), requestedCurrentInventory.get(4), 
+                    requestedCurrentInventory.get(3), requestedCurrentInventory.get(5), 
                     requestedCurrentInventory.get(6), 1); // 1 here means the request has been fulfilled(true)
-            requestNewInventory(requestedCurrentInventory, remainingInventoryRequired);
-            System.out.print("current request");
-            System.out.println(sql);
+            
+            System.out.println("request more");
+            System.out.println(String.format("%s - is something foing on here?", sql));
             System.out.println(sql2);
         }
         else{
@@ -221,9 +225,9 @@ public class Equipment {
                     123, requestedCurrentInventory.get(2), 
                     requestedCurrentInventory.get(3), requestedCurrentInventory.get(4), 
                     requestedCurrentInventory.get(6), 1); // 1 here means the request has been fulfilled
-            System.out.print("current request");
-            //System.out.println(sql);
-            //System.out.println(sql2);
+            System.out.println("current request equals or lower");
+            System.out.println(sql);
+            System.out.println(sql2);
             
         }
         //System.out.println(sql);
@@ -231,8 +235,9 @@ public class Equipment {
             con = db.OpenConnection();
             stmt = con.prepareStatement(sql);
             stmt.execute();
-            stmt = con.prepareStatement(sql2);
-            stmt.execute();
+            con2 = db.OpenConnection();
+            stmt2 = con2.prepareStatement(sql2);
+            stmt2.execute();
             
             System.out.println("Removed from inventory\nAdded new inventory request entry");
             con.close();
@@ -277,17 +282,19 @@ public class Equipment {
         return elements;
     }
     
-    public ArrayList ViewInventoryRequests(){
+    public ArrayList ViewInventoryRequests(boolean unfulfilledOnly){
             
         ArrayList<String> elements = new ArrayList<>();
-        sql = "SELECT * FROM inventory_request ORDER BY InvRequestID DESC LIMIT 20";
+        if(unfulfilledOnly){
+            sql = "SELECT * FROM inventory_request WHERE Fulfilled = 0";
+        }
+        else {
+            sql = "SELECT * FROM inventory_request ORDER BY InvRequestID DESC LIMIT 20";
+        }
         try {
             con = db.OpenConnection();
-            
             stmt = con.prepareStatement(sql);
-            
             result = stmt.executeQuery();
-            
             if (result != null) {
                 System.out.println("Successfully Accessed Inventory Request DataBase");
             }
@@ -298,7 +305,6 @@ public class Equipment {
                 else{
                     elements.add(String.format("%s -- %s", result.getString("InvRequestID"), "Needed"));
                 }
-                                
             }
         }
         catch(Exception e) {

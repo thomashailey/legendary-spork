@@ -279,38 +279,72 @@ public class EditInventory extends javax.swing.JFrame {
         ArrayList secondaryInventoryItem = new ArrayList<>();
         if(one && !two){
             System.out.println("add");
-            Collections.addAll(primaryInventoryItem, 
+        
+            if(!editInventoryPromaryQRequested.getText().equals("0") && !editInventoryPromaryQRequested.getText().equals("")){
+                Collections.addAll(primaryInventoryItem, 
                     editInventoryPromaryIDChar.getText(),editInventoryPromaryIDNum.getText(), 
                     editInventoryNameTxt.getText(), editInventoryDescriptionTxt.getText(), 
                     editInventoryPromaryQRequested.getText(), 
                     "Primary");
-            Collections.addAll(secondaryInventoryItem, 
+                
+                equip.addToInventory(primaryInventoryItem);
+            }
+            else if(!editInventorySecondaryQRequested.getText().equals("0") && !editInventorySecondaryQRequested.getText().equals("")){
+                Collections.addAll(secondaryInventoryItem, 
                     editInventorySecondaryIDChar.getText(), editInventorySecondaryIDNum.getText(), 
                     editInventoryNameTxt.getText(), editInventoryDescriptionTxt.getText(),
                     editInventorySecondaryQRequested.getText(), 
                     "Secondary");
-            equip.addToInventory(primaryInventoryItem);
-            equip.addToInventory(secondaryInventoryItem);
+                
+                equip.addToInventory(secondaryInventoryItem);
+            }
             
         }
         else if((one && two) || (editInventoryNewRequestRadio.isSelected())){
             System.out.println("request new inventory");
-            
+            if(!editInventoryPromaryQRequested.getText().equals("0") && !editInventoryPromaryQRequested.getText().equals("")){
+                int requestedAmt = Integer.parseInt(editInventoryPromaryQRequested.getText());
+                Collections.addAll(primaryInventoryItem, 
+                    editInventoryPromaryIDChar.getText(),editInventoryPromaryIDNum.getText(), 
+                    editInventoryNameTxt.getText(), editInventoryDescriptionTxt.getText(), 
+                    editInventoryPromaryQRequested.getText(), 
+                    "Primary");
+                
+                equip.requestNewInventory(primaryInventoryItem, requestedAmt);
+            }
+            else if(!editInventorySecondaryQRequested.getText().equals("0") && !editInventorySecondaryQRequested.getText().equals("")){
+                int requestedAmt = Integer.parseInt(editInventorySecondaryQRequested.getText());
+                Collections.addAll(secondaryInventoryItem, 
+                    editInventorySecondaryIDChar.getText(), editInventorySecondaryIDNum.getText(), 
+                    editInventoryNameTxt.getText(), editInventoryDescriptionTxt.getText(),
+                    editInventorySecondaryQRequested.getText(), 
+                    "Secondary");
+                
+                equip.requestNewInventory(secondaryInventoryItem, requestedAmt);
+            }
         }
         else if(!one && !two){
             System.out.println("request current inventory");
-            Collections.addAll(primaryInventoryItem, 
+            
+            
+            if(!editInventoryPromaryQRequested.getText().equals("0") && !editInventoryPromaryQRequested.getText().equals("")){
+                Collections.addAll(primaryInventoryItem, 
                     editInventoryPromaryIDChar.getText(),editInventoryPromaryIDNum.getText(), 
                     editInventoryNameTxt.getText(), editInventoryDescriptionTxt.getText(), 
                     editInventoryPromaryQRequested.getText(), editInventoryPromaryQAvailable.getText(),
                     "Primary");
-            Collections.addAll(secondaryInventoryItem, 
+                
+                equip.requestCurrentInventory(primaryInventoryItem);
+            }
+            else if(!editInventorySecondaryQRequested.getText().equals("0") && !editInventorySecondaryQRequested.getText().equals("")){
+                Collections.addAll(secondaryInventoryItem, 
                     editInventorySecondaryIDChar.getText(), editInventorySecondaryIDNum.getText(), 
                     editInventoryNameTxt.getText(), editInventoryDescriptionTxt.getText(),
                     editInventorySecondaryQRequested.getText(), editInventorySeccondaryQAvailable.getText(),
                     "Secondary");
-            equip.requestCurrentInventory(primaryInventoryItem);
-            equip.requestCurrentInventory(secondaryInventoryItem);
+                
+                equip.requestCurrentInventory(secondaryInventoryItem);
+            }
         }
         
         this.setVisible(false);
