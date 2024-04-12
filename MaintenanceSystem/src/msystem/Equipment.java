@@ -137,15 +137,91 @@ public class Equipment {
         return list;
     }
     
+    public ArrayList searchInventoryRecordForUnfulfilled(String itemNameRequested, String itemDescriptionRequested, String convertThisToInt){
+        int amountAdding = Integer.parseInt(convertThisToInt);
+        String sql2 = "";
+        Connection con2 = null;
+        PreparedStatement stmt2;
+        ResultSet result2;
+
+        sql = String.format("SELECT * FROM inventory_request WHERE Fulfilled = 0 and ItemName = \"%s\" and Desccription = \"%s\" LIMIT 1", 
+                itemNameRequested, itemDescriptionRequested);
+        ArrayList<String> elements = new ArrayList<>();
+        int amountNeeded = 0;
+        try{
+            con = db.OpenConnection();
+            stmt = con.prepareStatement(sql);
+            result = stmt.executeQuery();
+            if(result != null){
+                while(result.next()){
+                    //Collections.addAll(elements, result.getString("InvRequestID"), result.getString("Quantity"), result.getString("UserIDRequested"));
+                    amountNeeded = Integer.parseInt(result.getString("Quantity"));
+                    if(amountAdding > amountNeeded){
+                        String amountRemaining = String.format("%d", (amountAdding-amountNeeded));
+                        sql2 = null;
+                        con2 = db.OpenConnection();
+                        stmt2 = con2.prepareStatement(sql2);
+                        stmt2.execute();
+                        Collections.addAll(elements, "fn", amountRemaining);
+                        elements.add("fn");
+                        //This request is fulfilled, and there is more remaining to go through
+                    }
+                    else if(amountAdding == amountNeeded){
+                        sql2 = null;
+                        con2 = db.OpenConnection();
+                        stmt2 = con2.prepareStatement(sql2);
+                        stmt2.execute();
+                        elements.add("fc");
+                        // this request is fulfilled, and the amount is fully covered
+                    }
+                    else if(amountAdding < amountNeeded){
+                        sql2 = null;
+                        con2 = db.OpenConnection();
+                        stmt2 = con2.prepareStatement(sql2);
+                        stmt2.execute();
+                        elements.add("uc");
+                        //This request is unfulfilles, and the amount os fully covered
+                    }
+                }
+                con.close();
+                con2.close();
+            }
+            else{
+                elements.add("None");
+            }
+        }
+        catch(Exception e){
+            System.out.println(e);
+            System.out.println("Equipment.searchInventoryRecordForUnfulfilled");
+        }
+        
+        return elements;
+    }
+    
     public void addToInventory(ArrayList inventoryToAdd) {
         // Add code to add inventory to employee's account
         //expecting 3 items here, ItemIDChar, ItemIDNum, and toAddAmt
         //yeah strike that as a just in case, full item line expected
+        //0=IDCHAR, 1=IDNUM, 2=ITEMNAME, 3=ITEMDESC, 4=ADDamt, 5=LOCATION
+        String startOfNotifStatement = "Please Inform User ";
+        String completeFulfillment = " that their request was completely added to the inventory";
+        String partialFulfillment = " that their request was partially added to the inventory";
+        String sendThisInANotification = "";
+        
+        String amountNeeded = inventoryToAdd.get(4).toString();
+        ArrayList<String> list = new ArrayList<>();
+        while(true){
+            list = searchInventoryRecordForUnfulfilled(inventoryToAdd.get(2).toString(), inventoryToAdd.get(3).toString(), amountNeeded);
+
+        }
+        
         
         //add search into inventory request where unfulfilled, then popup a notification to notify user requested
         //if found and the amount added is more than the request, mark fulfilled
         //if found and the amount added is less, update that line to fulfilled with the amount added
         //and the remainder add to a new line
+        
+        //below is to add to current inventory
         sql = String.format("UPDATE inventory SET Quantity = (Quantity+%s) WHERE ItemIDChar = \"%s\" AND ItemIDNum = %s",
                 inventoryToAdd.get(4) ,inventoryToAdd.get(0), inventoryToAdd.get(1));
         System.out.println(sql);

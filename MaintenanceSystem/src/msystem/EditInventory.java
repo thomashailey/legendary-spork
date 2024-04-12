@@ -127,7 +127,7 @@ public class EditInventory extends javax.swing.JFrame {
         });
 
         editInventorySearchInventory.setText("Search Inventory");
-        editInventorySearchInventory.setToolTipText("Searches inventory based on Inventory ID\nPrimary first");
+        editInventorySearchInventory.setToolTipText("Searches inventory based on Inventory ID -- Primary first");
         editInventorySearchInventory.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 editInventorySearchInventoryMouseClicked(evt);
