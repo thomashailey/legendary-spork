@@ -848,7 +848,9 @@ public class MainPage extends javax.swing.JFrame {
     }//GEN-LAST:event_equipmentPullAllBtnMouseClicked
 
     private void lstToolsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstToolsValueChanged
-
+        //TODO add a null catch here since it errors pretty heavily once the "view available equipment" button is pressed
+        // if selection is not null do all of this
+        
         // Initialize variables
         String name = "";
         String description = "";

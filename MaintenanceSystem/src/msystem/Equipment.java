@@ -143,16 +143,16 @@ public class Equipment {
             while (result.next()) {
                 String itemName = result.getString("EquipmentName");
                 String itemDescription = result.getString("Description");
-                String.format("%s -- %s", itemName, itemDescription);
-                
-                if(!uniqueItems.contains(itemToAdd)) {
-                    uniqueItems.add(itemToAdd);
-                    elements.add(itemToAdd);
-                } else{
-                    // If the item is a duplicate, add it again to ensure both primay
-                    // and duplicate items ae retieved
-                    elements.add(itemToAdd);
-                }
+                itemToAdd = String.format("%s -- %s", itemName, itemDescription);
+                //only need one of these to add a single item into the list, don't want duplicates since we will be pulling singles using sql
+//                if(!uniqueItems.contains(itemToAdd)) {
+//                    uniqueItems.add(itemToAdd);
+//                    elements.add(itemToAdd);
+//                } else{
+//                    // If the item is a duplicate, add it again to ensure both primay
+//                    // and duplicate items ae retieved
+//                    elements.add(itemToAdd);
+//                }
                 if(!elements.contains(itemToAdd)){
                     elements.add(itemToAdd);
                 }
