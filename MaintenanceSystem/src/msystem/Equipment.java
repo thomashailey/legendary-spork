@@ -156,31 +156,45 @@ public class Equipment {
                 while(result.next()){
                     //Collections.addAll(elements, result.getString("InvRequestID"), result.getString("Quantity"), result.getString("UserIDRequested"));
                     amountNeeded = Integer.parseInt(result.getString("Quantity"));
+                    //TODO add all sql querys to adjust the inventory records
                     if(amountAdding > amountNeeded){
-                        String amountRemaining = String.format("%d", (amountAdding-amountNeeded));
-                        sql2 = null;
+                        String amountRemainingToAdd = String.format("%d", (amountAdding-amountNeeded));
+                        sql2 = String.format("UPDATE inventory_request SET Fulfilled = 1 where InvRequestID = %s",
+                                result.getString("InvRequestID"));
                         con2 = db.OpenConnection();
                         stmt2 = con2.prepareStatement(sql2);
                         stmt2.execute();
-                        Collections.addAll(elements, "fn", amountRemaining);
-                        elements.add("fn");
+                        Collections.addAll(elements, "fn", result.getString("UserIDRequested"), amountRemainingToAdd);
                         //This request is fulfilled, and there is more remaining to go through
+                        
                     }
                     else if(amountAdding == amountNeeded){
-                        sql2 = null;
+                        sql2 = String.format("UPDATE inventory_request SET Fulfilled = 1 where InvRequestID = %s",
+                                result.getString("InvRequestID"));
                         con2 = db.OpenConnection();
                         stmt2 = con2.prepareStatement(sql2);
                         stmt2.execute();
-                        elements.add("fc");
+                        Collections.addAll(elements, "fc", result.getString("UserIDRequested"));
                         // this request is fulfilled, and the amount is fully covered
                     }
                     else if(amountAdding < amountNeeded){
-                        sql2 = null;
+                        int amountRemainingRequested = amountNeeded-amountAdding;
+                        sql2 = String.format("UPDATE inventory_request SET Quantity = %s, Fulfilled = 1 where InvRequestID = %s",
+                                amountAdding, result.getString("InvRequestID"));
                         con2 = db.OpenConnection();
                         stmt2 = con2.prepareStatement(sql2);
                         stmt2.execute();
-                        elements.add("uc");
-                        //This request is unfulfilles, and the amount os fully covered
+                        ArrayList<String> sendToNewInvRequest = new ArrayList<>();
+                        //0=IDCHAR, 1=IDNUM, 2=ITEMNAME, 3=ITEMDESC, 4=USERidRequesting, 5=REQUESTamt, 6=LOCATION
+                        Collections.addAll(sendToNewInvRequest, 
+                                result.getString("ItemIDChar"), result.getString("ItemIDNum"), 
+                                result.getString("ItemName"), result.getString("Description"),
+                                result.getString("UserIDRequested"), // need to put userID here(4) and transfer that to the requestNewInventory as well
+                                "this entry doesn't matter", 
+                                result.getString("Destination"));
+                        requestNewInventory(sendToNewInvRequest, amountRemainingRequested);
+                        Collections.addAll(elements, "uc", result.getString("UserIDRequested"));
+                        //This request is unfulfilled, and the amount os fully covered
                     }
                 }
                 con.close();
@@ -206,13 +220,37 @@ public class Equipment {
         String startOfNotifStatement = "Please Inform User ";
         String completeFulfillment = " that their request was completely added to the inventory";
         String partialFulfillment = " that their request was partially added to the inventory";
-        String sendThisInANotification = "";
+        String sendThisInANotification = "Requests found";
         
         String amountNeeded = inventoryToAdd.get(4).toString();
         ArrayList<String> list = new ArrayList<>();
         while(true){
             list = searchInventoryRecordForUnfulfilled(inventoryToAdd.get(2).toString(), inventoryToAdd.get(3).toString(), amountNeeded);
-
+            if(list.get(0).toString().equals("None")){
+                //no match,no need to re-search
+                break;
+            }
+            else if(list.get(0).toString().equals("uc")){
+                //match, but amount is completely covered and the request is not fully covered
+                sendThisInANotification = String.format("%s\n%s%s%s",
+                        sendThisInANotification, startOfNotifStatement, 
+                        list.get(1), partialFulfillment);
+                break;
+            }
+            else if(list.get(0).toString().equals("fc")){
+                //match, the amount is fully covered and the request is fully covered
+                sendThisInANotification = String.format("%s\n%s%s%s",
+                        sendThisInANotification, startOfNotifStatement, 
+                        list.get(1), completeFulfillment);
+                break;
+            }
+            else if(list.get(0).toString().equals("fn")){
+                //match, the request is fully covered but the amount added still has room to go so search will run again
+                sendThisInANotification = String.format("%s\n%s%s%s",
+                        sendThisInANotification, startOfNotifStatement, 
+                        list.get(1), completeFulfillment);
+                amountNeeded = list.get(2).toString();
+            }
         }
         
         
@@ -241,11 +279,11 @@ public class Equipment {
     
     public void requestNewInventory(ArrayList requestedNewInv, int requestedAmt){
         // adding a request directly to the inventory request as there is no current inventory for this item, will pass values the user inputs
-        //0=IDCHAR, 1=IDNUM, 2=ITEMNAME, 3=ITEMDESC, 4=AMTinINVENTORY, 5=REQUESTamt, 6=LOCATION
+        //0=IDCHAR, 1=IDNUM, 2=ITEMNAME, 3=ITEMDESC, 4=USERidRequesting, 5=REQUESTamt, 6=LOCATION
         sql = String.format("INSERT INTO inventory_request(ItemIDChar, ItemIDNum, UserIDRequested,"
                 + " ItemName, Description, Quantity, Destination, Fulfilled) VALUES(\"%s\", %s, %s, \"%s\", \"%s\", %s, \"%s\", %s)",
                     requestedNewInv.get(0), requestedNewInv.get(1), 
-                    123, requestedNewInv.get(2), 
+                    requestedNewInv.get(4), requestedNewInv.get(2), 
                     requestedNewInv.get(3), requestedAmt, 
                     requestedNewInv.get(6), 0); // 0 here means the request is unfulfilled(false)
         try{

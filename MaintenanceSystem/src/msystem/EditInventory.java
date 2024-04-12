@@ -7,6 +7,7 @@ package msystem;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -277,6 +278,7 @@ public class EditInventory extends javax.swing.JFrame {
         // TODO add your handling code here:
         ArrayList primaryInventoryItem = new ArrayList<>();
         ArrayList secondaryInventoryItem = new ArrayList<>();
+        String requestingUserID = JOptionPane.showInputDialog("Please enter the userID that is requesting this item");
         if(one && !two){
             System.out.println("add");
         
@@ -298,7 +300,6 @@ public class EditInventory extends javax.swing.JFrame {
                 
                 equip.addToInventory(secondaryInventoryItem);
             }
-            
         }
         else if((one && two) || (editInventoryNewRequestRadio.isSelected())){
             System.out.println("request new inventory");
@@ -306,8 +307,8 @@ public class EditInventory extends javax.swing.JFrame {
                 int requestedAmt = Integer.parseInt(editInventoryPromaryQRequested.getText());
                 Collections.addAll(primaryInventoryItem, 
                     editInventoryPromaryIDChar.getText(),editInventoryPromaryIDNum.getText(), 
-                    editInventoryNameTxt.getText(), editInventoryDescriptionTxt.getText(), 
-                    editInventoryPromaryQRequested.getText(), 
+                    editInventoryNameTxt.getText(), editInventoryDescriptionTxt.getText(),
+                    requestingUserID, editInventoryPromaryQRequested.getText(), 
                     "Primary");
                 
                 equip.requestNewInventory(primaryInventoryItem, requestedAmt);
@@ -317,7 +318,7 @@ public class EditInventory extends javax.swing.JFrame {
                 Collections.addAll(secondaryInventoryItem, 
                     editInventorySecondaryIDChar.getText(), editInventorySecondaryIDNum.getText(), 
                     editInventoryNameTxt.getText(), editInventoryDescriptionTxt.getText(),
-                    editInventorySecondaryQRequested.getText(), 
+                    requestingUserID, editInventorySecondaryQRequested.getText(), 
                     "Secondary");
                 
                 equip.requestNewInventory(secondaryInventoryItem, requestedAmt);
