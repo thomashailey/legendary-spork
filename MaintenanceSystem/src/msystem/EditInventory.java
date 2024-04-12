@@ -83,18 +83,18 @@ public class EditInventory extends javax.swing.JFrame {
 
         buttonGroup1.add(editInventoryNewRequestRadio);
         editInventoryNewRequestRadio.setText("New Request");
-        editInventoryNewRequestRadio.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                editInventoryNewRequestRadioMouseClicked(evt);
+        editInventoryNewRequestRadio.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                editInventoryNewRequestRadioStateChanged(evt);
             }
         });
 
         buttonGroup1.add(editInventoryCurrentInventoryRadio);
         editInventoryCurrentInventoryRadio.setSelected(true);
         editInventoryCurrentInventoryRadio.setText("Current Inventory");
-        editInventoryCurrentInventoryRadio.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                editInventoryCurrentInventoryRadioMouseClicked(evt);
+        editInventoryCurrentInventoryRadio.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                editInventoryCurrentInventoryRadioStateChanged(evt);
             }
         });
 
@@ -127,7 +127,7 @@ public class EditInventory extends javax.swing.JFrame {
         });
 
         editInventorySearchInventory.setText("Search Inventory");
-        editInventorySearchInventory.setToolTipText("Searches inventory based on Inventory ID");
+        editInventorySearchInventory.setToolTipText("Searches inventory based on Inventory ID\nPrimary first");
         editInventorySearchInventory.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 editInventorySearchInventoryMouseClicked(evt);
@@ -355,14 +355,6 @@ public class EditInventory extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_editInventoryCancelBtnMouseClicked
 
-    private void editInventoryNewRequestRadioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editInventoryNewRequestRadioMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editInventoryNewRequestRadioMouseClicked
-
-    private void editInventoryCurrentInventoryRadioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editInventoryCurrentInventoryRadioMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editInventoryCurrentInventoryRadioMouseClicked
-
     private void editInventorySearchInventoryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editInventorySearchInventoryMouseClicked
         // TODO add your handling code here:
         ArrayList<String> list = new ArrayList<>();
@@ -373,9 +365,24 @@ public class EditInventory extends javax.swing.JFrame {
             list = equip.searchInventoryFromEdit(editInventorySecondaryIDChar.getText(), editInventorySecondaryIDNum.getText());
         }
         setTextBoxValues(list);
+        if(!editInventoryNameTxt.getText().equals("") && editInventoryNewRequestRadio.isVisible()){
+             editInventoryCurrentInventoryRadio.setSelected(true);
+             System.out.println("changing selected inventory request");
+        }
+           
         System.out.println(list);
         
     }//GEN-LAST:event_editInventorySearchInventoryMouseClicked
+
+    private void editInventoryNewRequestRadioStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_editInventoryNewRequestRadioStateChanged
+        // TODO add your handling code here:
+        changeFocus(true);
+    }//GEN-LAST:event_editInventoryNewRequestRadioStateChanged
+
+    private void editInventoryCurrentInventoryRadioStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_editInventoryCurrentInventoryRadioStateChanged
+        // TODO add your handling code here:
+        changeFocus(false);
+    }//GEN-LAST:event_editInventoryCurrentInventoryRadioStateChanged
 
     /**
      * @param args the command line arguments
