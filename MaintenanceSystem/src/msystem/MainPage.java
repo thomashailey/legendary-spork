@@ -151,6 +151,11 @@ public class MainPage extends javax.swing.JFrame {
         jScrollPane2.setViewportView(txaTooldescription);
 
         btnCheckout.setText("Check Out");
+        btnCheckout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnCheckoutMouseClicked(evt);
+            }
+        });
 
         btnCheckin.setText("Check In");
 
@@ -921,6 +926,11 @@ public class MainPage extends javax.swing.JFrame {
 //            System.out.println(e);
 //            System.out.println("MainPage.equipmentIDChar");
     }//GEN-LAST:event_lstToolsValueChanged
+
+    private void btnCheckoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCheckoutMouseClicked
+        // TODO add your handling code here:
+        new CheckOutScreen().setVisible(true);
+    }//GEN-LAST:event_btnCheckoutMouseClicked
 
     
     /**

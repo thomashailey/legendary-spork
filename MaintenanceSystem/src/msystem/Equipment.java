@@ -54,7 +54,7 @@ public class Equipment {
         ArrayList<String> elements = new ArrayList<>();
         String itemToAdd = null;
         try {
-            String sql = "SELECT * FROM equipment WHERE Status = ? AND EquipmentName = ? AND Description = ? LIMIT 1;";
+            String sql = "SELECT * FROM equipment WHERE Status = \'?\' AND EquipmentName = \'?\' AND Description = \'?\' LIMIT 1;";
             stmt = con.prepareStatement(sql);
             stmt.setString(1, "Available");
             stmt.setString(2, equipName);
@@ -62,28 +62,7 @@ public class Equipment {
             
             result = stmt.executeQuery();
             
-            if (result.next()) {
-                //Get the ID of the equipment
-                int equipmentId = result.getInt("ID");
-                
-                //Change the status of the equipment to checked out
-                String updateSql = "UPDATE equipment SET Status = ? WHERE ID = ?";
-                PreparedStatement updateStmt = con.prepareStatement(updateSql);
-                updateStmt.setString(1, "CheckedOut");
-                updateStmt.setInt(2, equipmentId);
-                updateStmt.executeUpdate();
-                
-                itemToAdd = equipName;
-                
-            }
-        }finally{
-            // Close resources
-            if (stmt != null) {
-                stmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
+            
             
 //            TODO: Need to finish checkout process
 //            Use item fields to change equipment_checkout table to reflect 
@@ -93,7 +72,7 @@ public class Equipment {
             
             
             if (result != null) {
-                System.out.println("Successfully Accessed Equipment DataBase");
+                System.out.println("Successfully Accessed Equipment DataBase - CheckOut");
             }
             while (result.next()) {
                 itemToAdd = String.format("%s -- %s", result.getString("EquipmentName"), result.getString("Description"));
@@ -101,9 +80,9 @@ public class Equipment {
                     elements.add(itemToAdd);
                 }
             }
-        
+        } catch (Exception e) {
+            
         }
-        elements.add(itemToAdd);
         return elements;
         
     }
