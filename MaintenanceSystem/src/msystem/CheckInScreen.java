@@ -10,9 +10,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 /**
@@ -35,6 +37,21 @@ public class CheckInScreen extends javax.swing.JFrame {
     public CheckInScreen() {
         initComponents();
         
+        // setup dropdown for equipment options (empty until search by ID)
+        ArrayList<String> equipmentOptions = new ArrayList<String>();
+        Collections.addAll(equipmentOptions, "");
+        DefaultComboBoxModel equipmentModel = new DefaultComboBoxModel();
+        equipmentModel.addAll(equipmentOptions);
+        checkinEquipDropdown.setModel(equipmentModel);
+        checkinEquipDropdown.setSelectedIndex(0);
+        
+        // setup dropdown for location
+        ArrayList<String> locationOptions = new ArrayList<String>();
+        Collections.addAll(locationOptions, "Primary","Secondary");
+        DefaultComboBoxModel locationModel = new DefaultComboBoxModel();
+        locationModel.addAll(locationOptions);
+        checkinLocationDropdown.setModel(locationModel);
+        checkinLocationDropdown.setSelectedIndex(0);
     }
     
     
@@ -166,6 +183,61 @@ public class CheckInScreen extends javax.swing.JFrame {
         // Search database for all of an employee's checked out equipment
         // Display them in checkinEquipDropdown
         // Format: Name - Descrip - Char - Num
+        if (checkinUserIDField.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please provide a User ID.");
+        }
+        else {
+            try {
+                con = db.OpenConnection();
+                ArrayList<String> elements = new ArrayList<>();
+                ArrayList<String> populateList = new ArrayList<>();
+                String user = checkinUserIDField.getText();
+                String itemToAdd = null;
+                String id = null;
+                String equipChar = null;
+                String equipNum = null;
+                String descrip = null;
+                
+                // Pull info for checked out items
+                sql = String.format("SELECT * FROM equipment_checkout WHERE UserID = \'%s\' AND Status = \'Checked out\'", user);
+                stmt = con.prepareStatement(sql);
+                result = stmt.executeQuery();
+                
+                while (result.next()) {
+                    Collections.addAll(elements, result.getString("CheckoutID"), result.getString("EquipmentIDChar"), result.getString("EquipmentIDChar"));
+                }
+                
+                // User results from above query to pull from equipment database and format list items
+                equipChar = elements.get(0);
+                equipNum = elements.get(1);
+                sql = String.format("SELECT * FROM equipment WHERE EquipmentIDChar = \'%s\' AND EquipmentIDNum = \'%s\'", equipChar, equipNum);
+                
+                stmt = con.prepareStatement(sql);
+                result = stmt.executeQuery();
+                
+                while (result.next()) {
+                    Collections.addAll(populateList, result.getString("EquipmentName"), 
+                            result.getString("Description"), result.getString("EquipmentIDChar"),
+                            result.getString("EquipmentIDNum"));
+                }
+                
+                System.out.println(populateList.get(0));
+                
+//                ArrayList<String> equipmentOptions = new ArrayList<>();
+//                Collections.addAll(equipmentOptions, populateList.toString());
+//                DefaultComboBoxModel equipmentModel = new DefaultComboBoxModel();
+//                equipmentModel.addAll(equipmentOptions);
+//                checkinEquipDropdown.setModel(equipmentModel);
+//                checkinEquipDropdown.setSelectedIndex(0);
+                
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(CheckOutScreen.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(CheckOutScreen.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
     }//GEN-LAST:event_checkinSearchBtnMouseClicked
 
     private void checkinEquipDropdownItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkinEquipDropdownItemStateChanged
@@ -188,6 +260,48 @@ public class CheckInScreen extends javax.swing.JFrame {
         // and change equipment table to reflect the availability of the
         // returned item. This should be a status change and a location change
         // location will be taken from the checkinLocationDropdown combobox
+        
+        if (checkinUserIDField.getText().isEmpty() || checkinEquipDropdown.getSelectedItem().toString().equals("")) {
+            JOptionPane.showMessageDialog(null, "Please fill out all fields.");
+        }
+        else {
+            try {
+                con = db.OpenConnection();
+                ArrayList<String> elements = new ArrayList<String>();
+                String charID = null;
+                String numID = null;
+                String name = null;
+                String descrip = null;
+                String userID = null;
+                
+                String pattern = "yyyy-MM-dd";
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+                
+                String date = simpleDateFormat.format(new Date());
+                System.out.println(date);
+                
+                sql = String.format("UPDATE equipment SET Status = \'Checked out\', Location = \'Out\' WHERE EquipmentIDChar = \'%s\' AND EquipmentIDNum = \'%s\'", charID, numID);
+                stmt = con.prepareStatement(sql);
+
+                stmt.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Successfully checked out equipment.");
+                
+                sql = String.format("INSERT INTO equipment_checkout (UserID, EquipmentIDChar, EquipmentIDNum, CheckoutDate, Status) VALUES (%s, \'%s\', \'%s\', \'%s\', \'Checked out\')",
+                        userID, charID, numID, date);
+                
+                stmt = con.prepareStatement(sql);
+                stmt.execute();
+                System.out.println("Success");
+                
+                this.setVisible(false);
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(CheckOutScreen.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(CheckOutScreen.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
 
     }//GEN-LAST:event_checkinCheckInBtnMouseClicked
 
