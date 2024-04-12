@@ -165,6 +165,11 @@ public class MainPage extends javax.swing.JFrame {
         });
 
         btnCheckin.setText("Check In");
+        btnCheckin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnCheckinMouseClicked(evt);
+            }
+        });
 
         btnReportloss.setBackground(new java.awt.Color(255, 51, 51));
         btnReportloss.setText("REPORT LOST");
@@ -974,6 +979,11 @@ public class MainPage extends javax.swing.JFrame {
         }
         new CheckOutScreen().setVisible(true);
     }//GEN-LAST:event_btnCheckoutMouseClicked
+
+    private void btnCheckinMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCheckinMouseClicked
+        // TODO add your handling code here:
+        new CheckInScreen().setVisible(true);
+    }//GEN-LAST:event_btnCheckinMouseClicked
 
     
     /**

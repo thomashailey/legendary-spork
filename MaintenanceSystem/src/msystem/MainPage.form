@@ -230,6 +230,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Check In"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnCheckinMouseClicked"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnReportloss">
                   <Properties>
