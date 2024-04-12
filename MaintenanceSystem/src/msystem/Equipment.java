@@ -177,27 +177,61 @@ public class Equipment {
         /*  Set connection to DBConnect OpenConnection() method,
             Create ArrayList to store DB elements
         */
-        //need to find a way to ensure that dupe items are not added to the list, then pull both when the request is bigger than the primary
+        
         con = db.OpenConnection();
         ArrayList<String> elements = new ArrayList<>();
         String itemToAdd = null;
+        String sql;
+        String warehouseOne = "Primary";
+        String warehouseTwo = "Secondary";
+        int priCounter = 0;
+        int secCounter = 0;
+        
+        
         try {
-            String sql = "SELECT * FROM equipment";
+            // Search for entry based on name, description, and location.
+            ResultSet primary, secondary;
+            
+            
+            // This one searches for primary location
+            sql = String.format("SELECT * FROM equipment WHERE EquipmentName = \'%s\' AND Description = \'%s\' AND Location = \'%s\'",
+                    equipName, equipDescrip, warehouseOne);
             stmt = con.prepareStatement(sql);
-            stmt.setString(1, "Available");
-            stmt.setString(2, equipName);
-            stmt.setString(3, equipDescrip);
+            
+            primary = stmt.executeQuery();
+            
+            // Increment priCounter in order to determine the number of entries matching criteria
+            while (primary.next()) {
+                priCounter += 1;
+            }
+            
+            
+            // This one searches for entries at the secondary location
+            sql = String.format("SELECT * FROM equipment WHERE EquipmentName = \'%s\' AND Description = \'%s\' AND Location = \'%s\'",
+                    equipName, equipDescrip, warehouseTwo);
+            stmt = con.prepareStatement(sql);
+            
+            secondary = stmt.executeQuery();
+            
+            // Increment secCounter in order to determine the number of entries matching criteria
+            while (secondary.next()) {
+                secCounter +=1;
+            }
+            
+            // Search for item using just name and description to narrow down 
+            // results again, now that the other queries have determined the number of 
+            // items stored at each different location.
+            sql = String.format("SELECT * FROM equipment WHERE EquipmentName = \'%s\' AND Description = \'%s\'", equipName, equipDescrip);
+            stmt = con.prepareStatement(sql);
             
             result = stmt.executeQuery();
             
-            if (result != null) {
-                System.out.println("Successfully Accessed Equipment DataBase -- Details");
-            }
             while (result.next()) {
-                itemToAdd = String.format("%s -- %s", result.getString("EquipmentName"), result.getString("Description"));
+                itemToAdd = String.format("%s: %s \n\n --- Available --- \n Primary:\t%s \n Secondary:\t%s",
+                        result.getString("EquipmentName"), result.getString("Description"), 
+                        priCounter, secCounter);
                 if(!elements.contains(itemToAdd)){
                     elements.add(itemToAdd);
-                    elements.add(result.getInt("EquipmentIDChar"), result.getString("EquipmentIDNum"));
                 }
             }
         }
