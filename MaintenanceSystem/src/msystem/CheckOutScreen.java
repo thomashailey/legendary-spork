@@ -8,6 +8,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -36,12 +42,7 @@ public class CheckOutScreen extends javax.swing.JFrame {
         
     }
     
-    public void ShowInfo(String name, String description, String character, String num) throws SQLException, ClassNotFoundException {
-        if (MainPage.editEmployee) {
-            Equipment equip = new Equipment();
-            equip.PullEquipInfo(sql, sql);
-        }
-    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -53,10 +54,8 @@ public class CheckOutScreen extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        checkoutIDField = new javax.swing.JTextField();
         checkoutUserIDField = new javax.swing.JTextField();
         checkoutEquipCharField = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
@@ -70,8 +69,6 @@ public class CheckOutScreen extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Checkout ID:");
-
         jLabel2.setText("User ID:");
 
         jLabel3.setText("Equipment ID:");
@@ -79,6 +76,11 @@ public class CheckOutScreen extends javax.swing.JFrame {
         jLabel4.setText("-");
 
         checkoutCheckOutBtn.setText("Check Out");
+        checkoutCheckOutBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                checkoutCheckOutBtnMouseClicked(evt);
+            }
+        });
 
         jLabel5.setText("Equipment Name:");
 
@@ -99,46 +101,36 @@ public class CheckOutScreen extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE))
-                            .addComponent(jLabel5))
-                        .addGap(47, 47, 47)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(checkoutUserIDField, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(checkoutEquipNameField)
-                            .addComponent(checkoutIDField)))
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(50, 50, 50)
+                        .addComponent(checkoutUserIDField))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(266, 266, 266)
-                        .addComponent(checkoutCancelBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(checkoutEquipNumField, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(checkoutCheckOutBtn)))
+                        .addComponent(jLabel5)
+                        .addGap(47, 47, 47)
+                        .addComponent(checkoutEquipNameField))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(checkoutEquipDescriptionField)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(checkoutEquipDescriptionField))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(checkoutEquipCharField, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(checkoutCancelBtn)
+                                    .addComponent(checkoutEquipCharField, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(checkoutEquipNumField)
+                                    .addComponent(checkoutCheckOutBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(checkoutIDField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(15, 15, 15)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(checkoutUserIDField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -150,17 +142,17 @@ public class CheckOutScreen extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(checkoutEquipDescriptionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(checkoutEquipCharField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
                     .addComponent(checkoutEquipNumField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(checkoutCancelBtn)
                     .addComponent(checkoutCheckOutBtn))
-                .addGap(0, 11, Short.MAX_VALUE))
+                .addGap(0, 17, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -182,6 +174,53 @@ public class CheckOutScreen extends javax.swing.JFrame {
         this.setVisible(false);
         MainPage.editEmployee = false;
     }//GEN-LAST:event_checkoutCancelBtnMouseClicked
+
+    private void checkoutCheckOutBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkoutCheckOutBtnMouseClicked
+        // TODO add your handling code here:
+        if (checkoutEquipNameField.getText().isEmpty() || checkoutEquipCharField.getText().isEmpty()
+                || checkoutEquipNumField.getText().isEmpty() || checkoutEquipDescriptionField.getText().isEmpty()
+                || checkoutUserIDField.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please fill out all fields.");
+        }
+        else {
+            try {
+                con = db.OpenConnection();
+                ArrayList<String> elements = new ArrayList<String>();
+                String charID = checkoutEquipCharField.getText();
+                String numID = checkoutEquipNumField.getText();
+                String name = checkoutEquipNameField.getText();
+                String descrip = checkoutEquipDescriptionField.getText();
+                String userID = checkoutUserIDField.getText();
+                
+                String pattern = "yyyy-MM-dd";
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+                
+                String date = simpleDateFormat.format(new Date());
+                System.out.println(date);
+                
+                sql = String.format("UPDATE equipment SET Status = \'Checked out\', Location = \'Out\' WHERE EquipmentIDChar = \'%s\' AND EquipmentIDNum = \'%s\'", charID, numID);
+                stmt = con.prepareStatement(sql);
+
+                stmt.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Successfully checked out equipment.");
+                
+                sql = String.format("INSERT INTO equipment_checkout (UserID, EquipmentIDChar, EquipmentIDNum, CheckoutDate, Status) VALUES (%s, \'%s\', \'%s\', \'%s\', \'Checked out\')",
+                        userID, charID, numID, date);
+                
+                stmt = con.prepareStatement(sql);
+                stmt.execute();
+                System.out.println("Success");
+                
+                this.setVisible(false);
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(CheckOutScreen.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(CheckOutScreen.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+    }//GEN-LAST:event_checkoutCheckOutBtnMouseClicked
 
     /**
      * @param args the command line arguments
@@ -225,9 +264,7 @@ public class CheckOutScreen extends javax.swing.JFrame {
     private javax.swing.JTextField checkoutEquipDescriptionField;
     private javax.swing.JTextField checkoutEquipNameField;
     private javax.swing.JTextField checkoutEquipNumField;
-    private javax.swing.JTextField checkoutIDField;
     private javax.swing.JTextField checkoutUserIDField;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
