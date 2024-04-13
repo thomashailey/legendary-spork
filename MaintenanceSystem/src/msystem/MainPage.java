@@ -9,7 +9,11 @@ package msystem;
  * @author thoma
  */
 import java.awt.List;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
@@ -20,8 +24,9 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import msystem.Employee;
 import msystem.Equipment;
+
 public class MainPage extends javax.swing.JFrame {
-    
+
     DBConnect db = new DBConnect();
     Connection con = null;
     PreparedStatement stmt;
@@ -37,7 +42,12 @@ public class MainPage extends javax.swing.JFrame {
     static String selectingThisEndorsement = null;
     Equipment equip = new Equipment();
     static ArrayList<String> nullArray = new ArrayList<>();
+    private int fileCounter = 1; // Counter for generating unique file names
+    String pattern = "yyyy-MM-dd";
+    SimpleDateFormat simpleDate = new SimpleDateFormat(pattern);
+    String currentDate = simpleDate.format(new java.util.Date());
 
+    // Assuming reportDetailsField is a JTextArea
     /**
      * Creates new form MainPage
      */
@@ -47,7 +57,6 @@ public class MainPage extends javax.swing.JFrame {
         AccessEmployeeInfo();
         AccessInventoryInfo();
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -712,8 +721,51 @@ public class MainPage extends javax.swing.JFrame {
 
     private void reportPrintMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportPrintMouseClicked
         // TODO add info from details box into a new form that will be saved as a file to the user's device.
-        JOptionPane.showMessageDialog(null, "Please connect a printer");
+/**
+        ArrayList<String> reportData = new ArrayList<>();
+        DefaultListModel model = (DefaultListModel) reportList.getModel();
+        for (int i = 0; i < model.size(); i++) {
+            reportData.add(model.getElementAt(i).toString());
+        }
+
+        String fileName = "report.txt";
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            for (String line : reportData) {
+                writer.write(line);
+                writer.newLine();
+            }
+            JOptionPane.showMessageDialog(null, "Report saved to " + fileName);
+        } catch (IOException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error occurred while saving report");
+        }
+        */
+
+String fileName = generateFileName();
+        
+        // Save the contents of reportDetailsField to the file
+        saveToFile(fileName);
     }//GEN-LAST:event_reportPrintMouseClicked
+
+     private String generateFileName() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HHmmss");
+        String timestamp = simpleDate.format(new java.util.Date());
+
+        return "report_" + timestamp + "_" + fileCounter++ + ".txt";
+    }
+    
+    private void saveToFile(String fileName) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            String reportContent = reportDetailsField.getText();
+            writer.write(reportContent);
+            JOptionPane.showMessageDialog(null, "Report saved to file: " + fileName);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Error saving report to file: " + fileName);
+            ex.printStackTrace();
+        }
+    }
+
+
 
     private void reportListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_reportListValueChanged
         try {
@@ -728,7 +780,7 @@ public class MainPage extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         /*
         String list = "Nothing";
         try {
@@ -746,12 +798,11 @@ public class MainPage extends javax.swing.JFrame {
         if (txtInvSearch.getText().equals("")) {
             System.out.println("pulling all inventory successful");
             AccessInventoryInfo();
-        
-        }
-        else{
+
+        } else {
             System.out.println("Search successful");
             SearchInventory();
-    }
+        }
     }//GEN-LAST:event_btnInventorySearchMouseClicked
 
     private void empAddBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_empAddBtnMouseClicked
@@ -762,14 +813,13 @@ public class MainPage extends javax.swing.JFrame {
 
     private void empRemoveBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_empRemoveBtnMouseClicked
         // TODO add your handling code here:
-        if(JOptionPane.showInputDialog("Are you sure you want to delete this user? Please enter DELETE to confirm action (case specific)").equals("DELETE")){
+        if (JOptionPane.showInputDialog("Are you sure you want to delete this user? Please enter DELETE to confirm action (case specific)").equals("DELETE")) {
             emp.RemoveEmpInfo(pullThisUserIdForEdit);
             //sql = String.format("DELETE FROM user_authoization WHERE UserID = %s", pullThisUserIdForEdit);
             //System.out.println(sql);
-            
+
             //JOptionPane.showMessageDialog(null, sql);
-        }
-        else{
+        } else {
             JOptionPane.showMessageDialog(null, "Data not removed, confirmation entered incorrectly");
         }
     }//GEN-LAST:event_empRemoveBtnMouseClicked
@@ -779,7 +829,7 @@ public class MainPage extends javax.swing.JFrame {
         //adding all code of selecting item here in order to not run it multiple times via the edit and delete button
         String test = empList.getSelectedValue();
         //trying to split this string into a list using .spit(",")
-        if(test != null){
+        if (test != null) {
             var Test = new ArrayList<String>(Arrays.asList(test.split(",")));
             pullThisUserIdForEdit = Test.get(0).trim();
             System.out.println(pullThisUserIdForEdit);
@@ -793,19 +843,19 @@ public class MainPage extends javax.swing.JFrame {
         String searchText = null;
         boolean fName = false;
         boolean lName = false;
-        
-        if(!searchFirstNameText.equals("") && !searchFirstNameText.equals("First Name")){
+
+        if (!searchFirstNameText.equals("") && !searchFirstNameText.equals("First Name")) {
             //System.out.println(searchFirstNameText);
             fName = true;
             searchText = searchFirstNameText;
         }
-        if(!searchLastInitText.equals("") && !searchLastInitText.equals("Last Initial")){
+        if (!searchLastInitText.equals("") && !searchLastInitText.equals("Last Initial")) {
             //System.out.println(searchLastInitText);
             lName = true;
             searchText = String.format("%s%s", searchText, searchLastInitText);
         }
         System.out.println(searchText);
-        if(!fName && !lName){
+        if (!fName && !lName) {
             return;
         }
         ArrayList<String> list = new ArrayList<String>();
@@ -823,14 +873,14 @@ public class MainPage extends javax.swing.JFrame {
 
     private void empFirstNameSearchFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_empFirstNameSearchFieldFocusGained
         // TODO add your handling code here:
-        if(!empFirstNameSearchField.getText().equals("")){
+        if (!empFirstNameSearchField.getText().equals("")) {
             empFirstNameSearchField.setText("");
         }
     }//GEN-LAST:event_empFirstNameSearchFieldFocusGained
 
     private void empLastInitSearchFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_empLastInitSearchFieldFocusGained
         // TODO add your handling code here:
-        if(!empLastInitSearchField.getText().equals("")){
+        if (!empLastInitSearchField.getText().equals("")) {
             empLastInitSearchField.setText("");
         }
     }//GEN-LAST:event_empLastInitSearchFieldFocusGained
@@ -853,7 +903,7 @@ public class MainPage extends javax.swing.JFrame {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
+
         new EditEmployee().setVisible(true);
     }//GEN-LAST:event_empEditBtnMouseClicked
 
@@ -876,85 +926,80 @@ public class MainPage extends javax.swing.JFrame {
             con = db.OpenConnection();
             stmt = con.prepareStatement(sql);
             result = stmt.executeQuery();
-            if(result!=null){
+            if (result != null) {
                 System.out.println("Successfully accessed database to pull all equipment.");
             }
-            while(result.next()){
-                elements.add(String.format("%5s-%4s %s",result.getString("EquipmentIDChar"),result.getString("EquipmentIDNum"),result.getString("EquipmentName")));
+            while (result.next()) {
+                elements.add(String.format("%5s-%4s %s", result.getString("EquipmentIDChar"), result.getString("EquipmentIDNum"), result.getString("EquipmentName")));
             }
             con.close();
             System.out.println("Database closed.");
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             System.out.println(e);
             System.out.println("MainPage.equipmentPullAllBtnMouseClicked");
         }
         DefaultListModel model = new DefaultListModel();
         model.addAll(elements);
-        lstTools.setModel(model);        
+        lstTools.setModel(model);
     }//GEN-LAST:event_equipmentPullAllBtnMouseClicked
 
     private void lstToolsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstToolsValueChanged
         // TODO add your handling code here:
         String equipPullThisCharacterID = null;
         String equipPullThisCharacterNum = null;
-        String equipListSelection = lstTools.getSelectedValue().substring(0,10).trim();
+        String equipListSelection = lstTools.getSelectedValue().substring(0, 10).trim();
         System.out.println(equipListSelection);
-        if(equipListSelection != null){
+        if (equipListSelection != null) {
             var equipmentListSelectionToList = new ArrayList<String>(Arrays.asList(equipListSelection.split("-")));
             System.out.println(equipmentListSelectionToList);
             equipPullThisCharacterID = equipmentListSelectionToList.get(0).trim();
             equipPullThisCharacterNum = equipmentListSelectionToList.get(1).trim();
-         
+
         }
         System.out.println(equipPullThisCharacterID);
         System.out.println(equipPullThisCharacterNum);
-        sql = String.format("SELECT * FROM equipment WHERE EquipmentIDChar = '%s' AND EquipmentIDNum = %s", equipPullThisCharacterID,equipPullThisCharacterNum);
+        sql = String.format("SELECT * FROM equipment WHERE EquipmentIDChar = '%s' AND EquipmentIDNum = %s", equipPullThisCharacterID, equipPullThisCharacterNum);
         try {
             con = db.OpenConnection();
             stmt = con.prepareStatement(sql);
             result = stmt.executeQuery();
-            if(result!=null){
+            if (result != null) {
                 System.out.println("Successfully accessed database to pull equipment ID and characger number.");
             }
-            while(result.next()){
+            while (result.next()) {
                 String elements;
-                elements = String.format("%5s-%4s %s",result.getString("EquipmentIDChar"),result.getString("EquipmentIDNum"),result.getString("EquipmentName"));
+                elements = String.format("%5s-%4s %s", result.getString("EquipmentIDChar"), result.getString("EquipmentIDNum"), result.getString("EquipmentName"));
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
             System.out.println("MainPage.equipmentIDChar");
         }
-        
+
     }//GEN-LAST:event_lstToolsValueChanged
 
     private void btnInventoryAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInventoryAddMouseClicked
         // TODO add your handling code here:
-        
+
         new EditInventory(true, false, nullArray).setVisible(true);
     }//GEN-LAST:event_btnInventoryAddMouseClicked
 
     private void btnInventoryRequestMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInventoryRequestMouseClicked
         // TODO add your handling code here:
-        if(invMainList.getSelectedValue() != null){
+        if (invMainList.getSelectedValue() != null) {
             ArrayList<String> requestedInv = new ArrayList<String>(Arrays.asList(invMainList.getSelectedValue().split(" -- ")));
             ArrayList<String> list = new ArrayList<>();
             System.out.println(requestedInv);
-            try{
+            try {
                 list = equip.searchInventoryForEdit(requestedInv.get(0), requestedInv.get(1));
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 System.out.println(e);
                 System.out.println("MainPage.btnInventoryRequestMouseClicked");
             }
             new EditInventory(false, false, list).setVisible(true);
-        }
-        else{
-            if(JOptionPane.showConfirmDialog(null, "Are you requesting a new inventory item?") == 0){
+        } else {
+            if (JOptionPane.showConfirmDialog(null, "Are you requesting a new inventory item?") == 0) {
                 new EditInventory(true, true, nullArray).setVisible(true);
-            }
-            else{
+            } else {
                 JOptionPane.showMessageDialog(null, "Please sselect an item in the inventory and then hit request");
             }
         }
@@ -962,34 +1007,33 @@ public class MainPage extends javax.swing.JFrame {
 
     private void mainPageInvRequestsLstValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_mainPageInvRequestsLstValueChanged
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_mainPageInvRequestsLstValueChanged
 
     private void btnInventoryRecordSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInventoryRecordSearchMouseClicked
         // TODO add your handling code here:
-        if(mainPageInvRequestsLst.getSelectedValue() != null){
+        if (mainPageInvRequestsLst.getSelectedValue() != null) {
             //pulling record
             var recordPulled = new ArrayList<String>(Arrays.asList(mainPageInvRequestsLst.getSelectedValue().split("--")));
             sql = String.format("SELECT * FROM inventory_request WHERE InvRequestID = %s", recordPulled.get(0));
             String elements = null;
-            try{
+            try {
                 con = db.OpenConnection();
                 stmt = con.prepareStatement(sql);
                 result = stmt.executeQuery();
-                if(result!=null){
+                if (result != null) {
                     System.out.println("Successfully accessed inventory request database");
-                    while(result.next()){
-                    elements = String.format("Request ID - %s\nItem ID - %s%s\nUser Requested%s\nItem Name - %s\nItem Description - %s\nQuantity needed - %s\nDestination - %s\nFulfilled - %s",
-                            result.getString("InvRequestID"), result.getString("ItemIDChar"),
-                            result.getString("ItemIDNum"), result.getString("UserIDRequested"),
-                            result.getString("ItemName"), result.getString("Description"),
-                            result.getString("Quantity"), result.getString("Destination"), 
-                            result.getString("Fulfilled"));
+                    while (result.next()) {
+                        elements = String.format("Request ID - %s\nItem ID - %s%s\nUser Requested%s\nItem Name - %s\nItem Description - %s\nQuantity needed - %s\nDestination - %s\nFulfilled - %s",
+                                result.getString("InvRequestID"), result.getString("ItemIDChar"),
+                                result.getString("ItemIDNum"), result.getString("UserIDRequested"),
+                                result.getString("ItemName"), result.getString("Description"),
+                                result.getString("Quantity"), result.getString("Destination"),
+                                result.getString("Fulfilled"));
                     }
                     con.close();
                 }
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 System.out.println(e);
                 System.out.println("MainPage.btnInventoryRecordSearchMouseClicked");
             }
@@ -999,7 +1043,7 @@ public class MainPage extends javax.swing.JFrame {
 
     private void inventoryPullOnlyUnfulfilledBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inventoryPullOnlyUnfulfilledBtnMouseClicked
         // TODO add your handling code here:
-        if(inventoryPullOnlyUnfulfilledBtn.getText().equals("Pull Only Unfulfilled")){
+        if (inventoryPullOnlyUnfulfilledBtn.getText().equals("Pull Only Unfulfilled")) {
             ArrayList<String> list = new ArrayList<String>();
             try {
                 list = equip.ViewInventoryRequests(true);
@@ -1007,14 +1051,12 @@ public class MainPage extends javax.swing.JFrame {
                 model.addAll(list);
                 mainPageInvRequestsLst.setModel(model);
 
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 System.out.println(e);
                 System.out.println("MainPage.inventoryPullOnlyUnfulfilledBtnMouseClicked - if");
             }
             inventoryPullOnlyUnfulfilledBtn.setText("Pull All");
-        }
-        else{
+        } else {
             ArrayList<String> list = new ArrayList<String>();
             try {
                 list = equip.ViewInventoryRequests(false);
@@ -1022,8 +1064,7 @@ public class MainPage extends javax.swing.JFrame {
                 model.addAll(list);
                 mainPageInvRequestsLst.setModel(model);
 
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 System.out.println(e);
                 System.out.println("MainPage.inventoryPullOnlyUnfulfilledBtnMouseClicked - else");
             }
@@ -1031,7 +1072,6 @@ public class MainPage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_inventoryPullOnlyUnfulfilledBtnMouseClicked
 
-    
     /**
      * @param args the command line arguments
      */
@@ -1066,11 +1106,11 @@ public class MainPage extends javax.swing.JFrame {
             }
         });
     }
-    
+
     public void AccessEquipmentInfo() {
-        
+
     }
-    
+
     public void AccessInventoryInfo() {
         ArrayList<String> list = new ArrayList<String>();
         ArrayList<String> list2 = new ArrayList<String>();
@@ -1089,10 +1129,10 @@ public class MainPage extends javax.swing.JFrame {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void SearchInventory() {
-                ArrayList<String> list = new ArrayList<String>();
-                
+        ArrayList<String> list = new ArrayList<String>();
+
         try {
             list = equip.SearchInventory(txtInvSearch.getText());
             DefaultListModel model = new DefaultListModel();
@@ -1104,7 +1144,7 @@ public class MainPage extends javax.swing.JFrame {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void AccessEmployeeInfo() {
         ArrayList<String> list = new ArrayList<String>();
         try {
@@ -1118,7 +1158,7 @@ public class MainPage extends javax.swing.JFrame {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void AccessReportInfo() {
         ArrayList<String> list = new ArrayList<String>();
         try {
@@ -1131,7 +1171,7 @@ public class MainPage extends javax.swing.JFrame {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-        }        
+        }
     }
     /*
     public void ViewReportDetails() throws ClassNotFoundException {
