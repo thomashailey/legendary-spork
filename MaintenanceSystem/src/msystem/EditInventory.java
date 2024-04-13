@@ -278,7 +278,7 @@ public class EditInventory extends javax.swing.JFrame {
         // TODO add your handling code here:
         ArrayList primaryInventoryItem = new ArrayList<>();
         ArrayList secondaryInventoryItem = new ArrayList<>();
-        String requestingUserID = JOptionPane.showInputDialog("Please enter the userID that is requesting this item");
+        String requestingUserID = null;
         if(one && !two){
             System.out.println("add");
         
@@ -288,7 +288,7 @@ public class EditInventory extends javax.swing.JFrame {
                     editInventoryNameTxt.getText(), editInventoryDescriptionTxt.getText(), 
                     editInventoryPromaryQRequested.getText(), 
                     "Primary");
-                
+                System.out.println("collections add complete");
                 equip.addToInventory(primaryInventoryItem);
             }
             else if(!editInventorySecondaryQRequested.getText().equals("0") && !editInventorySecondaryQRequested.getText().equals("")){
@@ -303,6 +303,7 @@ public class EditInventory extends javax.swing.JFrame {
         }
         else if((one && two) || (editInventoryNewRequestRadio.isSelected())){
             System.out.println("request new inventory");
+            requestingUserID = JOptionPane.showInputDialog("Please enter the userID that is requesting this item");
             if(!editInventoryPromaryQRequested.getText().equals("0") && !editInventoryPromaryQRequested.getText().equals("")){
                 int requestedAmt = Integer.parseInt(editInventoryPromaryQRequested.getText());
                 Collections.addAll(primaryInventoryItem, 
@@ -326,7 +327,8 @@ public class EditInventory extends javax.swing.JFrame {
         }
         else if(!one && !two){
             System.out.println("request current inventory");
-            
+            requestingUserID = JOptionPane.showInputDialog("Please enter the userID that is requesting this item");
+
             
             if(!editInventoryPromaryQRequested.getText().equals("0") && !editInventoryPromaryQRequested.getText().equals("")){
                 Collections.addAll(primaryInventoryItem, 

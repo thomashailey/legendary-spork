@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 public class Equipment {
     
@@ -144,20 +145,26 @@ public class Equipment {
         PreparedStatement stmt2;
         ResultSet result2;
 
-        sql = String.format("SELECT * FROM inventory_request WHERE Fulfilled = 0 and ItemName = \"%s\" and Desccription = \"%s\" LIMIT 1", 
+        sql = String.format("SELECT * FROM inventory_request WHERE Fulfilled = 0 and ItemName = \"%s\" and Description = \"%s\" LIMIT 1", 
                 itemNameRequested, itemDescriptionRequested);
+        System.out.println(sql);
         ArrayList<String> elements = new ArrayList<>();
         int amountNeeded = 0;
         try{
             con = db.OpenConnection();
             stmt = con.prepareStatement(sql);
             result = stmt.executeQuery();
+            System.out.println(result);
             if(result != null){
                 while(result.next()){
+                    System.out.println(sql);
+                    ///elements.add("None");
+                    System.out.println(elements);
                     //Collections.addAll(elements, result.getString("InvRequestID"), result.getString("Quantity"), result.getString("UserIDRequested"));
                     amountNeeded = Integer.parseInt(result.getString("Quantity"));
                     //TODO add all sql querys to adjust the inventory records
                     if(amountAdding > amountNeeded){
+                        System.out.println("amountAdding > amountNeeded");
                         String amountRemainingToAdd = String.format("%d", (amountAdding-amountNeeded));
                         sql2 = String.format("UPDATE inventory_request SET Fulfilled = 1 where InvRequestID = %s",
                                 result.getString("InvRequestID"));
@@ -169,6 +176,7 @@ public class Equipment {
                         
                     }
                     else if(amountAdding == amountNeeded){
+                        System.out.println("amountAdding == amountNeeded");
                         sql2 = String.format("UPDATE inventory_request SET Fulfilled = 1 where InvRequestID = %s",
                                 result.getString("InvRequestID"));
                         con2 = db.OpenConnection();
@@ -178,6 +186,7 @@ public class Equipment {
                         // this request is fulfilled, and the amount is fully covered
                     }
                     else if(amountAdding < amountNeeded){
+                        System.out.println("amountAdding < amountNeeded");
                         int amountRemainingRequested = amountNeeded-amountAdding;
                         sql2 = String.format("UPDATE inventory_request SET Quantity = %s, Fulfilled = 1 where InvRequestID = %s",
                                 amountAdding, result.getString("InvRequestID"));
@@ -196,19 +205,23 @@ public class Equipment {
                         Collections.addAll(elements, "uc", result.getString("UserIDRequested"));
                         //This request is unfulfilled, and the amount os fully covered
                     }
+                    else{
+                        System.out.println("else statement");
+                        elements.add("None");
+                    }
                 }
                 con.close();
-                con2.close();
-            }
-            else{
-                elements.add("None");
+                if(con2 != null){
+                    con2.close();
+                }
             }
         }
         catch(Exception e){
             System.out.println(e);
             System.out.println("Equipment.searchInventoryRecordForUnfulfilled");
         }
-        
+        elements.add("None");
+        System.out.println(elements);
         return elements;
     }
     
@@ -226,7 +239,7 @@ public class Equipment {
         ArrayList<String> list = new ArrayList<>();
         while(true){
             list = searchInventoryRecordForUnfulfilled(inventoryToAdd.get(2).toString(), inventoryToAdd.get(3).toString(), amountNeeded);
-            if(list.get(0).toString().equals("None")){
+            if(list.get(0).equals("None")){
                 //no match,no need to re-search
                 break;
             }
@@ -252,7 +265,7 @@ public class Equipment {
                 amountNeeded = list.get(2).toString();
             }
         }
-        
+        JOptionPane.showConfirmDialog(null, sendThisInANotification);
         
         //add search into inventory request where unfulfilled, then popup a notification to notify user requested
         //if found and the amount added is more than the request, mark fulfilled
