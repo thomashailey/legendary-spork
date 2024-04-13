@@ -198,6 +198,7 @@ public class NewLog extends javax.swing.JFrame {
                 stmt.executeUpdate();
 
                 // Log success message
+                con.close();
                 System.out.println(String.format("Successfully inserted log for user %s", jtfUserId.getText()));
             }
         } catch (SQLException ex) {
@@ -205,6 +206,9 @@ public class NewLog extends javax.swing.JFrame {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        MainPage.editEmployee = false;
+        this.setVisible(false);
          
         //Main Test*/
 

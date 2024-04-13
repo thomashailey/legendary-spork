@@ -21,10 +21,9 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import msystem.Employee;
 import msystem.Equipment;
+
 public class MainPage extends javax.swing.JFrame {
 
-    
-    
     DBConnect db = new DBConnect();
     Connection con = null;
     PreparedStatement stmt;
@@ -50,7 +49,6 @@ public class MainPage extends javax.swing.JFrame {
         AccessEmployeeInfo();
         AccessInventoryInfo();
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -349,11 +347,6 @@ public class MainPage extends javax.swing.JFrame {
         jLabel3.setText("Maintenance Logs:");
 
         jList1.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane7.setViewportView(jList1);
 
         maintLogBtn.setText("New Log");
@@ -683,11 +676,11 @@ public class MainPage extends javax.swing.JFrame {
         // TODO add your handling code here:
         AccessEmployeeInfo();
     }//GEN-LAST:event_empLoadAllBtnMouseClicked
-/*
+    /*
     private void empEditBtnMouseClicked(java.awt.event.MouseEvent evt) {                                        
 TODO DELETE
     }                                       
-*/
+     */
     private void reportLoadAllBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportLoadAllBtnMouseClicked
         // TODO add your handling code here:
         AccessReportInfo();
@@ -731,7 +724,7 @@ TODO DELETE
         } catch (SQLException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         /*
         String list = "Nothing";
         try {
@@ -749,12 +742,11 @@ TODO DELETE
         if (txtInvSearch.getText().equals("")) {
             System.out.println("Search successful");
             AccessInventoryInfo();
-        
-        }
-        else{
+
+        } else {
             System.out.println("Search successful");
             SearchInventory();
-    }
+        }
     }//GEN-LAST:event_btnInventorySearchMouseClicked
 
     private void empAddBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_empAddBtnMouseClicked
@@ -765,14 +757,13 @@ TODO DELETE
 
     private void empRemoveBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_empRemoveBtnMouseClicked
         // TODO add your handling code here:
-        if(JOptionPane.showInputDialog("Are you sure you want to delete this user? Please enter DELETE to confirm action (case specific)").equals("DELETE")){
+        if (JOptionPane.showInputDialog("Are you sure you want to delete this user? Please enter DELETE to confirm action (case specific)").equals("DELETE")) {
             emp.RemoveEmpInfo(pullThisUserIdForEdit);
             //sql = String.format("DELETE FROM user_authoization WHERE UserID = %s", pullThisUserIdForEdit);
             //System.out.println(sql);
-            
+
             //JOptionPane.showMessageDialog(null, sql);
-        }
-        else{
+        } else {
             JOptionPane.showMessageDialog(null, "Data not removed, confirmation entered incorrectly");
         }
     }//GEN-LAST:event_empRemoveBtnMouseClicked
@@ -782,7 +773,7 @@ TODO DELETE
         //adding all code of selecting item here in order to not run it multiple times via the edit and delete button
         String test = empList.getSelectedValue();
         //trying to split this string into a list using .spit(",")
-        if(test != null){
+        if (test != null) {
             var Test = new ArrayList<String>(Arrays.asList(test.split(",")));
             pullThisUserIdForEdit = Test.get(0).trim();
             System.out.println(pullThisUserIdForEdit);
@@ -796,19 +787,19 @@ TODO DELETE
         String searchText = null;
         boolean fName = false;
         boolean lName = false;
-        
-        if(!searchFirstNameText.equals("") && !searchFirstNameText.equals("First Name")){
+
+        if (!searchFirstNameText.equals("") && !searchFirstNameText.equals("First Name")) {
             //System.out.println(searchFirstNameText);
             fName = true;
             searchText = searchFirstNameText;
         }
-        if(!searchLastInitText.equals("") && !searchLastInitText.equals("Last Initial")){
+        if (!searchLastInitText.equals("") && !searchLastInitText.equals("Last Initial")) {
             //System.out.println(searchLastInitText);
             lName = true;
             searchText = String.format("%s%s", searchText, searchLastInitText);
         }
         System.out.println(searchText);
-        if(!fName && !lName){
+        if (!fName && !lName) {
             return;
         }
         ArrayList<String> list = new ArrayList<String>();
@@ -826,14 +817,14 @@ TODO DELETE
 
     private void empFirstNameSearchFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_empFirstNameSearchFieldFocusGained
         // TODO add your handling code here:
-        if(!empFirstNameSearchField.getText().equals("")){
+        if (!empFirstNameSearchField.getText().equals("")) {
             empFirstNameSearchField.setText("");
         }
     }//GEN-LAST:event_empFirstNameSearchFieldFocusGained
 
     private void empLastInitSearchFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_empLastInitSearchFieldFocusGained
         // TODO add your handling code here:
-        if(!empLastInitSearchField.getText().equals("")){
+        if (!empLastInitSearchField.getText().equals("")) {
             empLastInitSearchField.setText("");
         }
     }//GEN-LAST:event_empLastInitSearchFieldFocusGained
@@ -856,7 +847,7 @@ TODO DELETE
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
+
         new EditEmployee().setVisible(true);
     }//GEN-LAST:event_empEditBtnMouseClicked
 
@@ -904,16 +895,16 @@ TODO DELETE
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-        }        
-    
+        }
+
     }//GEN-LAST:event_maintPullAllActionPerformed
 
     private void maintSearchDateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maintSearchDateBtnActionPerformed
         // TODO add your handling code here:
         ArrayList<String> list = new ArrayList<String>();
-        
+
         try {
-           
+
             String input = String.format(jTextField1.getText());
             try {
                 String pattern = "yyyy-MM-dd";
@@ -947,7 +938,7 @@ TODO DELETE
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
+
         new NewLog().setVisible(true);
     }//GEN-LAST:event_maintLogBtnActionPerformed
 
@@ -957,12 +948,12 @@ TODO DELETE
 
     private void maintLogBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_maintLogBtnMouseClicked
         // TODO add your handling code here:
-        
-       
+
         new NewLog().setVisible(true);
-        
+
     }//GEN-LAST:event_maintLogBtnMouseClicked
 
+    
     
     /**
      * @param args the command line arguments
@@ -998,11 +989,11 @@ TODO DELETE
             }
         });
     }
-    
+
     public void AccessEquipmentInfo() {
-        
+
     }
-    
+
     public void AccessInventoryInfo() {
         ArrayList<String> list = new ArrayList<String>();
         try {
@@ -1016,10 +1007,10 @@ TODO DELETE
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void SearchInventory() {
-                ArrayList<String> list = new ArrayList<String>();
-                
+        ArrayList<String> list = new ArrayList<String>();
+
         try {
             list = equip.SearchInventory(txtInvSearch.getText());
             DefaultListModel model = new DefaultListModel();
@@ -1031,7 +1022,7 @@ TODO DELETE
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void AccessEmployeeInfo() {
         ArrayList<String> list = new ArrayList<String>();
         try {
@@ -1045,7 +1036,7 @@ TODO DELETE
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void AccessReportInfo() {
         ArrayList<String> list = new ArrayList<String>();
         try {
@@ -1058,7 +1049,7 @@ TODO DELETE
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-        }        
+        }
     }
     /*
     public void ViewReportDetails() throws ClassNotFoundException {
