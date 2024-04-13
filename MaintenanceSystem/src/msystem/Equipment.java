@@ -265,7 +265,7 @@ public class Equipment {
                 amountNeeded = list.get(2).toString();
             }
         }
-        JOptionPane.showConfirmDialog(null, sendThisInANotification);
+        JOptionPane.showMessageDialog(null, sendThisInANotification);
         
         //add search into inventory request where unfulfilled, then popup a notification to notify user requested
         //if found and the amount added is more than the request, mark fulfilled
