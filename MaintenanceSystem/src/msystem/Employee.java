@@ -294,10 +294,6 @@ public class Employee {
                         result.getString("Description")));
             }
 
-            /*
-            while (result.next()) {
-                System.out.print(result.getString("Username") + ", " + result.getString("UserID"));
-            }*/
             con.close();
             System.out.println("Database closed");
          
@@ -362,10 +358,6 @@ public ArrayList PullMaintenanceActivitiesDate(String selectedItem) throws SQLEx
                         result.getString("Description")));
             }
 
-            /*
-            while (result.next()) {
-                System.out.print(result.getString("Username") + ", " + result.getString("UserID"));
-            }*/
             con.close();
             System.out.println("Database closed");
          
@@ -398,10 +390,6 @@ public ArrayList ConfirmNewLog(int userInput) throws SQLException, ClassNotFound
                         result.getString("Description")));
             }
 
-            /*
-            while (result.next()) {
-                System.out.print(result.getString("Username") + ", " + result.getString("UserID"));
-            }*/
             con.close();
             System.out.println("Database closed");
          
