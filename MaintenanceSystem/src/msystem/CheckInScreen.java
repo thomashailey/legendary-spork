@@ -14,7 +14,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 /**
@@ -38,12 +40,10 @@ public class CheckInScreen extends javax.swing.JFrame {
         initComponents();
         
         // setup dropdown for equipment options (empty until search by ID)
-        ArrayList<String> equipmentOptions = new ArrayList<String>();
-        Collections.addAll(equipmentOptions, "");
-        DefaultComboBoxModel equipmentModel = new DefaultComboBoxModel();
-        equipmentModel.addAll(equipmentOptions);
-        checkinEquipDropdown.setModel(equipmentModel);
-        checkinEquipDropdown.setSelectedIndex(0);
+        ArrayList<String> list = new ArrayList();
+        DefaultListModel model = new DefaultListModel();
+        model.addAll(list);
+        checkinEquipList.setModel(model);
         
         // setup dropdown for location
         ArrayList<String> locationOptions = new ArrayList<String>();
@@ -71,10 +71,11 @@ public class CheckInScreen extends javax.swing.JFrame {
         checkinCheckInBtn = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         checkinCancelBtn = new javax.swing.JButton();
-        checkinEquipDropdown = new javax.swing.JComboBox<>();
         checkinSearchBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         checkinLocationDropdown = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        checkinEquipList = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -96,13 +97,6 @@ public class CheckInScreen extends javax.swing.JFrame {
             }
         });
 
-        checkinEquipDropdown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        checkinEquipDropdown.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                checkinEquipDropdownItemStateChanged(evt);
-            }
-        });
-
         checkinSearchBtn.setText("Search");
         checkinSearchBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -114,6 +108,13 @@ public class CheckInScreen extends javax.swing.JFrame {
 
         checkinLocationDropdown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        checkinEquipList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(checkinEquipList);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -122,24 +123,24 @@ public class CheckInScreen extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(checkinCancelBtn)
-                        .addGap(18, 18, 18)
-                        .addComponent(checkinCheckInBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5)
                             .addComponent(jLabel1))
-                        .addGap(12, 12, 12)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(checkinEquipDropdown, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(checkinUserIDField, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(checkinLocationDropdown, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(checkinUserIDField, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(checkinSearchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(checkinLocationDropdown, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(19, 19, 19))
+                            .addComponent(jScrollPane1)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(checkinCancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(checkinCheckInBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,19 +150,19 @@ public class CheckInScreen extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(checkinUserIDField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(checkinSearchBtn))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(checkinEquipDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addGap(18, 18, 18)
+                    .addComponent(checkinLocationDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(checkinLocationDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(checkinCancelBtn)
-                    .addComponent(checkinCheckInBtn))
-                .addContainerGap(18, Short.MAX_VALUE))
+                    .addComponent(checkinCheckInBtn)
+                    .addComponent(checkinCancelBtn))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -194,32 +195,36 @@ public class CheckInScreen extends javax.swing.JFrame {
                 String user = checkinUserIDField.getText();
                 String itemToAdd = null;
                 String id = null;
+                String name = null;
                 String equipChar = null;
                 String equipNum = null;
                 String descrip = null;
                 
                 // Pull info for checked out items
-                sql = String.format("SELECT * FROM equipment_checkout WHERE UserID = \'%s\' AND Status = \'Checked out\'", user);
+                sql = String.format("SELECT equipment_checkout.CheckoutID, equipment.EquipmentIDChar, equipment.EquipmentIDNum, "
+                        + "equipment.EquipmentName, equipment.Description FROM equipment_checkout INNER JOIN "
+                        + "equipment ON equipment_checkout.EquipmentIDChar=equipment.EquipmentIDChar AND "
+                        + "equipment_checkout.EquipmentIDNum=equipment.EquipmentIDNum WHERE equipment_checkout.UserID=\'%s\' "
+                        + "AND equipment_checkout.Status=\'Checked out\'", user);
                 stmt = con.prepareStatement(sql);
                 result = stmt.executeQuery();
                 
                 while (result.next()) {
-                    Collections.addAll(elements, result.getString("CheckoutID"), result.getString("EquipmentIDChar"), result.getString("EquipmentIDChar"));
+                    Collections.addAll(elements, result.getString("CheckoutID"),result.getString("EquipmentName"), result.getString("Description") ,result.getString("EquipmentIDChar"), result.getString("EquipmentIDNum"));
+                    id = result.getString("CheckoutID");
+                    name = result.getString("EquipmentName");
+                    descrip = result.getString("Description");
+                    equipChar = result.getString("EquipmentIDChar");
+                    equipNum = result.getString("EquipmentIDNum");
+                    
+                    populateList.add(id + " - " + name + " - " + descrip + " - " + equipChar + " - " + equipNum);
+                    
                 }
+
                 
-                // User results from above query to pull from equipment database and format list items
-                equipChar = elements.get(0);
-                equipNum = elements.get(1);
-                sql = String.format("SELECT * FROM equipment WHERE EquipmentIDChar = \'%s\' AND EquipmentIDNum = \'%s\'", equipChar, equipNum);
-                
-                stmt = con.prepareStatement(sql);
-                result = stmt.executeQuery();
-                
-                while (result.next()) {
-                    Collections.addAll(populateList, result.getString("EquipmentName"), 
-                            result.getString("Description"), result.getString("EquipmentIDChar"),
-                            result.getString("EquipmentIDNum"));
-                }
+                DefaultListModel model = new DefaultListModel();
+                model.addAll(populateList);
+                checkinEquipList.setModel(model);
                 
                 
             } catch (SQLException ex) {
@@ -230,11 +235,6 @@ public class CheckInScreen extends javax.swing.JFrame {
             
         }
     }//GEN-LAST:event_checkinSearchBtnMouseClicked
-
-    private void checkinEquipDropdownItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkinEquipDropdownItemStateChanged
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_checkinEquipDropdownItemStateChanged
 
     private void checkinCancelBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkinCancelBtnMouseClicked
         // TODO add your handling code here:
@@ -252,7 +252,7 @@ public class CheckInScreen extends javax.swing.JFrame {
         // returned item. This should be a status change and a location change
         // location will be taken from the checkinLocationDropdown combobox
         
-        if (checkinUserIDField.getText().isEmpty() || checkinEquipDropdown.getSelectedItem().toString().equals("")) {
+        if (checkinUserIDField.getText().isEmpty() || !checkinEquipList.hasFocus()) {
             JOptionPane.showMessageDialog(null, "Please fill out all fields.");
         }
         else {
@@ -335,7 +335,7 @@ public class CheckInScreen extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton checkinCancelBtn;
     private javax.swing.JButton checkinCheckInBtn;
-    private javax.swing.JComboBox<String> checkinEquipDropdown;
+    private javax.swing.JList<String> checkinEquipList;
     private javax.swing.JComboBox<String> checkinLocationDropdown;
     private javax.swing.JButton checkinSearchBtn;
     private javax.swing.JTextField checkinUserIDField;
@@ -343,5 +343,6 @@ public class CheckInScreen extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
