@@ -221,11 +221,9 @@ public class CheckInScreen extends javax.swing.JFrame {
                     
                 }
 
-                
                 DefaultListModel model = new DefaultListModel();
                 model.addAll(populateList);
                 checkinEquipList.setModel(model);
-                
                 
             } catch (SQLException ex) {
                 Logger.getLogger(CheckOutScreen.class.getName()).log(Level.SEVERE, null, ex);
@@ -252,37 +250,45 @@ public class CheckInScreen extends javax.swing.JFrame {
         // returned item. This should be a status change and a location change
         // location will be taken from the checkinLocationDropdown combobox
         
-        if (checkinUserIDField.getText().isEmpty() || !checkinEquipList.hasFocus()) {
+        boolean check = checkinEquipList.isSelectionEmpty();
+        
+        if (checkinUserIDField.getText().isEmpty() || check) {
             JOptionPane.showMessageDialog(null, "Please fill out all fields.");
         }
         else {
             try {
                 con = db.OpenConnection();
-                ArrayList<String> elements = new ArrayList<String>();
                 String charID = null;
                 String numID = null;
                 String name = null;
                 String descrip = null;
-                String userID = null;
-                
+                String userID = checkinUserIDField.getText();
+                String location = checkinLocationDropdown.getSelectedItem().toString();
                 String pattern = "yyyy-MM-dd";
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
                 
                 String date = simpleDateFormat.format(new Date());
-                System.out.println(date);
                 
-                sql = String.format("UPDATE equipment SET Status = \'Checked out\', Location = \'Out\' WHERE EquipmentIDChar = \'%s\' AND EquipmentIDNum = \'%s\'", charID, numID);
-                stmt = con.prepareStatement(sql);
-
-                stmt.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Successfully checked out equipment.");
+                String equipListSelection = checkinEquipList.getSelectedValue();
+                String[] list;
                 
-                sql = String.format("INSERT INTO equipment_checkout (UserID, EquipmentIDChar, EquipmentIDNum, CheckoutDate, Status) VALUES (%s, \'%s\', \'%s\', \'%s\', \'Checked out\')",
-                        userID, charID, numID, date);
+                list = equipListSelection.split("-");
+                userID = list[0].trim();
+                name = list[1].trim();
+                descrip = list[2].trim();
+                charID = list[3].trim();
+                numID = list[4].trim();
                 
+                sql = String.format("UPDATE equipment SET Status = \'Available\', Location = \'%s\' WHERE EquipmentIDChar = \'%s\' AND EquipmentIDNum = \'%s\'",
+                        location, charID, numID);
                 stmt = con.prepareStatement(sql);
                 stmt.execute();
-                System.out.println("Success");
+                
+                sql = String.format("UPDATE equipment_checkout SET ReturnDate = \'%s\', Status = \'Returned\' WHERE CheckoutID = \'%s\'", date, userID);
+                stmt = con.prepareStatement(sql);
+                stmt.execute();
+                
+                JOptionPane.showMessageDialog(null, "Equipment Checked In Successfully.");
                 
                 this.setVisible(false);
                 
