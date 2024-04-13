@@ -64,9 +64,10 @@ public class NewLog extends javax.swing.JFrame {
         txtActivityDateLog = new javax.swing.JLabel();
         jtfActivityDate = new javax.swing.JTextField();
         txtDescriptonLog = new javax.swing.JLabel();
-        jtfDescription = new javax.swing.JTextField();
         btnConfirmLog = new javax.swing.JButton();
         btnCancelLog = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jtfDescription = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -90,6 +91,10 @@ public class NewLog extends javax.swing.JFrame {
             }
         });
 
+        jtfDescription.setColumns(20);
+        jtfDescription.setRows(5);
+        jScrollPane1.setViewportView(jtfDescription);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -99,11 +104,10 @@ public class NewLog extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtfDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtUserIDLog)
                             .addComponent(txtActivityDateLog)
                             .addComponent(txtDescriptonLog))
-                        .addContainerGap(191, Short.MAX_VALUE))
+                        .addContainerGap(330, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jtfUserId, javax.swing.GroupLayout.Alignment.LEADING)
@@ -112,7 +116,10 @@ public class NewLog extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnConfirmLog)
                             .addComponent(btnCancelLog))
-                        .addGap(45, 45, 45))))
+                        .addGap(45, 45, 45))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,8 +139,8 @@ public class NewLog extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(txtDescriptonLog)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jtfDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(46, Short.MAX_VALUE))
         );
 
         pack();
@@ -296,8 +303,9 @@ public class NewLog extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelLog;
     private javax.swing.JButton btnConfirmLog;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jtfActivityDate;
-    private javax.swing.JTextField jtfDescription;
+    private javax.swing.JTextArea jtfDescription;
     private javax.swing.JTextField jtfUserId;
     private javax.swing.JLabel txtActivityDateLog;
     private javax.swing.JLabel txtDescriptonLog;
