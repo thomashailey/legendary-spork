@@ -1202,6 +1202,71 @@ public class MainPage extends javax.swing.JFrame {
             }
         });
     }
+    
+    public void LimitAccess() throws SQLException, ClassNotFoundException {
+//        TODO: pull userID from UserAuth in order to add it here
+//        then call this method when the jframe instance starts
+        
+        UserAuth auth = new UserAuth();
+        String userID = auth.txtUsercode.getText();
+        System.out.println("I have made it this far and my ID is: " + userID);
+        ArrayList<String> elements = new ArrayList<>();
+        String role;
+        
+        con = db.OpenConnection();
+        
+        sql = String.format("SELECT Role FROM user_authoization WHERE UserID = \'%s\'", userID);
+        stmt = con.prepareStatement(sql);
+
+        result = stmt.executeQuery();
+        
+        while (result.next()) {
+            elements.add(result.getString("Role"));
+        }
+        
+        role = elements.get(0);
+        
+        switch (role) {
+            case "Technician":
+                equipmentTab.setVisible(true);
+                inventoryTab.setVisible(true);
+                maintenanceTab.setVisible(false);
+                reportTab.setVisible(false);
+                Employee.setVisible(false);
+                break;
+            case "Maintenance":
+                equipmentTab.setVisible(true);
+                inventoryTab.setVisible(true);
+                maintenanceTab.setVisible(true);
+                reportTab.setVisible(true);
+                Employee.setVisible(false);
+                break;
+            case "Warehouse":
+                equipmentTab.setVisible(true);
+                inventoryTab.setVisible(true);
+                maintenanceTab.setVisible(false);
+                reportTab.setVisible(true);
+                Employee.setVisible(false);
+                break;
+            case "Management":
+                equipmentTab.setVisible(true);
+                inventoryTab.setVisible(true);
+                maintenanceTab.setVisible(true);
+                reportTab.setVisible(true);
+                Employee.setVisible(true);
+                break;
+            case "Admin":
+                equipmentTab.setVisible(true);
+                inventoryTab.setVisible(true);
+                maintenanceTab.setVisible(true);
+                reportTab.setVisible(true);
+                Employee.setVisible(true);
+                break;
+            default:
+                break;
+        }
+        
+    }
 
     public void AccessEquipmentInfo() {
 

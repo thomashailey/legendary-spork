@@ -165,6 +165,7 @@ public class UserAuth extends javax.swing.JFrame {
         
     }//GEN-LAST:event_tempNextPageMouseClicked
 
+    
     private void txtUsercodeFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUsercodeFocusLost
         // TODO add your handling code here:
         //No longer need the confirm here, was testing if userID exists in db
@@ -242,7 +243,7 @@ public class UserAuth extends javax.swing.JFrame {
     private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblUsercode;
     private javax.swing.JButton tempNextPage;
-    private javax.swing.JTextField txtUsercode;
+    protected javax.swing.JTextField txtUsercode;
     private javax.swing.JButton userAuthenByassBtn;
     // End of variables declaration//GEN-END:variables
 }
