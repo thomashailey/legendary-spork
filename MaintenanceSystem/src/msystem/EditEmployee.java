@@ -269,7 +269,6 @@ public class EditEmployee extends javax.swing.JFrame {
         }
         catch(Exception e) {
             System.out.println(e);
-            System.out.println("editEmpConfirmButtonMouseClicked");
         }
         MainPage.editEmployee = false;
         this.setVisible(false);
