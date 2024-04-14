@@ -19,6 +19,7 @@ public class Equipment {
     Connection con = null;
     PreparedStatement stmt;
     ResultSet result;
+    String sql = null;
     
     public ArrayList<String> CheckIn() throws SQLException, ClassNotFoundException {
         // Access database to return equipment
@@ -26,7 +27,7 @@ public class Equipment {
         ArrayList<String> elements = new ArrayList<>();
         String itemToAdd = null;
         try {
-                 String sql = "SELECT * FROM equipment";
+                 sql = "SELECT * FROM equipment";
             stmt = con.prepareStatement(sql);
             
             result = stmt.executeQuery();
@@ -54,7 +55,7 @@ public class Equipment {
         ArrayList<String> elements = new ArrayList<>();
         String itemToAdd = null;
         try {
-            String sql = "SELECT * FROM equipment WHERE Status = ? AND EquipmentName = ? AND Description = ? LIMIT 1;";
+            sql = "SELECT * FROM equipment WHERE Status = ? AND EquipmentName = ? AND Description = ? LIMIT 1;";
             stmt = con.prepareStatement(sql);
             stmt.setString(1, "Available");
             stmt.setString(2, equipName);
@@ -112,16 +113,16 @@ public class Equipment {
         // 
     }
 
-    public void ReportLoss(String equipName, String equipDescrip) throws SQLException, ClassNotFoundException {
+    public void ReportLoss(String equipIDChar, String equipIDNum) throws SQLException, ClassNotFoundException {
               // Report loss of equipment
         con = db.OpenConnection();
         try {
             // Update the status of the equipment to "Lost" in the database
-            String sql = "UPDATE equipment SET Status = ? WHERE EquipmentName = ? AND Description = ?";
-            PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setString(1, "Lost");
-            stmt.setString(2, equipName);
-            stmt.setString(3, equipDescrip);
+            sql = "UPDATE equipment SET Location = \"Lost\" WHERE EquipmentIDChar = ? AND EquipmentIDNum = ?";
+            System.out.println(sql);
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1, equipIDChar);
+            stmt.setString(2, equipIDNum);
             
             int rowsAffected = stmt.executeUpdate();
             
@@ -132,6 +133,7 @@ public class Equipment {
             }
         } catch (SQLException e) {
             System.out.println("SQL Error: " + e.getMessage());
+            System.out.println("Equipment.ReportLost");
         } finally {
             if (stmt != null) {
                 stmt.close();
@@ -140,15 +142,51 @@ public class Equipment {
                 con.close();
             }
         }
-  
+    }
+    public ArrayList checkForUserCheckOut(String equipIDChar, String equipIDNum){
+        sql = String.format("SELECT * FROM equipment_checkout WHERE EquipmentIDChar = \"%s\" and EquipmentIDNum = %s and Status = \"Checked out\"", equipIDChar, equipIDNum);
+        ArrayList userInformation = new ArrayList<>();
+        
+        try{
+            con = db.OpenConnection();
+            stmt = con.prepareStatement(sql);
+            result = stmt.executeQuery();
+            while(result.next()){
+                userInformation.add(result.getString("UserID"));
+            }
+        }
+        catch(Exception e){
+            System.out.println(e);
+            System.out.println("Equipment.checkForUserCheckOut");
+        }
+        if(userInformation.isEmpty()){
+            userInformation.addLast("not checked out by a user");
+        }
+        return userInformation;
     }
     
-    /**
-     *
-     * @return
-     * @throws SQLException
-     * @throws ClassNotFoundException
-     */
+    public ArrayList checkIfCheckedIn(String equipIDChar, String equipIDNum){
+        sql = String.format("SELECT * FROM equipment WHERE EquipmentIDChar = \"%s\" and EquipmentIDNum = %s", equipIDChar, equipIDNum);
+        ArrayList checkedIn = new ArrayList<>();
+        
+        try{
+            con = db.OpenConnection();
+            stmt = con.prepareStatement(sql);
+            result = stmt.executeQuery();
+            while(result.next()){
+                checkedIn.add(result.getString("Status"));
+            }
+        }
+        catch(Exception e){
+            System.out.println(e);
+            System.out.println("Equipment.checkIfCheckedIn");
+        }
+        if(checkedIn.isEmpty()){
+            checkedIn.add("not an item");
+        }
+        return checkedIn;
+    }
+    
     public ArrayList ViewEquipment() throws SQLException, ClassNotFoundException {
         /*  Set connection to DBConnect OpenConnection() method,
             Create ArrayList to store DB elements
@@ -159,7 +197,7 @@ public class Equipment {
         HashSet<String> uniqueItems = new HashSet<>(); // HashSet to store unique items 
         String itemToAdd = null;
         try {
-            String sql = "SELECT * FROM equipment";
+            sql = "SELECT * FROM equipment";
             stmt = con.prepareStatement(sql);
             
             result = stmt.executeQuery();
@@ -208,7 +246,6 @@ public class Equipment {
         con = db.OpenConnection();
         ArrayList<String> elements = new ArrayList<>();
         String itemToAdd = null;
-        String sql;
         String warehouseOne = "Primary";
         String warehouseTwo = "Secondary";
         int priCounter = 0;
@@ -282,7 +319,7 @@ public class Equipment {
         con = db.OpenConnection();
         ArrayList<String> elements = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM inventory WHERE ItemName = ?";
+            sql = "SELECT * FROM inventory WHERE ItemName = ?";
             stmt = con.prepareStatement(sql);
             stmt.setString(1, item);
             
@@ -346,7 +383,7 @@ public class Equipment {
         con = db.OpenConnection();
         ArrayList<String> elements = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM inventory";
+            sql = "SELECT * FROM inventory";
             stmt = con.prepareStatement(sql);
             
             result = stmt.executeQuery();
@@ -374,7 +411,7 @@ public class Equipment {
         con = db.OpenConnection();
         ArrayList<String> elements = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM equipment WHERE ItemName = ?";
+            sql = "SELECT * FROM equipment WHERE ItemName = ?";
             stmt = con.prepareStatement(sql);
             stmt.setString(1, item);
             

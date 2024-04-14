@@ -156,6 +156,11 @@ public class MainPage extends javax.swing.JFrame {
 
         btnReportloss.setBackground(new java.awt.Color(255, 51, 51));
         btnReportloss.setText("REPORT LOST");
+        btnReportloss.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnReportlossMouseClicked(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setText("Tool Summary:");
@@ -848,16 +853,16 @@ public class MainPage extends javax.swing.JFrame {
         AccessEquipmentInfo();        
     }//GEN-LAST:event_equipmentPullAllBtnMouseClicked
 
-    private void equipLostBtnMouseClicked(java.awt.event.MouseEvent evt) throws SQLException {
-        if(JOptionPane.showInputDialog("Are you sure you want to report this equipment lost? Please enter LOST to confirm action (case specific)").equals("LOST")){
-            equip.ReportLoss(equipNum);
-            //sql=String.format        if(JOptionPane.showInputDialog("Are you sure you want to report this equipment lost? Please enter LOST to confirm action (case specific)").equals("LOST")){
-
-        }
-        else{
-            JOptionPane.showMessageDialog(null, "Equipment not lost, confirmation enteredd incorrectly");
-        }
-    }
+//    private void equipLostBtnMouseClicked(java.awt.event.MouseEvent evt) throws SQLException {
+//        if(JOptionPane.showInputDialog("Are you sure you want to report this equipment lost? Please enter LOST to confirm action (case specific)").equals("LOST")){
+//            equip.ReportLoss(equipNum);
+//            //sql=String.format        if(JOptionPane.showInputDialog("Are you sure you want to report this equipment lost? Please enter LOST to confirm action (case specific)").equals("LOST")){
+//
+//        }
+//        else{
+//            JOptionPane.showMessageDialog(null, "Equipment not lost, confirmation enteredd incorrectly");
+//        }
+//    }
     
     
     private void lstToolsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstToolsValueChanged
@@ -936,6 +941,65 @@ public class MainPage extends javax.swing.JFrame {
 //            System.out.println(e);
 //            System.out.println("MainPage.equipmentIDChar");
     }//GEN-LAST:event_lstToolsValueChanged
+
+    private void btnReportlossMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnReportlossMouseClicked
+        // TODO add your handling code here:
+        String equipmentIdInput = JOptionPane.showInputDialog("Please enter the equipment ID like \"APM-1\"");
+        var equipID = new ArrayList<String>(Arrays.asList(equipmentIdInput.split("-")));
+        System.out.println(equipID);
+        ArrayList checkedIn = equip.checkIfCheckedIn(equipID.get(0).toUpperCase(), equipID.get(1));
+        
+        if(checkedIn.get(0).equals("Checked out")){
+            System.out.println("item is checked out");
+            ArrayList userConfirmedCheckedOut = equip.checkForUserCheckOut(equipID.get(0).toUpperCase(), equipID.get(1));
+            System.out.println(userConfirmedCheckedOut);
+            if(userConfirmedCheckedOut.get(0).equals("not checked out by a user")){
+                if(JOptionPane.showConfirmDialog(null, "Equipment not checked out by a user, entry was put in checked out before ECS system in place\nReport lost?") == 0){
+                    try {
+                        equip.ReportLoss(equipID.get(0).toUpperCase(), equipID.get(1));
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+            else{
+                if(JOptionPane.showConfirmDialog(null, String.format("Equipment checked out by %s, report lost?", userConfirmedCheckedOut.get(0))) == 0){
+                    try {
+                        equip.ReportLoss(equipID.get(0).toUpperCase(), equipID.get(1));
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+           
+        }
+        else if(checkedIn.get(0).equals("Available")){
+            System.out.println("item is not checked out");
+            int checkedInLostConfirm = JOptionPane.showConfirmDialog(null, "This item is showing as currently checked in\nShould this item be marked lost anyway?");
+            System.out.println(checkedInLostConfirm);
+            //0 = yes
+            if(checkedInLostConfirm == 0){
+                try {
+                    equip.ReportLoss(equipID.get(0).toUpperCase(), equipID.get(1));
+                } catch (SQLException ex) {
+                    Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        else{
+            System.out.println("Item does not exist");
+            JOptionPane.showMessageDialog(null, "Please enter a correct equipment ID\nThis ID does not exist");
+        }
+        
+        //if(checkedIn.get(0))
+        //System.out.println(equip.checkIfCheckedIn(equipID.get(0), equipID.get(1)));
+    }//GEN-LAST:event_btnReportlossMouseClicked
 
     
     /**
