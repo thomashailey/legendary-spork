@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
  * @author never
  */
 public class AddReport extends javax.swing.JFrame {
+    boolean mainTextVisible = false;
     String pattern = "yyyy-MM-dd";
     SimpleDateFormat simpleDate = new SimpleDateFormat(pattern);
     String currentDate = simpleDate.format(new Date());
@@ -28,8 +29,12 @@ public class AddReport extends javax.swing.JFrame {
      * Creates new form AddReport
      */
     public AddReport() {
+        
         System.out.println(currentDate);
         initComponents();
+        addReportMainReportTxtBox.setVisible(false);
+        addReportMainReportTxtBox.setColumns(0);
+        setBounds(0, 0, 439, 439);
     }
 
     /**
@@ -52,6 +57,9 @@ public class AddReport extends javax.swing.JFrame {
         addReportConfirmBtn = new javax.swing.JButton();
         addReportCancelBtn = new javax.swing.JButton();
         addReportCharCountLbl = new javax.swing.JLabel();
+        addReportOpenMainBtn = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        addReportMainReportTxtBox = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -103,63 +111,83 @@ public class AddReport extends javax.swing.JFrame {
 
         addReportCharCountLbl.setText("# of characters");
 
+        addReportOpenMainBtn.setText("Show Main Report Form");
+        addReportOpenMainBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addReportOpenMainBtnMouseClicked(evt);
+            }
+        });
+
+        addReportMainReportTxtBox.setColumns(20);
+        addReportMainReportTxtBox.setLineWrap(true);
+        addReportMainReportTxtBox.setRows(5);
+        addReportMainReportTxtBox.setAutoscrolls(false);
+        jScrollPane3.setViewportView(addReportMainReportTxtBox);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(addReportConfirmBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(addReportCancelBtn))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(addReportCharCountLbl))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)
-                            .addComponent(addReportDateTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(addReportCharCountLbl))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(addReportDateTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(addReportOpenMainBtn)))
+                .addGap(41, 41, 41)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 623, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(addReportDateTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(addReportCharCountLbl))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addReportConfirmBtn)
-                    .addComponent(addReportCancelBtn))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(addReportOpenMainBtn))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(7, 7, 7)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(addReportDateTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(addReportCharCountLbl))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(addReportConfirmBtn)
+                            .addComponent(addReportCancelBtn)))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        pack();
+        setBounds(0, 0, 966, 373);
     }// </editor-fold>//GEN-END:initComponents
 
     private void addReportConfirmBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addReportConfirmBtnMouseClicked
         // TODO add your handling code here:
-        //TODO add sql add statement here
-        sql = String.format("INSERT INTO reports(UserID, ReportDate, ReportType) VALUES(%s, '%s', '%s')", 
-                addReportUserIdTxt.getText(), addReportDateTxt.getText(), addReportTypeTxt.getText());
+        //TODO checking against the date code, add error checking
+        sql = String.format("INSERT INTO reports(UserID, ReportDate, ReportType, Data) VALUES(%s, '%s', \"%s\", \"%s\")", 
+                addReportUserIdTxt.getText(), addReportDateTxt.getText(), addReportTypeTxt.getText(), addReportMainReportTxtBox.getText());
         //JOptionPane.showMessageDialog(null, sql);
         try {
             con = db.OpenConnection();
@@ -221,6 +249,26 @@ public class AddReport extends javax.swing.JFrame {
         addReportCharCountLbl.setText(String.format("%d", numberOfCharactersInBox));
     }//GEN-LAST:event_addReportTypeTxtKeyPressed
 
+    private void addReportOpenMainBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addReportOpenMainBtnMouseClicked
+        // TODO add your handling code here:
+        if(mainTextVisible){
+            setBounds(0, 0, 439, 439);
+            addReportMainReportTxtBox.setVisible(false);
+            addReportOpenMainBtn.setText("Show Main Report Form");
+            mainTextVisible = false;
+            
+            
+            
+        }
+        else{
+            setBounds(0, 0, 966, 439);
+            addReportMainReportTxtBox.setVisible(true);
+            addReportOpenMainBtn.setText("Hide Main Report Form");
+            mainTextVisible = true;
+        }
+        
+    }//GEN-LAST:event_addReportOpenMainBtnMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -261,6 +309,8 @@ public class AddReport extends javax.swing.JFrame {
     private javax.swing.JLabel addReportCharCountLbl;
     private javax.swing.JButton addReportConfirmBtn;
     private javax.swing.JFormattedTextField addReportDateTxt;
+    private javax.swing.JTextArea addReportMainReportTxtBox;
+    private javax.swing.JButton addReportOpenMainBtn;
     private javax.swing.JTextArea addReportTypeTxt;
     private javax.swing.JTextPane addReportUserIdTxt;
     private javax.swing.JLabel jLabel1;
@@ -268,6 +318,7 @@ public class AddReport extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     // End of variables declaration//GEN-END:variables
 
 
