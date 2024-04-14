@@ -850,8 +850,9 @@ public class MainPage extends javax.swing.JFrame {
 
     private void equipLostBtnMouseClicked(java.awt.event.MouseEvent evt) throws SQLException {
         if(JOptionPane.showInputDialog("Are you sure you want to report this equipment lost? Please enter LOST to confirm action (case specific)").equals("LOST")){
-            equip.ReportLoss(int equipNum,);
-            //sql=String.format
+            equip.ReportLoss(equipNum);
+            //sql=String.format        if(JOptionPane.showInputDialog("Are you sure you want to report this equipment lost? Please enter LOST to confirm action (case specific)").equals("LOST")){
+
         }
         else{
             JOptionPane.showMessageDialog(null, "Equipment not lost, confirmation enteredd incorrectly");
