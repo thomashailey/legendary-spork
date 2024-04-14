@@ -59,11 +59,7 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="tabPanePanel" max="32767" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-              </Group>
+              <Component id="tabPanePanel" alignment="1" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -498,7 +494,7 @@
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="maintSearchEmpBtn" alignment="0" max="32767" attributes="0"/>
                                       <Component id="jTextField1" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="maintSearchCatBtn" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="maintPullAll" alignment="0" max="32767" attributes="0"/>
                                       <Component id="maintSearchDateBtn" alignment="0" max="32767" attributes="0"/>
                                       <Component id="maintLogBtn" max="32767" attributes="0"/>
                                   </Group>
@@ -524,7 +520,7 @@
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="maintSearchEmpBtn" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="maintSearchCatBtn" min="-2" max="-2" attributes="0"/>
+                                  <Component id="maintPullAll" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="maintSearchDateBtn" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="32767" attributes="0"/>
@@ -544,16 +540,25 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Search by Employee ID"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="maintSearchEmpBtnActionPerformed"/>
+                  </Events>
                 </Component>
-                <Component class="javax.swing.JButton" name="maintSearchCatBtn">
+                <Component class="javax.swing.JButton" name="maintPullAll">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Search by Category"/>
+                    <Property name="text" type="java.lang.String" value="Pull All Logs"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="maintPullAllActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="maintSearchDateBtn">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Search by Date"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="maintSearchDateBtnActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel3">
                   <Properties>
@@ -573,13 +578,7 @@
                           <Font name="Cascadia Code" size="12" style="0"/>
                         </Property>
                         <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                          <StringArray count="5">
-                            <StringItem index="0" value="Item 1"/>
-                            <StringItem index="1" value="Item 2"/>
-                            <StringItem index="2" value="Item 3"/>
-                            <StringItem index="3" value="Item 4"/>
-                            <StringItem index="4" value="Item 5"/>
-                          </StringArray>
+                          <StringArray count="0"/>
                         </Property>
                       </Properties>
                       <AuxValues>
@@ -592,6 +591,10 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="New Log"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="maintLogBtnMouseClicked"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="maintLogBtnActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -754,6 +757,7 @@
                   </Properties>
                   <Events>
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="reportAddButtonMouseClicked"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="reportAddButtonActionPerformed"/>
                   </Events>
                 </Component>
               </SubComponents>

@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
+import java.lang.String;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
@@ -41,11 +42,13 @@ public class MainPage extends javax.swing.JFrame {
     static String selectingThisRole = null;
     static String selectingThisEndorsement = null;
     Equipment equip = new Equipment();
+    static boolean NewLog = false;
     static ArrayList<String> nullArray = new ArrayList<>();
     private int fileCounter = 1; // Counter for generating unique file names
     String pattern = "yyyy-MM-dd";
     SimpleDateFormat simpleDate = new SimpleDateFormat(pattern);
     String currentDate = simpleDate.format(new java.util.Date());
+
 
     // Assuming reportDetailsField is a JTextArea
     /**
@@ -100,7 +103,7 @@ public class MainPage extends javax.swing.JFrame {
         maintenanceTab = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
         maintSearchEmpBtn = new javax.swing.JButton();
-        maintSearchCatBtn = new javax.swing.JButton();
+        maintPullAll = new javax.swing.JButton();
         maintSearchDateBtn = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane7 = new javax.swing.JScrollPane();
@@ -363,22 +366,42 @@ public class MainPage extends javax.swing.JFrame {
         tabPanePanel.addTab("Inventory", inventoryTab);
 
         maintSearchEmpBtn.setText("Search by Employee ID");
+        maintSearchEmpBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                maintSearchEmpBtnActionPerformed(evt);
+            }
+        });
 
-        maintSearchCatBtn.setText("Search by Category");
+        maintPullAll.setText("Pull All Logs");
+        maintPullAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                maintPullAllActionPerformed(evt);
+            }
+        });
 
         maintSearchDateBtn.setText("Search by Date");
+        maintSearchDateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                maintSearchDateBtnActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Maintenance Logs:");
 
         jList1.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane7.setViewportView(jList1);
 
         maintLogBtn.setText("New Log");
+        maintLogBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                maintLogBtnMouseClicked(evt);
+            }
+        });
+        maintLogBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                maintLogBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout maintenanceTabLayout = new javax.swing.GroupLayout(maintenanceTab);
         maintenanceTab.setLayout(maintenanceTabLayout);
@@ -393,7 +416,7 @@ public class MainPage extends javax.swing.JFrame {
                         .addGroup(maintenanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(maintSearchEmpBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jTextField1)
-                            .addComponent(maintSearchCatBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(maintPullAll, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(maintSearchDateBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(maintLogBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(maintenanceTabLayout.createSequentialGroup()
@@ -413,7 +436,7 @@ public class MainPage extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(maintSearchEmpBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(maintSearchCatBtn)
+                        .addComponent(maintPullAll)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(maintSearchDateBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -472,6 +495,11 @@ public class MainPage extends javax.swing.JFrame {
         reportAddButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 reportAddButtonMouseClicked(evt);
+            }
+        });
+        reportAddButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reportAddButtonActionPerformed(evt);
             }
         });
 
@@ -645,10 +673,7 @@ public class MainPage extends javax.swing.JFrame {
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mainPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(tabPanePanel)
-                .addContainerGap())
+            .addComponent(tabPanePanel, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -916,6 +941,98 @@ String fileName = generateFileName();
         // TODO add your handling code here:
         reportSearchField.setText("");
     }//GEN-LAST:event_reportSearchFieldFocusGained
+
+    private void maintSearchEmpBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maintSearchEmpBtnActionPerformed
+        // TODO add your handling code here:
+        ArrayList<String> list = new ArrayList<String>();
+        try {
+            String input = String.format(jTextField1.getText());
+            try {
+                list = emp.PullMaintenanceActivities(jTextField1.getText());
+                DefaultListModel model = new DefaultListModel();
+                model.addAll(list);
+                jList1.setModel(model);
+            } catch (SQLException ex) {
+                Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid User ID");
+        }
+    }//GEN-LAST:event_maintSearchEmpBtnActionPerformed
+
+    private void maintPullAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maintPullAllActionPerformed
+        // TODO add your handling code here:
+        // do we even have a category for these? we could change this to a pull all button >>>>Love it
+        ArrayList<String> list = new ArrayList<String>();
+        try {
+            list = emp.PullAllMaintenanceActivities();
+            DefaultListModel model = new DefaultListModel();
+            model.addAll(list);
+            jList1.setModel(model);
+            //reportSearchField.setText("");
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_maintPullAllActionPerformed
+
+    private void maintSearchDateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maintSearchDateBtnActionPerformed
+        // TODO add your handling code here:
+        ArrayList<String> list = new ArrayList<String>();
+
+        try {
+
+            String input = String.format(jTextField1.getText());
+            try {
+                String pattern = "yyyy-MM-dd";
+                list = emp.PullMaintenanceActivitiesDate(jTextField1.getText());
+                DefaultListModel model = new DefaultListModel();
+                model.addAll(list);
+                jList1.setModel(model);
+            } catch (SQLException ex) {
+                Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid Date");
+        }
+    }//GEN-LAST:event_maintSearchDateBtnActionPerformed
+
+    private void maintLogBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maintLogBtnActionPerformed
+        // TODO add your handling code here:
+        NewLog = true;
+        ArrayList<String> list = new ArrayList<String>();
+        try {
+            list = emp.PullEmpInfo(pullThisUserIdForEdit);
+            selectingThisUserID = pullThisUserIdForEdit;
+            selectingThisUsername = list.get(1);
+            selectingThisPassword = null;
+            selectingThisRole = list.get(2);
+            selectingThisEndorsement = list.get(3);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        new NewLog().setVisible(true);
+    }//GEN-LAST:event_maintLogBtnActionPerformed
+
+    private void reportAddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportAddButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_reportAddButtonActionPerformed
+
+    private void maintLogBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_maintLogBtnMouseClicked
+        // TODO add your handling code here:
+
+        new NewLog().setVisible(true);
+
+    }//GEN-LAST:event_maintLogBtnMouseClicked
 
     private void equipmentPullAllBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_equipmentPullAllBtnMouseClicked
         // TODO add your handling code here:
@@ -1234,7 +1351,7 @@ String fileName = generateFileName();
     private javax.swing.JList<String> mainPageInvRequestsLst;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JButton maintLogBtn;
-    private javax.swing.JButton maintSearchCatBtn;
+    private javax.swing.JButton maintPullAll;
     private javax.swing.JButton maintSearchDateBtn;
     private javax.swing.JButton maintSearchEmpBtn;
     private javax.swing.JPanel maintenanceTab;

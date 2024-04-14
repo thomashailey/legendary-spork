@@ -72,8 +72,8 @@ public class Equipment {
         }
         catch(Exception e) {
             System.out.println(e);
-            System.out.println("Equipment.ViewInventory");
-            
+            System.out.println("Equipment.SearchInventory");
+
         }
         return elements;
     }

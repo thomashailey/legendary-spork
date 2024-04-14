@@ -18,12 +18,13 @@ import javax.swing.JOptionPane;
 public class Employee {
     
     // Global level varriables
-
+    String pattern = "yyyy-MM-dd";
     DBConnect db = new DBConnect();
     Connection con = null;
     PreparedStatement stmt;
     ResultSet result;
     String sql = null;
+    
     
     public ArrayList PullEmployees() throws SQLException, ClassNotFoundException {
         
@@ -57,6 +58,7 @@ public class Employee {
         
         catch(Exception e) {
             System.out.println(e);
+            System.out.println("Employee.PullEmployees");
         }
         return elements;
     }
@@ -116,6 +118,7 @@ public class Employee {
         
         catch(Exception e) {
             System.out.println(e);
+            System.out.println("Employee.SearchEmployees");
         }
         return elements;
         
@@ -154,6 +157,7 @@ public class Employee {
         
         catch(Exception e) {
             System.out.println(e);
+            System.out.println("Employee.PullEmpInfo");
         }
         return elements;
     }
@@ -177,6 +181,7 @@ public class Employee {
         }
         catch(Exception e) {
             System.out.println(e);
+            System.out.println("Employee.RemoveEmpInfo");
         }
     }
     
@@ -201,7 +206,8 @@ public class Employee {
             }
         }
         catch(Exception e) {
-            
+            System.out.println(e);
+            System.out.println("Employee.PullReports");
         }
         return elements;
     }
@@ -226,6 +232,8 @@ public class Employee {
         }
         catch(Exception e) {
             JOptionPane.showMessageDialog(null, "Incorrect");
+            System.out.println(e);
+            System.out.println("Employee.SearchReports");
         }
         return elements;
     }
@@ -259,11 +267,167 @@ public class Employee {
             //System.out.println(elements);
         }
         catch(Exception e) {
+            System.out.println(e);
+            System.out.println("Employee.ReportDetails");
             
         }
         return results;
     }
     
+    public ArrayList PullMaintenanceActivities(String selectedItem) throws SQLException, ClassNotFoundException {
+
+        con = db.OpenConnection();
+        ArrayList<String> elements = new ArrayList<>();
+
+        try {  sql = "SELECT * FROM maintenance_activities WHERE UserID = ?";
+            stmt = con.prepareStatement(sql);
+            stmt.setInt(1, Integer.parseInt(selectedItem));
+            result = stmt.executeQuery();
+
+            if (result != null) {
+                System.out.println("Successfully Accessed DataBase to pull maintenance activities");
+            }
+            while (result.next()) {
+            elements.add(String.format("%s,%s,   %s", 
+                        String.format("%10s",result.getString("ActivityID")), 
+                        String.format("%12s", result.getString("ActivityDate")),
+                        result.getString("Description")));
+            }
+
+            con.close();
+            System.out.println("Database closed");
+         
+        }
+        
+        catch(Exception e) {
+            System.out.println(e);
+            System.out.println("Employee.PullMaintenanceActivities");
+        }
+        return elements;
+    }
+    
+    
+public ArrayList PullAllMaintenanceActivities() throws SQLException, ClassNotFoundException {
+
+       con = db.OpenConnection();
+        ArrayList<String> elements = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM maintenance_activities";
+            stmt = con.prepareStatement(sql);
+            
+            result = stmt.executeQuery();
+
+            if (result != null) {
+                System.out.println("Successfully Accessed Maintenance DataBase");
+            }
+            while (result.next()) {
+                elements.add(String.format("%s,%s,   %s, %s",
+                        String.format("%10s",result.getString("ActivityID")),
+                        String.format("%12s", result.getString("UserID")),
+                        String.format("%12s", result.getString("ActivityDate")),
+                        result.getString("Description")));
+            }
+        
+           }catch(Exception e) {
+            System.out.println(e);
+            System.out.println("Employee.PullMaintenanceActivities");
+        }
+        return elements;
+
+
+}
+
+
+public ArrayList PullMaintenanceActivitiesDate(String selectedItem) throws SQLException, ClassNotFoundException {
+
+        con = db.OpenConnection();
+        ArrayList<String> elements = new ArrayList<>();
+
+        try {  sql = "SELECT * FROM maintenance_activities WHERE ActivityDate = ?";
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1, selectedItem);
+            result = stmt.executeQuery();
+
+            if (result != null) {
+                System.out.println("Successfully Accessed DataBase to pull maintenance activities");
+            }
+            while (result.next()) {
+            elements.add(String.format("%s,%s,   %s", 
+                        String.format("%10s",result.getString("ActivityID")), 
+                        String.format("%12s", result.getString("UserID")),
+                        result.getString("Description")));
+            }
+
+            con.close();
+            System.out.println("Database closed");
+         
+        }
+        catch(Exception e) {
+            System.out.println(e);
+            System.out.println("Employee.PullMaintenanceActivities");
+        }
+        return elements;
+    }
+        
+
+public ArrayList ConfirmNewLog(int userInput) throws SQLException, ClassNotFoundException {
+
+        con = db.OpenConnection();
+        ArrayList<String> elements = new ArrayList<>();
+
+        try {  sql = "SELECT * FROM maintenance_activities WHERE ActivityDate = ?";
+            stmt = con.prepareStatement(sql);
+            stmt.setInt(1, userInput);
+            result = stmt.executeQuery();
+
+            if (result != null) {
+                System.out.println("Successfully Accessed DataBase to pull maintenance activities");
+            }
+            while (result.next()) {
+            elements.add(String.format("%s,%s,   %s", 
+                        String.format("%10s",result.getString("ActivityID")), 
+                        String.format("%12s", result.getString("UserID")),
+                        result.getString("Description")));
+            }
+
+            con.close();
+            System.out.println("Database closed");
+         
+        }
+        catch(Exception e) {
+            System.out.println(e);
+            System.out.println("Employee.PullMaintenanceActivities");
+        }
+        return elements;
+    }
+
+public ArrayList PopulateJlist() throws SQLException, ClassNotFoundException {
+
+       con = db.OpenConnection();
+        ArrayList<String> elements = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM maintenance_activities";
+            stmt = con.prepareStatement(sql);
+            
+            result = stmt.executeQuery();
+            
+            while (result.next()) {
+                elements.add(String.format("%s,%s,   %s, %s",
+                        String.format("%10s",result.getString("ActivityID")),
+                        String.format("%12s", result.getString("UserID")),
+                        String.format("%12s", result.getString("ActivityDate")),
+                        result.getString("Description")));
+            }
+        
+           }catch(Exception e) {
+            System.out.println(e);
+            System.out.println("Employee.PullMaintenanceActivities");
+        }
+        return elements;
+        
+}
+        
+
     public void AccessLogs() {
         // stretch goal - if we have time to add
 
@@ -274,4 +438,5 @@ public class Employee {
         
     }
     
+
 }
