@@ -45,8 +45,8 @@ public class NewLog extends javax.swing.JFrame {
         System.out.println(MainPage.NewLog);
         if (MainPage.NewLog) {
             jtfUserId.setText(MainPage.selectingThisUserID);
-            jtfActivityDate.setText(MainPage.selectingThisUsername);
-            jtfDescription.setText(MainPage.selectingThisUserID);
+            jtfActivityDate.setText(currentDate);
+            jtfDescription.setText(String.format("%s - %s", MainPage.selectingThisUserID, MainPage.selectingThisUsername));
         }
     }
 
@@ -154,7 +154,7 @@ public class NewLog extends javax.swing.JFrame {
             list = emp.PullAllMaintenanceActivities();
 
             // Construct the SQL INSERT statement
-            String sql = String.format("INSERT INTO maintenance_activities (UserID, ActivityDate, Description) VALUES (?, ?, ?)");
+            sql = String.format("INSERT INTO maintenance_activities (UserID, ActivityDate, Description) VALUES (?, ?, ?)");
 
             // Establish connection and execute the INSERT statement
             try (Connection con = db.OpenConnection(); PreparedStatement stmt = con.prepareStatement(sql)) {

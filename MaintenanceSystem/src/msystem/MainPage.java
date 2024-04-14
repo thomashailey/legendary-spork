@@ -59,6 +59,8 @@ public class MainPage extends javax.swing.JFrame {
         AccessReportInfo();
         AccessEmployeeInfo();
         AccessInventoryInfo();
+        AccessInventoryRepportInfo();
+        AccessMaintInfo();
     }
 
     /**
@@ -100,6 +102,7 @@ public class MainPage extends javax.swing.JFrame {
         jScrollPane9 = new javax.swing.JScrollPane();
         mainPageInvRequestsLst = new javax.swing.JList<>();
         inventoryPullOnlyUnfulfilledBtn = new javax.swing.JButton();
+        inventoryPullAllReportsBtn = new javax.swing.JButton();
         maintenanceTab = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
         maintSearchEmpBtn = new javax.swing.JButton();
@@ -302,10 +305,17 @@ public class MainPage extends javax.swing.JFrame {
         });
         jScrollPane9.setViewportView(mainPageInvRequestsLst);
 
-        inventoryPullOnlyUnfulfilledBtn.setText("Pull only unfulfilled");
+        inventoryPullOnlyUnfulfilledBtn.setText("Pull only Unfulfilled Reports");
         inventoryPullOnlyUnfulfilledBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 inventoryPullOnlyUnfulfilledBtnMouseClicked(evt);
+            }
+        });
+
+        inventoryPullAllReportsBtn.setText("Pull All Reports");
+        inventoryPullAllReportsBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                inventoryPullAllReportsBtnMouseClicked(evt);
             }
         });
 
@@ -319,27 +329,33 @@ public class MainPage extends javax.swing.JFrame {
                     .addGroup(inventoryTabLayout.createSequentialGroup()
                         .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(inventoryTabLayout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inventoryTabLayout.createSequentialGroup()
-                                .addComponent(txtInvSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnInventorySearch)))
-                        .addGap(24, 24, 24)
-                        .addComponent(btnInventoryAdd))
-                    .addComponent(jScrollPane11))
-                .addGap(18, 18, 18)
-                .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(inventoryTabLayout.createSequentialGroup()
-                            .addComponent(btnInventoryRequest)
-                            .addGap(104, 104, 104)
-                            .addComponent(inventoryPullOnlyUnfulfilledBtn)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(btnInventoryRecordSearch))
-                        .addComponent(jScrollPane9))
-                    .addComponent(lblInventoryRecord))
-                .addGap(19, 19, 19))
+                                .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(inventoryTabLayout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inventoryTabLayout.createSequentialGroup()
+                                        .addComponent(txtInvSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnInventorySearch)))
+                                .addGap(24, 24, 24)
+                                .addComponent(btnInventoryAdd))
+                            .addComponent(jScrollPane11))
+                        .addGap(18, 18, 18)
+                        .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(inventoryTabLayout.createSequentialGroup()
+                                    .addComponent(btnInventoryRequest)
+                                    .addGap(243, 243, 243)
+                                    .addComponent(btnInventoryRecordSearch))
+                                .addComponent(jScrollPane9))
+                            .addComponent(lblInventoryRecord))
+                        .addGap(19, 19, 19))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inventoryTabLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(inventoryPullAllReportsBtn)
+                            .addComponent(inventoryPullOnlyUnfulfilledBtn))
+                        .addGap(84, 84, 84))))
         );
         inventoryTabLayout.setVerticalGroup(
             inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -359,8 +375,10 @@ public class MainPage extends javax.swing.JFrame {
                     .addComponent(btnInventoryRequest)
                     .addComponent(btnInventoryRecordSearch)
                     .addComponent(btnInventoryAdd)
-                    .addComponent(inventoryPullOnlyUnfulfilledBtn))
-                .addContainerGap(54, Short.MAX_VALUE))
+                    .addComponent(inventoryPullAllReportsBtn))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(inventoryPullOnlyUnfulfilledBtn)
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         tabPanePanel.addTab("Inventory", inventoryTab);
@@ -746,42 +764,28 @@ public class MainPage extends javax.swing.JFrame {
 
     private void reportPrintMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportPrintMouseClicked
         // TODO add info from details box into a new form that will be saved as a file to the user's device.
-/**
-        ArrayList<String> reportData = new ArrayList<>();
-        DefaultListModel model = (DefaultListModel) reportList.getModel();
-        for (int i = 0; i < model.size(); i++) {
-            reportData.add(model.getElementAt(i).toString());
-        }
-
-        String fileName = "report.txt";
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
-            for (String line : reportData) {
-                writer.write(line);
-                writer.newLine();
+        if(reportList.getSelectedValue() != null){
+            try{
+                saveToFile("report" + reportList.getSelectedValue() + "_" + currentDate + ".txt");
             }
-            JOptionPane.showMessageDialog(null, "Report saved to " + fileName);
-        } catch (IOException ex) {
-            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "Error occurred while saving report");
+            catch(Exception e){
+                System.out.println(e);
+                System.out.println("MainPage.reportPrintMouseClicked");
+            }
         }
-        */
-
-String fileName = generateFileName();
-        
-        // Save the contents of reportDetailsField to the file
-        saveToFile(fileName);
+        else{
+            JOptionPane.showMessageDialog(null, "Please select a report to save.");
+        }
     }//GEN-LAST:event_reportPrintMouseClicked
 
-     private String generateFileName() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HHmmss");
-        String timestamp = simpleDate.format(new java.util.Date());
-
-        return "report_" + timestamp + "_" + fileCounter++ + ".txt";
-    }
+//     private String generateFileName() {
+//       
+//        return "report_" + reportList.getSelectedValue() + "_" + currentDate + ".txt";
+//    }
     
     private void saveToFile(String fileName) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
-            String reportContent = reportDetailsField.getText();
+            String reportContent = emp.PrintReportLogs(reportList.getSelectedValue());
             writer.write(reportContent);
             JOptionPane.showMessageDialog(null, "Report saved to file: " + fileName);
         } catch (IOException ex) {
@@ -842,7 +846,6 @@ String fileName = generateFileName();
             emp.RemoveEmpInfo(pullThisUserIdForEdit);
             //sql = String.format("DELETE FROM user_authoization WHERE UserID = %s", pullThisUserIdForEdit);
             //System.out.println(sql);
-
             //JOptionPane.showMessageDialog(null, sql);
         } else {
             JOptionPane.showMessageDialog(null, "Data not removed, confirmation entered incorrectly");
@@ -928,7 +931,6 @@ String fileName = generateFileName();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         new EditEmployee().setVisible(true);
     }//GEN-LAST:event_empEditBtnMouseClicked
 
@@ -965,25 +967,12 @@ String fileName = generateFileName();
     private void maintPullAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maintPullAllActionPerformed
         // TODO add your handling code here:
         // do we even have a category for these? we could change this to a pull all button >>>>Love it
-        ArrayList<String> list = new ArrayList<String>();
-        try {
-            list = emp.PullAllMaintenanceActivities();
-            DefaultListModel model = new DefaultListModel();
-            model.addAll(list);
-            jList1.setModel(model);
-            //reportSearchField.setText("");
-        } catch (SQLException ex) {
-            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        AccessMaintInfo();
     }//GEN-LAST:event_maintPullAllActionPerformed
 
     private void maintSearchDateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maintSearchDateBtnActionPerformed
         // TODO add your handling code here:
         ArrayList<String> list = new ArrayList<String>();
-
         try {
 
             String input = String.format(jTextField1.getText());
@@ -1160,34 +1149,24 @@ String fileName = generateFileName();
 
     private void inventoryPullOnlyUnfulfilledBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inventoryPullOnlyUnfulfilledBtnMouseClicked
         // TODO add your handling code here:
-        if (inventoryPullOnlyUnfulfilledBtn.getText().equals("Pull Only Unfulfilled")) {
-            ArrayList<String> list = new ArrayList<String>();
-            try {
-                list = equip.ViewInventoryRequests(true);
-                DefaultListModel model = new DefaultListModel();
-                model.addAll(list);
-                mainPageInvRequestsLst.setModel(model);
+        
+        ArrayList<String> list = new ArrayList<String>();
+        try {
+            list = equip.ViewInventoryRequests(true);
+            DefaultListModel model = new DefaultListModel();
+            model.addAll(list);
+            mainPageInvRequestsLst.setModel(model);
 
-            } catch (Exception e) {
-                System.out.println(e);
-                System.out.println("MainPage.inventoryPullOnlyUnfulfilledBtnMouseClicked - if");
-            }
-            inventoryPullOnlyUnfulfilledBtn.setText("Pull All");
-        } else {
-            ArrayList<String> list = new ArrayList<String>();
-            try {
-                list = equip.ViewInventoryRequests(false);
-                DefaultListModel model = new DefaultListModel();
-                model.addAll(list);
-                mainPageInvRequestsLst.setModel(model);
-
-            } catch (Exception e) {
-                System.out.println(e);
-                System.out.println("MainPage.inventoryPullOnlyUnfulfilledBtnMouseClicked - else");
-            }
-            inventoryPullOnlyUnfulfilledBtn.setText("Pull Only Unfulfilled");
-        }
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("MainPage.inventoryPullOnlyUnfulfilledBtnMouseClicked");
+        }     
     }//GEN-LAST:event_inventoryPullOnlyUnfulfilledBtnMouseClicked
+
+    private void inventoryPullAllReportsBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inventoryPullAllReportsBtnMouseClicked
+        // TODO add your handling code here:
+        AccessInventoryRepportInfo();
+    }//GEN-LAST:event_inventoryPullAllReportsBtnMouseClicked
 
     /**
      * @param args the command line arguments
@@ -1227,23 +1206,47 @@ String fileName = generateFileName();
     public void AccessEquipmentInfo() {
 
     }
-
-    public void AccessInventoryInfo() {
+    
+    public void AccessMaintInfo(){
         ArrayList<String> list = new ArrayList<String>();
-        ArrayList<String> list2 = new ArrayList<String>();
         try {
-            list = equip.ViewInventory();
+            list = emp.PullAllMaintenanceActivities();
             DefaultListModel model = new DefaultListModel();
-            DefaultListModel model2 = new DefaultListModel();
             model.addAll(list);
-            invMainList.setModel(model);
-            list2 = equip.ViewInventoryRequests(false);
-            model2.addAll(list2);
-            mainPageInvRequestsLst.setModel(model2);
+            jList1.setModel(model);
         } catch (SQLException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void AccessInventoryInfo() {
+        ArrayList<String> list = new ArrayList<String>();
+        try {
+            list = equip.ViewInventory();
+            DefaultListModel model = new DefaultListModel();
+            model.addAll(list);
+            invMainList.setModel(model);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void AccessInventoryRepportInfo(){
+        ArrayList<String> list = new ArrayList<String>();
+        try{
+            DefaultListModel model = new DefaultListModel();
+            list = equip.ViewInventoryRequests(false);
+            model.addAll(list);
+            mainPageInvRequestsLst.setModel(model);
+        }
+        catch(Exception e){
+            System.out.println(e);
+            System.out.println("MainPage.AccessInventoryRepportInfo");
         }
     }
 
@@ -1325,6 +1328,7 @@ String fileName = generateFileName();
     private javax.swing.JButton equipmentPullAllBtn;
     private javax.swing.JPanel equipmentTab;
     private javax.swing.JList<String> invMainList;
+    private javax.swing.JButton inventoryPullAllReportsBtn;
     private javax.swing.JButton inventoryPullOnlyUnfulfilledBtn;
     private javax.swing.JPanel inventoryTab;
     private javax.swing.JLabel jLabel1;

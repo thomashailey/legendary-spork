@@ -258,9 +258,7 @@ public class Employee {
                     results = String.format("Report ID   - %s\nUserID      - %s\nReport Date - %s\nType/ Description\n%s", 
                         result.getString("ReportID"), result.getString("UserID"), 
                         result.getString("ReportDate"), result.getString("ReportType"));
-                    
                 }
-                
             }
             //results = elements.toString();
             //System.out.println(results);
@@ -272,6 +270,28 @@ public class Employee {
             
         }
         return results;
+    }
+    
+    public String PrintReportLogs(String selectedReport){
+        String reportToPrint = null;
+        sql = String.format("SELECT * FROM reports WHERE ReportID = %s", selectedReport);
+        try{
+            con = db.OpenConnection();
+            stmt = con.prepareStatement(sql);
+            result = stmt.executeQuery();
+            while(result.next()){
+                reportToPrint = String.format("Report ID   - %s\nUserID      - %s\nReport Date - %s\nType/ Description\n%s\n\nReport Body\n%s", 
+                        result.getString("ReportID"), result.getString("UserID"), 
+                        result.getString("ReportDate"), result.getString("ReportType"),
+                        result.getString("data"));
+            }
+        }
+        catch(Exception e){
+            System.out.println(e);
+            System.out.println("Employee.PrintReportLogs");
+        }
+        
+        return reportToPrint;
     }
     
     public ArrayList PullMaintenanceActivities(String selectedItem) throws SQLException, ClassNotFoundException {
