@@ -217,7 +217,7 @@ public class CheckInScreen extends javax.swing.JFrame {
                     equipChar = result.getString("EquipmentIDChar");
                     equipNum = result.getString("EquipmentIDNum");
                     
-                    populateList.add(id + " | " + name + " | " + descrip + " | " + equipChar + " | " + equipNum);
+                    populateList.add(id + " / " + name + " / " + descrip + " / " + equipChar + " / " + equipNum);
                     
                 }
 
@@ -272,7 +272,7 @@ public class CheckInScreen extends javax.swing.JFrame {
                 String equipListSelection = checkinEquipList.getSelectedValue();
                 String[] list;
                 
-                list = equipListSelection.split("|");
+                list = equipListSelection.split("/");
                 userID = list[0].trim();
                 name = list[1].trim();
                 descrip = list[2].trim();
