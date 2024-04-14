@@ -440,6 +440,80 @@ public class Equipment {
         }
         return elements;
     }
+    
+    public void ReportLoss(String equipIDChar, String equipIDNum) throws SQLException, ClassNotFoundException {
+              // Report loss of equipment
+        con = db.OpenConnection();
+        try {
+            // Update the status of the equipment to "Lost" in the database
+            sql = "UPDATE equipment SET Location = \"Lost\" WHERE EquipmentIDChar = ? AND EquipmentIDNum = ?";
+            System.out.println(sql);
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1, equipIDChar);
+            stmt.setString(2, equipIDNum);
+            
+            int rowsAffected = stmt.executeUpdate();
+            
+            if (rowsAffected > 0) {
+                System.out.println("Equipment reported as lost successfully.");
+            } else {
+                System.out.println("Failed to report equipment as lost.");
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            System.out.println("Equipment.ReportLost");
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+    }
+    public ArrayList checkForUserCheckOut(String equipIDChar, String equipIDNum){
+        sql = String.format("SELECT * FROM equipment_checkout WHERE EquipmentIDChar = \"%s\" and EquipmentIDNum = %s and Status = \"Checked out\"", equipIDChar, equipIDNum);
+        ArrayList userInformation = new ArrayList<>();
+        
+        try{
+            con = db.OpenConnection();
+            stmt = con.prepareStatement(sql);
+            result = stmt.executeQuery();
+            while(result.next()){
+                userInformation.add(result.getString("UserID"));
+            }
+        }
+        catch(Exception e){
+            System.out.println(e);
+            System.out.println("Equipment.checkForUserCheckOut");
+        }
+        if(userInformation.isEmpty()){
+            userInformation.addLast("not checked out by a user");
+        }
+        return userInformation;
+    }
+    
+    public ArrayList checkIfCheckedIn(String equipIDChar, String equipIDNum){
+        sql = String.format("SELECT * FROM equipment WHERE EquipmentIDChar = \"%s\" and EquipmentIDNum = %s", equipIDChar, equipIDNum);
+        ArrayList checkedIn = new ArrayList<>();
+        
+        try{
+            con = db.OpenConnection();
+            stmt = con.prepareStatement(sql);
+            result = stmt.executeQuery();
+            while(result.next()){
+                checkedIn.add(result.getString("Status"));
+            }
+        }
+        catch(Exception e){
+            System.out.println(e);
+            System.out.println("Equipment.checkIfCheckedIn");
+        }
+        if(checkedIn.isEmpty()){
+            checkedIn.add("not an item");
+        }
+        return checkedIn;
+    }
 
     public ArrayList ViewEquipment(String item) throws SQLException, ClassNotFoundException {
         // Search inventory for specific item

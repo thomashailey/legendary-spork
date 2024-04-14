@@ -171,6 +171,11 @@ public class MainPage extends javax.swing.JFrame {
 
         btnReportloss.setBackground(new java.awt.Color(255, 51, 51));
         btnReportloss.setText("REPORT LOST");
+        btnReportloss.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnReportlossMouseClicked(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setText("Tool Summary:");
@@ -1083,6 +1088,8 @@ public class MainPage extends javax.swing.JFrame {
 
     }//GEN-LAST:event_lstToolsValueChanged
 
+ 
+    
     private void btnInventoryAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInventoryAddMouseClicked
         // TODO add your handling code here:
 
@@ -1167,6 +1174,65 @@ public class MainPage extends javax.swing.JFrame {
         // TODO add your handling code here:
         AccessInventoryRepportInfo();
     }//GEN-LAST:event_inventoryPullAllReportsBtnMouseClicked
+
+    private void btnReportlossMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnReportlossMouseClicked
+        // TODO add your handling code here:
+        String equipmentIdInput = JOptionPane.showInputDialog("Please enter the equipment ID like \"APM-1\"");
+        var equipID = new ArrayList<String>(Arrays.asList(equipmentIdInput.split("-")));
+        System.out.println(equipID);
+        ArrayList checkedIn = equip.checkIfCheckedIn(equipID.get(0).toUpperCase(), equipID.get(1));
+        
+        if(checkedIn.get(0).equals("Checked out")){
+            System.out.println("item is checked out");
+            ArrayList userConfirmedCheckedOut = equip.checkForUserCheckOut(equipID.get(0).toUpperCase(), equipID.get(1));
+            System.out.println(userConfirmedCheckedOut);
+            if(userConfirmedCheckedOut.get(0).equals("not checked out by a user")){
+                if(JOptionPane.showConfirmDialog(null, "Equipment not checked out by a user, entry was put in checked out before ECS system in place\nReport lost?") == 0){
+                    try {
+                        equip.ReportLoss(equipID.get(0).toUpperCase(), equipID.get(1));
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+            else{
+                if(JOptionPane.showConfirmDialog(null, String.format("Equipment checked out by %s, report lost?", userConfirmedCheckedOut.get(0))) == 0){
+                    try {
+                        equip.ReportLoss(equipID.get(0).toUpperCase(), equipID.get(1));
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+           
+        }
+        else if(checkedIn.get(0).equals("Available")){
+            System.out.println("item is not checked out");
+            int checkedInLostConfirm = JOptionPane.showConfirmDialog(null, "This item is showing as currently checked in\nShould this item be marked lost anyway?");
+            System.out.println(checkedInLostConfirm);
+            //0 = yes
+            if(checkedInLostConfirm == 0){
+                try {
+                    equip.ReportLoss(equipID.get(0).toUpperCase(), equipID.get(1));
+                } catch (SQLException ex) {
+                    Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        else{
+            System.out.println("Item does not exist");
+            JOptionPane.showMessageDialog(null, "Please enter a correct equipment ID\nThis ID does not exist");
+        }
+        
+        //if(checkedIn.get(0))
+        //System.out.println(equip.checkIfCheckedIn(equipID.get(0), equipID.get(1)));
+    }//GEN-LAST:event_btnReportlossMouseClicked
 
     /**
      * @param args the command line arguments
