@@ -1,5 +1,0 @@
-Report ID   - 12356
-UserID      - 123
-Report Date - 2024-04-10
-Type/ Description
-test #4
