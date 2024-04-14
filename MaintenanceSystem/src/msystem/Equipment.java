@@ -20,6 +20,8 @@ public class Equipment {
     Connection con = null;
     PreparedStatement stmt;
     ResultSet result;
+    CheckInScreen checkin = new CheckInScreen();
+    CheckOutScreen checkout = new CheckOutScreen();
     
     public ArrayList<String> CheckIn() throws SQLException, ClassNotFoundException {
         // Access database to return equipment
