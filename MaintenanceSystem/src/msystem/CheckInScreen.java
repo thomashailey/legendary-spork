@@ -217,7 +217,7 @@ public class CheckInScreen extends javax.swing.JFrame {
                     equipChar = result.getString("EquipmentIDChar");
                     equipNum = result.getString("EquipmentIDNum");
                     
-                    populateList.add(id + " - " + name + " - " + descrip + " - " + equipChar + " - " + equipNum);
+                    populateList.add(id + " | " + name + " | " + descrip + " | " + equipChar + " | " + equipNum);
                     
                 }
 
@@ -272,12 +272,14 @@ public class CheckInScreen extends javax.swing.JFrame {
                 String equipListSelection = checkinEquipList.getSelectedValue();
                 String[] list;
                 
-                list = equipListSelection.split("-");
+                list = equipListSelection.split("|");
                 userID = list[0].trim();
                 name = list[1].trim();
                 descrip = list[2].trim();
                 charID = list[3].trim();
                 numID = list[4].trim();
+                
+//                System.out.println(userID + "\n" + name + "\n" + descrip + "\n" + charID + "\n" + numID);
                 
                 sql = String.format("UPDATE equipment SET Status = \'Available\', Location = \'%s\' WHERE EquipmentIDChar = \'%s\' AND EquipmentIDNum = \'%s\'",
                         location, charID, numID);
