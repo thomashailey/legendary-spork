@@ -48,6 +48,8 @@ public class MainPage extends javax.swing.JFrame {
     Equipment equip = new Equipment();
     CheckInScreen checkin = new CheckInScreen();
     CheckOutScreen checkout = new CheckOutScreen();
+    
+    static String getUserID = null;
 
     /**
      * Creates new form MainPage
@@ -1120,6 +1122,8 @@ public class MainPage extends javax.swing.JFrame {
         DefaultListModel model = new DefaultListModel();
         model.addAll(elements);
         lstActionsTaken.setModel(model);
+        
+        getUserID = userID;
     }
     
     public String ReturnUserID() {
