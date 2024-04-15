@@ -78,6 +78,7 @@ public class CheckInScreen extends javax.swing.JFrame {
         checkinLocationDropdown = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         checkinEquipList = new javax.swing.JList<>();
+        checkinFinishedBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -117,6 +118,13 @@ public class CheckInScreen extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(checkinEquipList);
 
+        checkinFinishedBtn.setText("Finished");
+        checkinFinishedBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                checkinFinishedBtnMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -138,7 +146,8 @@ public class CheckInScreen extends javax.swing.JFrame {
                                 .addComponent(checkinSearchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane1)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(checkinFinishedBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(checkinCancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(checkinCheckInBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -165,7 +174,8 @@ public class CheckInScreen extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(checkinCheckInBtn)
-                    .addComponent(checkinCancelBtn))
+                    .addComponent(checkinCancelBtn)
+                    .addComponent(checkinFinishedBtn))
                 .addGap(14, 14, 14))
         );
 
@@ -319,7 +329,55 @@ public class CheckInScreen extends javax.swing.JFrame {
                 // Informs the user of successful completion of operation, then closes this window.
                 JOptionPane.showMessageDialog(null, "Equipment Checked In Successfully.");
                 
-                this.setVisible(false);
+                    try {
+                        // initialize variables
+                        con = db.OpenConnection();
+                        ArrayList<String> elements = new ArrayList<>();
+                        ArrayList<String> populateList = new ArrayList<>();
+                        String user = checkinUserIDField.getText();
+                        String itemToAdd = null;
+                        String id = null;
+                        String equipChar = null;
+                        String equipNum = null;
+
+                        // Pull info for checked out items
+                        // This query joins equipment and equipment_checkout in order
+                        // to gather all necessary info.
+                        sql = String.format("SELECT equipment_checkout.CheckoutID, equipment.EquipmentIDChar, equipment.EquipmentIDNum, "
+                                + "equipment.EquipmentName, equipment.Description FROM equipment_checkout INNER JOIN "
+                                + "equipment ON equipment_checkout.EquipmentIDChar=equipment.EquipmentIDChar AND "
+                                + "equipment_checkout.EquipmentIDNum=equipment.EquipmentIDNum WHERE equipment_checkout.UserID=\'%s\' "
+                                + "AND equipment_checkout.Status=\'Checked out\'", user);
+                        stmt = con.prepareStatement(sql);
+                        result = stmt.executeQuery();
+
+                        while (result.next()) {
+                            // Add results to elements
+                            // Take element fields one by one and save them to
+                            // variables more easy to read.
+                            // add fields to populateList ArrayList with / formatting
+                            Collections.addAll(elements, result.getString("CheckoutID"),result.getString("EquipmentName"), result.getString("Description") ,result.getString("EquipmentIDChar"), result.getString("EquipmentIDNum"));
+                            id = result.getString("CheckoutID");
+                            name = result.getString("EquipmentName");
+                            descrip = result.getString("Description");
+                            equipChar = result.getString("EquipmentIDChar");
+                            equipNum = result.getString("EquipmentIDNum");
+
+                            populateList.add(id + " / " + name + " / " + descrip + " / " + equipChar + " / " + equipNum);
+
+                        }
+
+                        // set arraylist with formatted text to the model, then 
+                        // set the model to the list box so the user can see them.
+                        DefaultListModel model = new DefaultListModel();
+                        model.addAll(populateList);
+                        checkinEquipList.setModel(model);
+
+                    } catch (SQLException ex) {
+                        Logger.getLogger(CheckOutScreen.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(CheckOutScreen.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 
             } catch (SQLException ex) {
                 Logger.getLogger(CheckOutScreen.class.getName()).log(Level.SEVERE, null, ex);
@@ -330,6 +388,11 @@ public class CheckInScreen extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_checkinCheckInBtnMouseClicked
+
+    private void checkinFinishedBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkinFinishedBtnMouseClicked
+        // TODO add your handling code here:
+        this.setVisible(false);
+    }//GEN-LAST:event_checkinFinishedBtnMouseClicked
 
     /**
      * @param args the command line arguments
@@ -371,6 +434,7 @@ public class CheckInScreen extends javax.swing.JFrame {
     private javax.swing.JButton checkinCancelBtn;
     private javax.swing.JButton checkinCheckInBtn;
     private javax.swing.JList<String> checkinEquipList;
+    private javax.swing.JButton checkinFinishedBtn;
     private javax.swing.JComboBox<String> checkinLocationDropdown;
     private javax.swing.JButton checkinSearchBtn;
     private javax.swing.JTextField checkinUserIDField;

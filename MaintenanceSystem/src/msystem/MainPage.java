@@ -242,6 +242,11 @@ public class MainPage extends javax.swing.JFrame {
         });
 
         btnRefreshList.setText("Refresh List");
+        btnRefreshList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnRefreshListMouseClicked(evt);
+            }
+        });
 
         lstTools.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         lstTools.setModel(new javax.swing.AbstractListModel<String>() {
@@ -1338,6 +1343,10 @@ public class MainPage extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please enter a correct equipment ID\nThis ID does not exist");
         }
     }//GEN-LAST:event_btnReportlostMouseClicked
+
+    private void btnRefreshListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRefreshListMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRefreshListMouseClicked
 
 
     /**
