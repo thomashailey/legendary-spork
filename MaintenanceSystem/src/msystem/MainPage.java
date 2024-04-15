@@ -325,8 +325,7 @@ public class MainPage extends javax.swing.JFrame {
                     .addComponent(jLabel6)
                     .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(34, 34, 34))
-<<<<<<< Updated upstream
-=======
+
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EquipmentTabLayout.createSequentialGroup()
                 .addGap(42, 42, 42)
                 .addComponent(equipmentPullAllBtn)
@@ -339,7 +338,7 @@ public class MainPage extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnReportlost)
                 .addContainerGap())
->>>>>>> Stashed changes
+
         );
         EquipmentTabLayout.setVerticalGroup(
             EquipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -354,7 +353,7 @@ public class MainPage extends javax.swing.JFrame {
                     .addComponent(jScrollPane1)
                     .addComponent(jScrollPane2)
                     .addComponent(jScrollPane12, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE))
-<<<<<<< Updated upstream
+
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(EquipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRefreshList)
@@ -363,16 +362,7 @@ public class MainPage extends javax.swing.JFrame {
                     .addComponent(equipmentPullAllBtn)
                     .addComponent(btnReportlost))
                 .addGap(17, 17, 17))
-=======
-                .addGap(23, 23, 23)
-                .addGroup(EquipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnReportlost)
-                    .addComponent(btnRefreshList)
-                    .addComponent(btnCheckout)
-                    .addComponent(btnCheckin)
-                    .addComponent(equipmentPullAllBtn))
-                .addContainerGap())
->>>>>>> Stashed changes
+
         );
 
         tabPanePanel.addTab("Equipment", EquipmentTab);
