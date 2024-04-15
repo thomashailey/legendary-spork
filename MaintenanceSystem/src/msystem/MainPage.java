@@ -832,7 +832,6 @@ public class MainPage extends javax.swing.JFrame {
 
     private void empEditBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_empEditBtnMouseClicked
         // TODO add your handling code here:
-        //TODO add your handling code here:
         //this.setVisible(false);
         editEmployee = true;
         ArrayList<String> list = new ArrayList<String>();
@@ -1024,6 +1023,9 @@ public class MainPage extends javax.swing.JFrame {
     public void AccessEquipmentInfo() {
         ArrayList<String> list = new ArrayList<>();
         try {
+            // call ViewEquipment and set to ArrayList list
+            // create the model, and add the list to the model.
+            // set the model to the list box so user can see info.
             list = equip.ViewEquipment();
             DefaultListModel model = new DefaultListModel();
             model.addAll(list);
@@ -1038,6 +1040,9 @@ public class MainPage extends javax.swing.JFrame {
     public void AccessInventoryInfo() {
         ArrayList<String> list = new ArrayList<String>();
         try {
+            // call ViewInventory and set to ArrayList list
+            // create the model, and add the list to the model.
+            // set the model to the list box so user can see info.
             list = equip.ViewInventory();
             DefaultListModel model = new DefaultListModel();
             model.addAll(list);
@@ -1053,6 +1058,11 @@ public class MainPage extends javax.swing.JFrame {
         ArrayList<String> list = new ArrayList<String>();
                 
         try {
+            // call SearchInventory and set to ArrayList list
+            // it will provide the searchbox text to the method.
+            // it will return the relevent inventory list data.
+            // create the model, and add the list to the model.
+            // set the model to the list box so user can see info.
             list = equip.SearchInventory(txtInvSearch.getText());
             DefaultListModel model = new DefaultListModel();
             model.addAll(list);
@@ -1065,8 +1075,11 @@ public class MainPage extends javax.swing.JFrame {
     }
     
     public void AccessEmployeeInfo() {
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> list = new ArrayList<>();
         try {
+            // call PullEmployees and set to ArrayList list
+            // create the model, and add the list to the model.
+            // set the model to the list box so user can see info.
             list = emp.PullEmployees();
             DefaultListModel model = new DefaultListModel();
             model.addAll(list);
@@ -1079,8 +1092,11 @@ public class MainPage extends javax.swing.JFrame {
     }
     
     public void AccessReportInfo() {
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> list = new ArrayList<>();
         try {
+            // call PullReports and set to ArrayList list
+            // create the model, and add the list to the model.
+            // set the model to the list box so user can see info.
             list = emp.PullReports();
             DefaultListModel model = new DefaultListModel();
             model.addAll(list);

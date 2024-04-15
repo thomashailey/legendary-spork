@@ -25,11 +25,13 @@ public class Equipment {
     
     public ArrayList<String> CheckIn() throws SQLException, ClassNotFoundException {
         // Access database to return equipment
-             con = db.OpenConnection();
+        con = db.OpenConnection();
+        
+        // Instantiate variables
         ArrayList<String> elements = new ArrayList<>();
         String itemToAdd = null;
         try {
-                 String sql = "SELECT * FROM equipment";
+            String sql = "SELECT * FROM equipment";
             stmt = con.prepareStatement(sql);
             
             result = stmt.executeQuery();

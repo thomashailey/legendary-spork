@@ -28,12 +28,13 @@ public class CheckInScreen extends javax.swing.JFrame {
     /**
      * Creates new form CheckOutScreen
      */
+    
+    // Class level variables
     String sql = null;
     DBConnect db = new DBConnect();
     Connection con = null;
     PreparedStatement stmt;
     ResultSet result;
-    //setup list of actions taken
     
     
     
@@ -46,8 +47,8 @@ public class CheckInScreen extends javax.swing.JFrame {
         model.addAll(list);
         checkinEquipList.setModel(model);
         
-        // setup dropdown for location
-        ArrayList<String> locationOptions = new ArrayList<String>();
+        // setup dropdown for location, default to primary
+        ArrayList<String> locationOptions = new ArrayList<>();
         Collections.addAll(locationOptions, "Primary","Secondary");
         DefaultComboBoxModel locationModel = new DefaultComboBoxModel();
         locationModel.addAll(locationOptions);
@@ -186,12 +187,14 @@ public class CheckInScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
         // Search database for all of an employee's checked out equipment
         // Display them in checkinEquipDropdown
-        // Format: Name - Descrip - Char - Num
+        // Format: Name / Descrip / Char / Num
         if (checkinUserIDField.getText().isEmpty()) {
+            // request user input an ID
             JOptionPane.showMessageDialog(null, "Please provide a User ID.");
         }
         else {
             try {
+                // initialize variables
                 con = db.OpenConnection();
                 ArrayList<String> elements = new ArrayList<>();
                 ArrayList<String> populateList = new ArrayList<>();
@@ -204,6 +207,8 @@ public class CheckInScreen extends javax.swing.JFrame {
                 String descrip = null;
                 
                 // Pull info for checked out items
+                // This query joins equipment and equipment_checkout in order
+                // to gather all necessary info.
                 sql = String.format("SELECT equipment_checkout.CheckoutID, equipment.EquipmentIDChar, equipment.EquipmentIDNum, "
                         + "equipment.EquipmentName, equipment.Description FROM equipment_checkout INNER JOIN "
                         + "equipment ON equipment_checkout.EquipmentIDChar=equipment.EquipmentIDChar AND "
@@ -213,6 +218,10 @@ public class CheckInScreen extends javax.swing.JFrame {
                 result = stmt.executeQuery();
                 
                 while (result.next()) {
+                    // Add results to elements
+                    // Take element fields one by one and save them to
+                    // variables more easy to read.
+                    // add fields to populateList ArrayList with / formatting
                     Collections.addAll(elements, result.getString("CheckoutID"),result.getString("EquipmentName"), result.getString("Description") ,result.getString("EquipmentIDChar"), result.getString("EquipmentIDNum"));
                     id = result.getString("CheckoutID");
                     name = result.getString("EquipmentName");
@@ -224,6 +233,8 @@ public class CheckInScreen extends javax.swing.JFrame {
                     
                 }
 
+                // set arraylist with formatted text to the model, then 
+                // set the model to the list box so the user can see them.
                 DefaultListModel model = new DefaultListModel();
                 model.addAll(populateList);
                 checkinEquipList.setModel(model);
@@ -239,6 +250,7 @@ public class CheckInScreen extends javax.swing.JFrame {
 
     private void checkinCancelBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkinCancelBtnMouseClicked
         // TODO add your handling code here:
+        // set this page not visible, reset the editEmployee variable
         this.setVisible(false);
         MainPage.editEmployee = false;
     }//GEN-LAST:event_checkinCancelBtnMouseClicked
@@ -256,10 +268,12 @@ public class CheckInScreen extends javax.swing.JFrame {
         boolean check = checkinEquipList.isSelectionEmpty();
         
         if (checkinUserIDField.getText().isEmpty() || check) {
+            // require user to input text
             JOptionPane.showMessageDialog(null, "Please fill out all fields.");
         }
         else {
             try {
+                // initiate variables
                 con = db.OpenConnection();
                 String charID = null;
                 String numID = null;
@@ -272,7 +286,13 @@ public class CheckInScreen extends javax.swing.JFrame {
                 
                 String date = simpleDateFormat.format(new Date());
                 
+                // get the string value from the selected option in the checkin list
                 String equipListSelection = checkinEquipList.getSelectedValue();
+                
+                // create array, take elements from selected value and insert them.
+                // this is accomplished by splitting the string based on "/"
+                // and saving each value to variables that are easier to read and work with.
+                // the variables must be trimmed in order to eliminate whitespace.
                 String[] list;
                 
                 list = equipListSelection.split("/");
@@ -284,15 +304,19 @@ public class CheckInScreen extends javax.swing.JFrame {
                 
 //                System.out.println(userID + "\n" + name + "\n" + descrip + "\n" + charID + "\n" + numID);
                 
+                // Updates the equipment table to change the status and location of the selected item based on the Char and Num
                 sql = String.format("UPDATE equipment SET Status = \'Available\', Location = \'%s\' WHERE EquipmentIDChar = \'%s\' AND EquipmentIDNum = \'%s\'",
                         location, charID, numID);
                 stmt = con.prepareStatement(sql);
                 stmt.execute();
                 
+                // Updates the equipment_checkout to reflect returndate and change in status, based on 
+                // the checkoutid
                 sql = String.format("UPDATE equipment_checkout SET ReturnDate = \'%s\', Status = \'Returned\' WHERE CheckoutID = \'%s\'", date, userID);
                 stmt = con.prepareStatement(sql);
                 stmt.execute();
                 
+                // Informs the user of successful completion of operation, then closes this window.
                 JOptionPane.showMessageDialog(null, "Equipment Checked In Successfully.");
                 
                 this.setVisible(false);
