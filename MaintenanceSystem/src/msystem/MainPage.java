@@ -152,25 +152,23 @@ public class MainPage extends javax.swing.JFrame {
 
         mainPanel = new javax.swing.JPanel();
         tabPanePanel = new javax.swing.JTabbedPane();
-        equipmentTab = new javax.swing.JPanel();
-        lblToolname = new javax.swing.JLabel();
+        EquipmentTab = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jScrollPane12 = new javax.swing.JScrollPane();
+        lstActionsTaken = new javax.swing.JList<>();
+        btnReportlost = new javax.swing.JButton();
+        btnRefreshList = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         lstTools = new javax.swing.JList<>();
-        lblTooldescription = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txaTooldescription = new javax.swing.JTextArea();
         btnCheckout = new javax.swing.JButton();
         btnCheckin = new javax.swing.JButton();
-        btnReportloss = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
         equipmentPullAllBtn = new javax.swing.JButton();
-
-        jScrollPane9 = new javax.swing.JScrollPane();
-        lstActionsTaken = new javax.swing.JList<>();
-        btnRefreshList = new javax.swing.JButton();
-        inventoryTab = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-
+        InventoryTab = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
         txtInvSearch = new javax.swing.JTextField();
         btnInventorySearch = new javax.swing.JButton();
         btnInventoryAdd = new javax.swing.JButton();
@@ -222,8 +220,28 @@ public class MainPage extends javax.swing.JFrame {
 
         tabPanePanel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        lblToolname.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblToolname.setText("Tool Name:");
+        jLabel2.setText("Tool Name:");
+
+        jLabel5.setText("Tool Description:");
+
+        jLabel6.setText("Tool Checkout Record:");
+
+        lstActionsTaken.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane12.setViewportView(lstActionsTaken);
+
+        btnReportlost.setBackground(new java.awt.Color(255, 51, 51));
+        btnReportlost.setText("REPORT LOST");
+        btnReportlost.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnReportlostMouseClicked(evt);
+            }
+        });
+
+        btnRefreshList.setText("Refresh List");
 
         lstTools.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         lstTools.setModel(new javax.swing.AbstractListModel<String>() {
@@ -237,9 +255,6 @@ public class MainPage extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(lstTools);
-
-        lblTooldescription.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblTooldescription.setText("Tool Description:");
 
         txaTooldescription.setColumns(30);
         txaTooldescription.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
@@ -260,17 +275,6 @@ public class MainPage extends javax.swing.JFrame {
             }
         });
 
-        btnReportloss.setBackground(new java.awt.Color(255, 51, 51));
-        btnReportloss.setText("REPORT LOST");
-        btnReportloss.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnReportlossMouseClicked(evt);
-            }
-        });
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel1.setText("Tool Checkout Record:");
-
         equipmentPullAllBtn.setText("Pull All");
         equipmentPullAllBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -278,115 +282,69 @@ public class MainPage extends javax.swing.JFrame {
             }
         });
 
-
-        lstActionsTaken.setModel(new javax.swing.AbstractListModel<String>() {
-
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-
-        jScrollPane9.setViewportView(lstActionsTaken);
-
-        btnRefreshList.setText("Refresh List");
-        btnRefreshList.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnRefreshListMouseClicked(evt);
-            }
-        });
-
-
-        javax.swing.GroupLayout equipmentTabLayout = new javax.swing.GroupLayout(equipmentTab);
-        equipmentTab.setLayout(equipmentTabLayout);
-        equipmentTabLayout.setHorizontalGroup(
-            equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(equipmentTabLayout.createSequentialGroup()
-                .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, equipmentTabLayout.createSequentialGroup()
-                        .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(equipmentTabLayout.createSequentialGroup()
-
-                                .addGap(23, 23, 23)
-                                .addComponent(lblToolname))
-                            .addGroup(equipmentTabLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(equipmentTabLayout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(equipmentTabLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblTooldescription)))
-                        .addGap(18, 18, 18)
-                        .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 9, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, equipmentTabLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(equipmentPullAllBtn)
-
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnCheckin, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnCheckout)
-
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, equipmentTabLayout.createSequentialGroup()
-                        .addComponent(btnRefreshList)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-
-                        .addComponent(btnReportloss)))
+        javax.swing.GroupLayout EquipmentTabLayout = new javax.swing.GroupLayout(EquipmentTab);
+        EquipmentTab.setLayout(EquipmentTabLayout);
+        EquipmentTabLayout.setHorizontalGroup(
+            EquipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(EquipmentTabLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(EquipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(EquipmentTabLayout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(245, 245, 245))
+                    .addGroup(EquipmentTabLayout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
+                        .addGap(40, 40, 40)))
+                .addGroup(EquipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 131, Short.MAX_VALUE)
+                .addGroup(EquipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(34, 34, 34))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EquipmentTabLayout.createSequentialGroup()
+                .addGap(120, 120, 120)
+                .addComponent(btnCheckin)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnCheckout)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnRefreshList)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(equipmentPullAllBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnReportlost)
                 .addContainerGap())
         );
-        equipmentTabLayout.setVerticalGroup(
-            equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(equipmentTabLayout.createSequentialGroup()
-                .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-
-                    .addComponent(jScrollPane9)
+        EquipmentTabLayout.setVerticalGroup(
+            EquipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(EquipmentTabLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(EquipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(EquipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
                     .addComponent(jScrollPane2)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-
-
-
-                    .addComponent(btnRefreshList))
-
-                    .addGroup(equipmentTabLayout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblToolname)
-                            .addComponent(lblTooldescription)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, equipmentTabLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1)))
-                .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(equipmentTabLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, equipmentTabLayout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
-                .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnReportloss, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnCheckin)
-                        .addComponent(btnCheckout)
-                        .addComponent(equipmentPullAllBtn)))
-
-                .addContainerGap())
+                    .addComponent(jScrollPane12, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(EquipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EquipmentTabLayout.createSequentialGroup()
+                        .addGroup(EquipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnReportlost)
+                            .addComponent(equipmentPullAllBtn))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EquipmentTabLayout.createSequentialGroup()
+                        .addGroup(EquipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnRefreshList)
+                            .addComponent(btnCheckout)
+                            .addComponent(btnCheckin))
+                        .addGap(17, 17, 17))))
         );
 
-        tabPanePanel.addTab("Epuipment", equipmentTab);
+        tabPanePanel.addTab("Equipment", EquipmentTab);
 
         jLabel4.setText("Inventory:");
 
@@ -690,7 +648,6 @@ public class MainPage extends javax.swing.JFrame {
                             .addComponent(reportSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(reportSearchBtn))
                         .addGap(18, 18, 18)
-
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE))
                     .addComponent(jScrollPane4))
                 .addGap(18, 18, 18)
@@ -1192,65 +1149,6 @@ public class MainPage extends javax.swing.JFrame {
 
 
 
-    private void btnReportlossMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnReportlossMouseClicked
-        // TODO add your handling code here:
-        String equipmentIdInput = JOptionPane.showInputDialog("Please enter the equipment ID like \"APM-1\"");
-        var equipID = new ArrayList<String>(Arrays.asList(equipmentIdInput.split("-")));
-        System.out.println(equipID);
-        ArrayList checkedIn = equip.checkIfCheckedIn(equipID.get(0).toUpperCase(), equipID.get(1));
-
-        if(checkedIn.get(0).equals("Checked out")){
-            System.out.println("item is checked out");
-            ArrayList userConfirmedCheckedOut = equip.checkForUserCheckOut(equipID.get(0).toUpperCase(), equipID.get(1));
-            System.out.println(userConfirmedCheckedOut);
-            if(userConfirmedCheckedOut.get(0).equals("not checked out by a user")){
-                if(JOptionPane.showConfirmDialog(null, "Equipment not checked out by a user, entry was put in checked out before ECS system in place\nReport lost?") == 0){
-                    try {
-                        equip.ReportLoss(equipID.get(0).toUpperCase(), equipID.get(1));
-                    } catch (SQLException ex) {
-                        Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (ClassNotFoundException ex) {
-                        Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-            else{
-                if(JOptionPane.showConfirmDialog(null, String.format("Equipment checked out by %s, report lost?", userConfirmedCheckedOut.get(0))) == 0){
-                    try {
-                        equip.ReportLoss(equipID.get(0).toUpperCase(), equipID.get(1));
-                    } catch (SQLException ex) {
-                        Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (ClassNotFoundException ex) {
-                        Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-
-        }
-        else if(checkedIn.get(0).equals("Available")){
-            System.out.println("item is not checked out");
-            int checkedInLostConfirm = JOptionPane.showConfirmDialog(null, "This item is showing as currently checked in\nShould this item be marked lost anyway?");
-            System.out.println(checkedInLostConfirm);
-            //0 = yes
-            if(checkedInLostConfirm == 0){
-                try {
-                    equip.ReportLoss(equipID.get(0).toUpperCase(), equipID.get(1));
-                } catch (SQLException ex) {
-                    Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-        else{
-            System.out.println("Item does not exist");
-            JOptionPane.showMessageDialog(null, "Please enter a correct equipment ID\nThis ID does not exist");
-        }
-
-        //if(checkedIn.get(0))
-        //System.out.println(equip.checkIfCheckedIn(equipID.get(0), equipID.get(1)));
-    }//GEN-LAST:event_btnReportlossMouseClicked
-
     private void lstToolsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstToolsValueChanged
 
         // TODO add your handling code here:
@@ -1284,12 +1182,6 @@ public class MainPage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_lstToolsValueChanged
 
-
-    private void btnRefreshListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRefreshListMouseClicked
-        try {
-            // TODO add your handling code here:
-            SetToolSummary();
-    }//GEN-LAST:event_btnRefreshListMouseClicked
 
     private void btnInventorySearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInventorySearchMouseClicked
         // TODO add your handling code here:
@@ -1390,6 +1282,62 @@ public class MainPage extends javax.swing.JFrame {
         Collections.addAll(reportToAdd, userID, todaysDate, reportType, dataForReport);
         emp.addNewReport(reportToAdd);
     }//GEN-LAST:event_reportLostGenerateBtnMouseClicked
+
+    private void btnReportlostMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnReportlostMouseClicked
+        // TODO add your handling code here:
+        String equipmentIdInput = JOptionPane.showInputDialog("Please enter the equipment ID like \"APM-1\"");
+        var equipID = new ArrayList<String>(Arrays.asList(equipmentIdInput.split("-")));
+        System.out.println(equipID);
+        ArrayList checkedIn = equip.checkIfCheckedIn(equipID.get(0).toUpperCase(), equipID.get(1));
+
+        if(checkedIn.get(0).equals("Checked out")){
+            System.out.println("item is checked out");
+            ArrayList userConfirmedCheckedOut = equip.checkForUserCheckOut(equipID.get(0).toUpperCase(), equipID.get(1));
+            System.out.println(userConfirmedCheckedOut);
+            if(userConfirmedCheckedOut.get(0).equals("not checked out by a user")){
+                if(JOptionPane.showConfirmDialog(null, "Equipment not checked out by a user, entry was put in checked out before ECS system in place\nReport lost?") == 0){
+                    try {
+                        equip.ReportLoss(equipID.get(0).toUpperCase(), equipID.get(1));
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+            else{
+                if(JOptionPane.showConfirmDialog(null, String.format("Equipment checked out by %s, report lost?", userConfirmedCheckedOut.get(0))) == 0){
+                    try {
+                        equip.ReportLoss(equipID.get(0).toUpperCase(), equipID.get(1));
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+
+        }
+        else if(checkedIn.get(0).equals("Available")){
+            System.out.println("item is not checked out");
+            int checkedInLostConfirm = JOptionPane.showConfirmDialog(null, "This item is showing as currently checked in\nShould this item be marked lost anyway?");
+            System.out.println(checkedInLostConfirm);
+            //0 = yes
+            if(checkedInLostConfirm == 0){
+                try {
+                    equip.ReportLoss(equipID.get(0).toUpperCase(), equipID.get(1));
+                } catch (SQLException ex) {
+                    Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        else{
+            System.out.println("Item does not exist");
+            JOptionPane.showMessageDialog(null, "Please enter a correct equipment ID\nThis ID does not exist");
+        }
+    }//GEN-LAST:event_btnReportlostMouseClicked
 
 
     /**
@@ -1630,6 +1578,7 @@ public class MainPage extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Employee;
+    private javax.swing.JPanel EquipmentTab;
     private javax.swing.JPanel InventoryTab;
     private javax.swing.JButton btnCheckin;
     private javax.swing.JButton btnCheckout;
@@ -1638,7 +1587,7 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JButton btnInventoryRequest;
     private javax.swing.JButton btnInventorySearch;
     private javax.swing.JButton btnRefreshList;
-    private javax.swing.JButton btnReportloss;
+    private javax.swing.JButton btnReportlost;
     private javax.swing.JButton empAddBtn;
     private javax.swing.JButton empEditBtn;
     private javax.swing.JTextField empFirstNameSearchField;
@@ -1648,30 +1597,27 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JButton empLoadAllBtn;
     private javax.swing.JButton empRemoveBtn;
     private javax.swing.JButton empSearchBtn;
-    private javax.swing.JList<String> equipmentCheckoutRecordLst;
     private javax.swing.JButton equipmentPullAllBtn;
-    private javax.swing.JPanel equipmentTab;
     private javax.swing.JList<String> invMainList;
     private javax.swing.JButton inventoryPullAllReportsBtn;
     private javax.swing.JButton inventoryPullOnlyUnfulfilledBtn;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JList<String> jList1;
-    private javax.swing.JList<String> jList2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane11;
+    private javax.swing.JScrollPane jScrollPane12;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
-    private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblInventoryRecord;
-    private javax.swing.JLabel lblTooldescription;
-    private javax.swing.JLabel lblToolname;
     private javax.swing.JMenu logOutBtn;
     private javax.swing.JList<String> lstActionsTaken;
     private javax.swing.JList<String> lstTools;
