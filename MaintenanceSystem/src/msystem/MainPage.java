@@ -58,6 +58,73 @@ public class MainPage extends javax.swing.JFrame {
         AccessEmployeeInfo();
         AccessInventoryInfo();
         AccessEquipmentInfo();
+        
+        String role;
+        try {
+            role = LimitAccess();
+            SetToolSummary();
+            switch (role) {
+                case "Technician":
+
+                    // 0: Equipment
+                    // 1: Inventory
+                    // 2: Maintenance
+                    // 3: Report
+                    // 4: Employee
+                    
+                    // Technician gets access to:
+                    // Equipment, Inventory
+                    tabPanePanel.setEnabledAt(0, true);
+                    tabPanePanel.setEnabledAt(1, true);
+                    tabPanePanel.setEnabledAt(2, false);
+                    tabPanePanel.setEnabledAt(3, false);
+                    tabPanePanel.setEnabledAt(4, false);
+                    break;
+                case "Maintenance":
+                    // Maintenance gets access to:
+                    // Equipment, Inventory, Maintenance, Report
+                    tabPanePanel.setEnabledAt(0, true);
+                    tabPanePanel.setEnabledAt(1, true);
+                    tabPanePanel.setEnabledAt(2, true);
+                    tabPanePanel.setEnabledAt(3, false);
+                    tabPanePanel.setEnabledAt(4, false);
+                    break;
+                case "Warehouse":
+                    // Warehouse gets access to:
+                    // Equipment, Inventory, Report
+                    tabPanePanel.setEnabledAt(0, true);
+                    tabPanePanel.setEnabledAt(1, true);
+                    tabPanePanel.setEnabledAt(2, false);
+                    tabPanePanel.setEnabledAt(3, true);
+                    tabPanePanel.setEnabledAt(4, false);
+                    break;
+                case "Management":
+                    // Management gets access to:
+                    // Equipment, Inventory, Maintenance, Report, Employee
+                    tabPanePanel.setEnabledAt(0, true);
+                    tabPanePanel.setEnabledAt(1, true);
+                    tabPanePanel.setEnabledAt(2, true);
+                    tabPanePanel.setEnabledAt(3, true);
+                    tabPanePanel.setEnabledAt(4, true);
+                    break;
+                case "Admin":
+                    // Admin gets access to:
+                    // Equipment, Inventory, Maintenance, Report, Employee
+                    tabPanePanel.setEnabledAt(0, true);
+                    tabPanePanel.setEnabledAt(1, true);
+                    tabPanePanel.setEnabledAt(2, true);
+                    tabPanePanel.setEnabledAt(3, true);
+                    tabPanePanel.setEnabledAt(4, true);
+                    break;
+                default:
+                    break;
+        }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 
@@ -86,6 +153,7 @@ public class MainPage extends javax.swing.JFrame {
         equipmentPullAllBtn = new javax.swing.JButton();
         jScrollPane9 = new javax.swing.JScrollPane();
         lstActionsTaken = new javax.swing.JList<>();
+        btnRefreshList = new javax.swing.JButton();
         inventoryTab = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         txtInvSearch = new javax.swing.JTextField();
@@ -196,6 +264,13 @@ public class MainPage extends javax.swing.JFrame {
         });
         jScrollPane9.setViewportView(lstActionsTaken);
 
+        btnRefreshList.setText("Refresh List");
+        btnRefreshList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnRefreshListMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout equipmentTabLayout = new javax.swing.GroupLayout(equipmentTab);
         equipmentTab.setLayout(equipmentTabLayout);
         equipmentTabLayout.setHorizontalGroup(
@@ -208,11 +283,12 @@ public class MainPage extends javax.swing.JFrame {
                             .addComponent(jScrollPane1)
                             .addGroup(equipmentTabLayout.createSequentialGroup()
                                 .addComponent(lblToolname)
-                                .addGap(0, 289, Short.MAX_VALUE)))
+                                .addGap(0, 307, Short.MAX_VALUE)))
                         .addGap(18, 18, 18)
                         .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblTooldescription)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(17, 17, 17))
                     .addGroup(equipmentTabLayout.createSequentialGroup()
                         .addComponent(equipmentPullAllBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -220,11 +296,13 @@ public class MainPage extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnCheckout)
                         .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(18, 18, 18)
                 .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
-                    .addComponent(btnReportloss, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, equipmentTabLayout.createSequentialGroup()
+                        .addComponent(btnRefreshList)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnReportloss)))
                 .addContainerGap())
         );
         equipmentTabLayout.setVerticalGroup(
@@ -245,7 +323,8 @@ public class MainPage extends javax.swing.JFrame {
                     .addComponent(btnCheckout)
                     .addComponent(btnCheckin)
                     .addComponent(equipmentPullAllBtn)
-                    .addComponent(btnReportloss))
+                    .addComponent(btnReportloss)
+                    .addComponent(btnRefreshList))
                 .addContainerGap())
         );
 
@@ -941,51 +1020,18 @@ public class MainPage extends javax.swing.JFrame {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        // Previous example code:
-
-        //        // TODO add your handling code here:
-        //        String equipPullThisCharacterID = null;
-        //        String equipPullThisCharacterNum = null;
-        //        String equipListSelection = lstTools.getSelectedValue().substring(0,10).trim();
-        //        System.out.println(equipListSelection);
-        //        if(equipListSelection != null){
-            //            var equipmentListSelectionToList = new ArrayList<String>(Arrays.asList(equipListSelection.split("-")));
-            //            System.out.println(equipmentListSelectionToList);
-            //            equipPullThisCharacterID = equipmentListSelectionToList.get(0).trim();
-            //            equipPullThisCharacterNum = equipmentListSelectionToList.get(1).trim();
-            //
-            //        }
-        //        System.out.println(equipPullThisCharacterID);
-        //        System.out.println(equipPullThisCharacterNum);
-        //        sql = String.format("SELECT * FROM equipment WHERE EquipmentIDChar = '%s' AND EquipmentIDNum = %s", equipPullThisCharacterID,equipPullThisCharacterNum);
-        //        try {
-            //            con = db.OpenConnection();
-            //            stmt = con.prepareStatement(sql);
-            //            result = stmt.executeQuery();
-            //            if(result!=null){
-                //                System.out.println("Successfully accessed database to pull equipment ID and characger number.");
-                //            }
-            //            while(result.next()){
-                //                String elements;
-                //                elements = String.format("%5s-%4s %s",result.getString("EquipmentIDChar"),result.getString("EquipmentIDNum"),result.getString("EquipmentName"));
-                //                System.out.println(elements);
-                //            }
-            //
-            //            //System.out.println(elements);
-            //            /*
-            //            If you uncomment this print statement you can see that it cannot see the elements variable
-            //            this is not a big deal since you are only pulling one item and pushing it into the description field,
-            //            but if it was something like the previous method it would only ever display one item at a time since you are also initilizing that variable in the same while loop
-            //            As much as possible initalize variables at the beginning of the method and outside of any loops or blocks
-            //
-            //            add the set text line and this method should work as intended, just need the string to be formatted correctly after that
-            //            */
-            //        }
-        //        catch (Exception e){
-            //            System.out.println(e);
-            //            System.out.println("MainPage.equipmentIDChar");
     }//GEN-LAST:event_lstToolsValueChanged
+
+    private void btnRefreshListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRefreshListMouseClicked
+        try {
+            // TODO add your handling code here:
+            SetToolSummary();
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnRefreshListMouseClicked
 
     
     /**
@@ -1073,6 +1119,7 @@ public class MainPage extends javax.swing.JFrame {
         
         DefaultListModel model = new DefaultListModel();
         model.addAll(elements);
+        lstActionsTaken.setModel(model);
     }
     
     public String ReturnUserID() {
@@ -1200,6 +1247,7 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JButton btnCheckout;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnInventorySearch;
+    private javax.swing.JButton btnRefreshList;
     private javax.swing.JButton btnReportloss;
     private javax.swing.JButton btnSearchRecord;
     private javax.swing.JButton empAddBtn;

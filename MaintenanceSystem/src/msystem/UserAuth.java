@@ -4,6 +4,9 @@
  */
 package msystem;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -135,7 +138,7 @@ public class UserAuth extends javax.swing.JFrame {
         String userIdToPull = txtUsercode.getText();
         String userPassToPull = jpfPassword.getText();
         if(checkPrimaryKey(txtUsercode.getText())){
-            JOptionPane.showMessageDialog(null, "Correct!");
+//            JOptionPane.showMessageDialog(null, "Correct!");
             sql = String.format("SELECT Password FROM user_authoization WHERE UserID = %s",
                     userIdToPull);
             try{
@@ -166,8 +169,27 @@ public class UserAuth extends javax.swing.JFrame {
 
     private void txtUsercodeFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUsercodeFocusLost
         // TODO add your handling code here:
-        if(checkPrimaryKey(txtUsercode.getText())){
-            JOptionPane.showMessageDialog(null, "Correct!");
+        // Write userId field value to file
+        try {
+            File userIdFile = new File("currentuser.txt");
+            if (userIdFile.createNewFile()) {
+                System.out.println("File created: " + userIdFile.getName());
+            } else {
+                System.out.println("File already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+        
+        try {
+            FileWriter myWriter = new FileWriter("currentuser.txt");
+            myWriter.write(txtUsercode.getText());
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
         }
     }//GEN-LAST:event_txtUsercodeFocusLost
 
