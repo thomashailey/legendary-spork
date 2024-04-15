@@ -6,12 +6,13 @@ package msystem;
 
 /**
  *
- * @author never
+ * @author Alex
  */
 public class EditEmployeePasswordConfirm extends javax.swing.JFrame {
 
     /**
      * Creates new form EditEmployeePasswordConfirm
+     * This could really be a JOptionPane
      */
     public EditEmployeePasswordConfirm() {
         initComponents();
@@ -85,16 +86,18 @@ public class EditEmployeePasswordConfirm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void EditEmpPassConfYesButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EditEmpPassConfYesButtonMouseClicked
-        // TODO add your handling code here:
-        //allow edit
+        /*
+        User meant to click on password field and will be allowed to change it
+        */
         EditEmployee.passwordEdit = true;
         EditEmployee.passAsk = false;
         this.setVisible(false);
     }//GEN-LAST:event_EditEmpPassConfYesButtonMouseClicked
 
     private void EditEmpPassConfNoButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EditEmpPassConfNoButtonMouseClicked
-        // TODO add your handling code here:
-        //lose focus
+        /*
+        user accidently clicked on password field, returning to edit page without changes
+        */
         EditEmployee.passAsk = false;
         this.setVisible(false);
         

@@ -13,17 +13,14 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import static msystem.MainPage.selectingThisEndorsement;
-import static msystem.MainPage.selectingThisPassword;
-import static msystem.MainPage.selectingThisRole;
-import static msystem.MainPage.selectingThisUserID;
-import static msystem.MainPage.selectingThisUsername;
+
 
 /**
  *
- * @author never
+ * @author Alex
  */
 public class EditEmployee extends javax.swing.JFrame {
+    //setting up class variables
     static boolean passwordEdit = false;
     static boolean passAsk = false;
     String sql = null;
@@ -36,17 +33,21 @@ public class EditEmployee extends javax.swing.JFrame {
      * Creates new form EditEmployee
      */
     public EditEmployee() {
+        // setting the fields with information pulled from the mainpage
+        //resetting the password edit ability each time a new window is created
         initComponents();
         passwordEdit = false;
         
         System.out.println(MainPage.editEmployee);
         if(MainPage.editEmployee){
+            //if the user got here through the edit button, pulls info and sets the userID to uneditable
             editEmpUserIDtxt.setText(MainPage.selectingThisUserID);
             editEmpUsernametxt.setText(MainPage.selectingThisUsername);
             editEmpRoleComboBox.setSelectedItem(MainPage.selectingThisRole);
             editEmpEndorseComboBox.setSelectedItem(MainPage.selectingThisEndorsement);
             editEmpUserIDtxt.setFocusable(false);
         }
+        //test statement to pull the same information that is printed in this page
         /*
         System.out.println("This is the edit employee accessing the previous pull");
         System.out.println(String.format("%12s -- %s", "UserID",selectingThisUserID));
@@ -116,11 +117,6 @@ public class EditEmployee extends javax.swing.JFrame {
                 editEmpRoleComboBoxItemStateChanged(evt);
             }
         });
-        editEmpRoleComboBox.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                editEmpRoleComboBoxPropertyChange(evt);
-            }
-        });
 
         editEmpConfirmButton.setText("Confirm");
         editEmpConfirmButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -157,13 +153,13 @@ public class EditEmployee extends javax.swing.JFrame {
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel2)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(editEmpConfirmButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(editEmpCancelButton))))
+                                .addComponent(editEmpCancelButton)))
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -206,13 +202,19 @@ public class EditEmployee extends javax.swing.JFrame {
 
 
     private void editEmpCancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editEmpCancelButtonMouseClicked
-        // TODO add your handling code here:
+        /*
+        user canceled the edit employee information, closes window and resets the editEmployee variable
+        */
         this.setVisible(false);
         MainPage.editEmployee = false;
     }//GEN-LAST:event_editEmpCancelButtonMouseClicked
 
     private void editEmpConfirmButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editEmpConfirmButtonMouseClicked
-        // TODO add your handling code here:
+        /*
+        As this page is used for editing and adding employees, based on the editEmployee
+        vaeiable it will run through 2 options, and then 2 options on each of those based
+        on if the password field had been changed
+        */
         if(MainPage.editEmployee){
             if(editEmpPasswordtxt.getText().equals("***************")){
                 sql = String.format("UPDATE user_authoization SET Username = \"%s\", Role = \"%s\", Endorsement = \"%s\" WHERE UserID = %s", 
@@ -251,37 +253,24 @@ public class EditEmployee extends javax.swing.JFrame {
             con = db.OpenConnection();
             stmt = con.prepareStatement(sql);
             stmt.execute();
-            
-            if (result != null) {
-                if(MainPage.editEmployee){
-                    System.out.println(String.format("Successfully Accessed DataBase to edit user %s", editEmpUserIDtxt.getText()));
-                }
-                else{
-                    System.out.println(String.format("Successfully Accessed DataBase to add user %s", editEmpUserIDtxt.getText()));
-                }
-            }
-            /*
-            while (result.next()) {
-                System.out.print(result.getString("Username") + ", " + result.getString("UserID"));
-            }*/
+           
             con.close();
             System.out.println("Database closed");
         }
         catch(Exception e) {
             System.out.println(e);
+            System.out.println("EditEmployee.editEmpConfirmButtonMouseClicked");
         }
         MainPage.editEmployee = false;
         this.setVisible(false);
 
     }//GEN-LAST:event_editEmpConfirmButtonMouseClicked
 
-    private void editEmpRoleComboBoxPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_editEmpRoleComboBoxPropertyChange
-        // TODO add your handling code here:
-        //only need if below method does not work
-    }//GEN-LAST:event_editEmpRoleComboBoxPropertyChange
-
     private void editEmpRoleComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_editEmpRoleComboBoxItemStateChanged
-        // TODO add your handling code here:
+        /*
+        Based on the role selection, there are several endorsements available per role
+        this method will change the endorsements available when you change the role selected for the user
+        */
         
         ArrayList<String> techEndos = new ArrayList<String>();
         ArrayList<String> manageEndos = new ArrayList<String>();
@@ -336,8 +325,10 @@ public class EditEmployee extends javax.swing.JFrame {
     }//GEN-LAST:event_editEmpRoleComboBoxItemStateChanged
 
     private void editEmpPasswordtxtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_editEmpPasswordtxtFocusGained
-        // TODO add your handling code here:
-        // toast?
+        /*
+        runs everytime the password gets clicked into, this prevents an accidental change
+        of an employees password should the user be editing thir information
+        */
         if(!passwordEdit){
             jScrollPane1.requestFocus();
             new EditEmployeePasswordConfirm().setVisible(true);

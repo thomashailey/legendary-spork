@@ -14,9 +14,10 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author never
+ * @author Alex
  */
 public class AddReport extends javax.swing.JFrame {
+    //class level variables
     Employee emp = new Employee();
     boolean mainTextVisible = false;
     String pattern = "yyyy-MM-dd";
@@ -32,7 +33,7 @@ public class AddReport extends javax.swing.JFrame {
      * Creates new form AddReport
      */
     public AddReport() {
-        
+        //setting up resiziability of the screen
         System.out.println(currentDate);
         initComponents();
         addReportMainReportTxtBox.setVisible(false);
@@ -68,16 +69,19 @@ public class AddReport extends javax.swing.JFrame {
 
         jLabel1.setText("User ID");
 
+        addReportUserIdTxt.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         jScrollPane1.setViewportView(addReportUserIdTxt);
 
         jLabel2.setText("Report Date");
 
         addReportDateTxt.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy-MM-dd"))));
         addReportDateTxt.setText(currentDate);
+        addReportDateTxt.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
 
         jLabel3.setText("Report Type");
 
         addReportTypeTxt.setColumns(20);
+        addReportTypeTxt.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         addReportTypeTxt.setLineWrap(true);
         addReportTypeTxt.setRows(5);
         addReportTypeTxt.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -122,6 +126,7 @@ public class AddReport extends javax.swing.JFrame {
         });
 
         addReportMainReportTxtBox.setColumns(20);
+        addReportMainReportTxtBox.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         addReportMainReportTxtBox.setLineWrap(true);
         addReportMainReportTxtBox.setRows(5);
         addReportMainReportTxtBox.setAutoscrolls(false);
@@ -187,8 +192,11 @@ public class AddReport extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addReportConfirmBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addReportConfirmBtnMouseClicked
-        // TODO add your handling code here:
-        //TODO checking against the date code, add error checking
+        /*
+        Pulls together information from the filled out report screen and sends it 
+        to the method that creats the reports and sends them to the database
+        then the screen is removed from the users view.
+        */
         // add to an arraylist to make a report
         // order UID, Date, report type, data
         ArrayList reportToAdd = new ArrayList<>();
@@ -197,24 +205,30 @@ public class AddReport extends javax.swing.JFrame {
                 addReportMainReportTxtBox.getText());
         emp.addNewReport(reportToAdd);
         
-        MainPage.editEmployee = false;
         this.setVisible(false);
     }//GEN-LAST:event_addReportConfirmBtnMouseClicked
 
     private void addReportCancelBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addReportCancelBtnMouseClicked
-        // TODO add your handling code here:
+        /*
+        User does not wish to go through with the report creation, closes
+        out the screen
+        */
         this.setVisible(false);
     }//GEN-LAST:event_addReportCancelBtnMouseClicked
 
     private void addReportTypeTxtFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_addReportTypeTxtFocusLost
-        // TODO add your handling code here:
+        /*
+        This and the methods below are something of a prevention of the user adding more than
+        255 characters, sometimes it works on point and sometimes it lags behind
+        This method runs when focus is lost on the text box
+        */
         if(addReportTypeTxt.getText().length() > 255){
             JOptionPane.showMessageDialog(null, "Please only enter 255 characters");
         }
     }//GEN-LAST:event_addReportTypeTxtFocusLost
 
     private void addReportTypeTxtKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_addReportTypeTxtKeyTyped
-        // TODO add your handling code here:
+        // This should run when a key is typed within the box
         numberOfCharactersInBox = addReportTypeTxt.getText().length();
         if(numberOfCharactersInBox > 255){
             JOptionPane.showMessageDialog(null, "Please only enter 255 characters");
@@ -224,7 +238,7 @@ public class AddReport extends javax.swing.JFrame {
     }//GEN-LAST:event_addReportTypeTxtKeyTyped
 
     private void addReportTypeTxtKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_addReportTypeTxtKeyReleased
-        // TODO add your handling code here:
+        // This should run when a key is released within the text box
         numberOfCharactersInBox = addReportTypeTxt.getText().length();
         if(addReportTypeTxt.getText().length() > 255){
             JOptionPane.showMessageDialog(null, "Please only enter 255 characters");
@@ -233,13 +247,17 @@ public class AddReport extends javax.swing.JFrame {
     }//GEN-LAST:event_addReportTypeTxtKeyReleased
 
     private void addReportTypeTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_addReportTypeTxtKeyPressed
-        // TODO add your handling code here:
+        // And this should run when a key is pressed within the text box
         numberOfCharactersInBox = addReportTypeTxt.getText().length();
         addReportCharCountLbl.setText(String.format("%d", numberOfCharactersInBox));
     }//GEN-LAST:event_addReportTypeTxtKeyPressed
 
     private void addReportOpenMainBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addReportOpenMainBtnMouseClicked
-        // TODO add your handling code here:
+        /*
+        In an effort to allow the customer the choice for filling out a full report
+        or just having as electronic record of a meeting or handoff, this will show or 
+        hide the main report body text box
+        */
         if(mainTextVisible){
             setBounds(0, 0, 439, 439);
             addReportMainReportTxtBox.setVisible(false);

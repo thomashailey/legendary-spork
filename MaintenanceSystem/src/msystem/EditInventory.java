@@ -11,9 +11,10 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author never
+ * @author Alex 
  */
 public class EditInventory extends javax.swing.JFrame {
+    //setting up class variables
     boolean one;
     boolean two;
     Equipment equip = new Equipment();
@@ -22,7 +23,8 @@ public class EditInventory extends javax.swing.JFrame {
      * Creates new form EditInventory
      */
     public EditInventory(boolean add, boolean newItem, ArrayList values) {
-                one = add;
+        //assigning passed variables to local variables for ease of use
+        one = add;
         two = newItem;
         initComponents();
         editInventoryNewRequestRadio.setSelected(newItem);
@@ -235,6 +237,9 @@ public class EditInventory extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     private void setTextBoxValues(ArrayList values){
+        /*
+        setting text box variables based the arraylist that is passed
+        */
         editInventoryNameTxt.setText(values.get(2).toString());
         editInventoryDescriptionTxt.setText(values.get(3).toString());
         if(values.get(11).toString().equals("Primary")){
@@ -263,6 +268,9 @@ public class EditInventory extends javax.swing.JFrame {
     }
     
     private void changeFocus(boolean yesNo){
+        /*
+        changing the ability to edit certain boxes to prevent confusion
+        */
         editInventoryNameTxt.setFocusable(yesNo);
         editInventoryDescriptionTxt.setFocusable(yesNo);
         
@@ -275,7 +283,11 @@ public class EditInventory extends javax.swing.JFrame {
         editInventorySeccondaryQAvailable.setFocusable(yesNo);
     }
     private void editInventoryConfirmBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editInventoryConfirmBtnMouseClicked
-        // TODO add your handling code here:
+        /*
+        inventory edit is confirmed by user, based on the boolean variables passed to the original creation of the 
+        page, it is an add inventory, new inventory request, or current inventory request
+        This pulls relevant inforamtion and passes it to the proper sql creation and injection methods
+        */
         ArrayList primaryInventoryItem = new ArrayList<>();
         ArrayList secondaryInventoryItem = new ArrayList<>();
         String requestingUserID = null;
@@ -328,14 +340,14 @@ public class EditInventory extends javax.swing.JFrame {
         else if(!one && !two){
             System.out.println("request current inventory");
             requestingUserID = JOptionPane.showInputDialog("Please enter the userID that is requesting this item");
-
+            //0=IDCHAR, 1=IDNUM, 2=ITEMNAME, 3=ITEMDESC, 4=userIDrequested 5=REQUESTamt, 6=LOCATION, 7=AMTinINVENTORY
             
             if(!editInventoryPromaryQRequested.getText().equals("0") && !editInventoryPromaryQRequested.getText().equals("")){
                 Collections.addAll(primaryInventoryItem, 
                     editInventoryPromaryIDChar.getText(),editInventoryPromaryIDNum.getText(), 
                     editInventoryNameTxt.getText(), editInventoryDescriptionTxt.getText(), 
-                    editInventoryPromaryQRequested.getText(), editInventoryPromaryQAvailable.getText(),
-                    "Primary");
+                    requestingUserID, editInventoryPromaryQRequested.getText(), 
+                    "Primary", editInventoryPromaryQAvailable.getText());
                 
                 equip.requestCurrentInventory(primaryInventoryItem);
             }
@@ -343,8 +355,8 @@ public class EditInventory extends javax.swing.JFrame {
                 Collections.addAll(secondaryInventoryItem, 
                     editInventorySecondaryIDChar.getText(), editInventorySecondaryIDNum.getText(), 
                     editInventoryNameTxt.getText(), editInventoryDescriptionTxt.getText(),
-                    editInventorySecondaryQRequested.getText(), editInventorySeccondaryQAvailable.getText(),
-                    "Secondary");
+                    requestingUserID, editInventorySecondaryQRequested.getText(), 
+                    "Secondary", editInventorySeccondaryQAvailable.getText());
                 
                 equip.requestCurrentInventory(secondaryInventoryItem);
             }
@@ -354,12 +366,17 @@ public class EditInventory extends javax.swing.JFrame {
     }//GEN-LAST:event_editInventoryConfirmBtnMouseClicked
 
     private void editInventoryCancelBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editInventoryCancelBtnMouseClicked
-        // TODO add your handling code here:
+        /*
+        User canceled out the inventory request, closing window
+        */
         this.setVisible(false);
     }//GEN-LAST:event_editInventoryCancelBtnMouseClicked
 
     private void editInventorySearchInventoryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editInventorySearchInventoryMouseClicked
-        // TODO add your handling code here:
+        /*
+        User has filled out the item id and want to search through current inventory
+        pulls information from sql and sets the text box values
+        */
         ArrayList<String> list = new ArrayList<>();
         if(!editInventoryPromaryIDChar.getText().equals("") && !editInventoryPromaryIDNum.getText().equals("")){
             list = equip.searchInventoryFromEdit(editInventoryPromaryIDChar.getText(), editInventoryPromaryIDNum.getText() );
@@ -378,12 +395,16 @@ public class EditInventory extends javax.swing.JFrame {
     }//GEN-LAST:event_editInventorySearchInventoryMouseClicked
 
     private void editInventoryNewRequestRadioStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_editInventoryNewRequestRadioStateChanged
-        // TODO add your handling code here:
+        /*
+        when the radio button changes it will allow edits
+        */
         changeFocus(true);
     }//GEN-LAST:event_editInventoryNewRequestRadioStateChanged
 
     private void editInventoryCurrentInventoryRadioStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_editInventoryCurrentInventoryRadioStateChanged
-        // TODO add your handling code here:
+        /*
+        When the radio button changes it will not allow edits
+        */
         changeFocus(false);
     }//GEN-LAST:event_editInventoryCurrentInventoryRadioStateChanged
 

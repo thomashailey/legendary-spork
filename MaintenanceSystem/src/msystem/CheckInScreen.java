@@ -85,6 +85,8 @@ public class CheckInScreen extends javax.swing.JFrame {
 
         jLabel2.setText("User ID:");
 
+        checkinUserIDField.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
+
         checkinCheckInBtn.setText("Check In");
         checkinCheckInBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -110,8 +112,10 @@ public class CheckInScreen extends javax.swing.JFrame {
 
         jLabel1.setText("Warehouse Location:");
 
+        checkinLocationDropdown.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         checkinLocationDropdown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        checkinEquipList.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         checkinEquipList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
@@ -166,7 +170,7 @@ public class CheckInScreen extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel5)
-                        .addGap(0, 164, Short.MAX_VALUE))
+                        .addGap(0, 165, Short.MAX_VALUE))
                     .addComponent(jScrollPane1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -249,6 +253,7 @@ public class CheckInScreen extends javax.swing.JFrame {
                 DefaultListModel model = new DefaultListModel();
                 model.addAll(populateList);
                 checkinEquipList.setModel(model);
+                con.close();
                 
             } catch (SQLException ex) {
                 Logger.getLogger(CheckOutScreen.class.getName()).log(Level.SEVERE, null, ex);
@@ -256,13 +261,16 @@ public class CheckInScreen extends javax.swing.JFrame {
                 Logger.getLogger(CheckOutScreen.class.getName()).log(Level.SEVERE, null, ex);
             }
             
+            
         }
     }//GEN-LAST:event_checkinSearchBtnMouseClicked
 
     private void checkinCheckInViaEquipIDBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkinCheckInViaEquipIDBtnMouseClicked
-        // TODO add your handling code here:
-        // create a popup to accept just the equipment ID, this is 
-        //   for the equipment that does not have a check out record and is not associated with an employee ID
+        /*
+        This is used to check in equipment that is not attached to an employee ID
+        If the equipment does have a checkout record the user is directed to actually
+        follow the standard process
+        */
         String bypassCheckIn = JOptionPane.showInputDialog("Please enter an equipment ID as \"APM-1\"\nThis check in will default to Primary Warehouse ");
         ArrayList<String> bypassCheckInSplit = new ArrayList<String>(Arrays.asList(bypassCheckIn.split("-")));
         sql = String.format("SELECT * FROM equipment_checkout WHERE EquipmentIDChar = \"%s\" AND EquipmentIDNum = %s",
@@ -292,7 +300,6 @@ public class CheckInScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_checkinCheckInViaEquipIDBtnMouseClicked
 
     private void checkinCheckInBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkinCheckInBtnMouseClicked
-        // TODO add your handling code here:
         // Runs sql statement that changes necessary fields in database
         // Should update the equipment_checkout table based on
         // criteria: Char, Num, UserID, Status(Checkedout) [add ReturnDate
@@ -398,6 +405,7 @@ public class CheckInScreen extends javax.swing.JFrame {
                         DefaultListModel model = new DefaultListModel();
                         model.addAll(populateList);
                         checkinEquipList.setModel(model);
+                        con.close();
 
                     } catch (SQLException ex) {
                         Logger.getLogger(CheckOutScreen.class.getName()).log(Level.SEVERE, null, ex);

@@ -136,21 +136,6 @@
                           </Group>
                           <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
                       </Group>
-
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
-                          <Component id="equipmentPullAllBtn" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="btnCheckin" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="btnCheckout" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="btnRefreshList" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="btnReportlost" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                      </Group>
-
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
@@ -168,19 +153,15 @@
                               <Component id="jScrollPane2" max="32767" attributes="0"/>
                               <Component id="jScrollPane12" pref="351" max="32767" attributes="0"/>
                           </Group>
-
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-
                               <Component id="btnRefreshList" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnCheckout" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnCheckin" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="equipmentPullAllBtn" alignment="3" min="-2" max="-2" attributes="0"/>
-
                               <Component id="btnReportlost" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
-
                       </Group>
                   </Group>
                 </DimensionLayout>

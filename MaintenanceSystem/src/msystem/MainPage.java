@@ -9,6 +9,7 @@ package msystem;
 /**
  *
  * @author thoma
+ * Total java lines as of 4/15 - 5608
  */
 import java.awt.List;
 import java.io.*;
@@ -325,20 +326,6 @@ public class MainPage extends javax.swing.JFrame {
                     .addComponent(jLabel6)
                     .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(34, 34, 34))
-
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EquipmentTabLayout.createSequentialGroup()
-                .addGap(42, 42, 42)
-                .addComponent(equipmentPullAllBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCheckin)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCheckout)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnRefreshList)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnReportlost)
-                .addContainerGap())
-
         );
         EquipmentTabLayout.setVerticalGroup(
             EquipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -353,7 +340,6 @@ public class MainPage extends javax.swing.JFrame {
                     .addComponent(jScrollPane1)
                     .addComponent(jScrollPane2)
                     .addComponent(jScrollPane12, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE))
-
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(EquipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRefreshList)
@@ -362,7 +348,6 @@ public class MainPage extends javax.swing.JFrame {
                     .addComponent(equipmentPullAllBtn)
                     .addComponent(btnReportlost))
                 .addGap(17, 17, 17))
-
         );
 
         tabPanePanel.addTab("Equipment", EquipmentTab);
@@ -896,7 +881,7 @@ public class MainPage extends javax.swing.JFrame {
                 if (result != null) {
                     System.out.println("Successfully accessed inventory request database");
                     while (result.next()) {
-                        elements = String.format("Request ID - %s\nItem ID - %s%s\nUser Requested%s\nItem Name - %s\nItem Description - %s\nQuantity needed - %s\nDestination - %s\nFulfilled - %s",
+                        elements = String.format("Request ID - %s\nItem ID - %s%s\nUser Requested - %s\nItem Name - %s\nItem Description - %s\nQuantity needed - %s\nDestination - %s\nFulfilled - %s",
                             result.getString("InvRequestID"), result.getString("ItemIDChar"),
                             result.getString("ItemIDNum"), result.getString("UserIDRequested"),
                             result.getString("ItemName"), result.getString("Description"),
@@ -1438,7 +1423,7 @@ public class MainPage extends javax.swing.JFrame {
         while (result.next()) {
             elements.add(result.getString("Role"));
         }
-        
+        con.close();
         role = elements.get(0);
         return role;
     }
@@ -1465,6 +1450,7 @@ public class MainPage extends javax.swing.JFrame {
             String equipmentInfo = String.format("%s -- %s", itemName, itemDescription);
             elements.add(equipmentInfo);
         }
+        con.close();
         
         DefaultListModel model = new DefaultListModel();
         model.addAll(elements);

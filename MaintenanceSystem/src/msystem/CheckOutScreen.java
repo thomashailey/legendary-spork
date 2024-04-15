@@ -33,6 +33,7 @@ public class CheckOutScreen extends javax.swing.JFrame {
     
     
     public CheckOutScreen() {
+        //populate all fields with information pulled from the user selection on the mainpage
         initComponents();
         checkoutEquipNameField.setText(MainPage.getEquipmentName);
         checkoutEquipCharField.setText(MainPage.getEquipmentChar);
@@ -75,7 +76,13 @@ public class CheckOutScreen extends javax.swing.JFrame {
 
         jLabel3.setText("Equipment ID:");
 
+        checkoutUserIDField.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
+
+        checkoutEquipCharField.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
+
         jLabel4.setText("-");
+
+        checkoutEquipNumField.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
 
         checkoutCheckOutBtn.setText("Check Out");
         checkoutCheckOutBtn.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -86,6 +93,8 @@ public class CheckOutScreen extends javax.swing.JFrame {
 
         jLabel5.setText("Equipment Name:");
 
+        checkoutEquipNameField.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
+
         checkoutCancelBtn.setText("Cancel");
         checkoutCancelBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -94,6 +103,8 @@ public class CheckOutScreen extends javax.swing.JFrame {
         });
 
         jLabel6.setText("Equipment Description:");
+
+        checkoutEquipDescriptionField.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -154,7 +165,7 @@ public class CheckOutScreen extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(checkoutCancelBtn)
                     .addComponent(checkoutCheckOutBtn))
-                .addGap(0, 17, Short.MAX_VALUE))
+                .addGap(0, 21, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -172,13 +183,20 @@ public class CheckOutScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void checkoutCancelBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkoutCancelBtnMouseClicked
-        // TODO add your handling code here:
+        /*
+        User does not want to continue checkout, closed out window
+        */
         this.setVisible(false);
         MainPage.editEmployee = false;
     }//GEN-LAST:event_checkoutCancelBtnMouseClicked
 
     private void checkoutCheckOutBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkoutCheckOutBtnMouseClicked
-        // TODO add your handling code here:
+        /*
+        User is continueing with checkout of equipment, will scan the fields and ensure that no
+        field is empty and fill out an equipment sql update with the information that
+        is pulled from the field, this method will then create a checkout record in the 
+        equipment_checkout table
+        */
         if (checkoutEquipNameField.getText().isEmpty() || checkoutEquipCharField.getText().isEmpty()
                 || checkoutEquipNumField.getText().isEmpty() || checkoutEquipDescriptionField.getText().isEmpty()
                 || checkoutUserIDField.getText().isEmpty()) {
@@ -212,7 +230,7 @@ public class CheckOutScreen extends javax.swing.JFrame {
                 stmt = con.prepareStatement(sql);
                 stmt.execute();
                 System.out.println("Success");
-                
+                con.close();
                 this.setVisible(false);
                 
             } catch (SQLException ex) {

@@ -58,6 +58,7 @@ public class Equipment {
                     elements.add(itemToAdd);
                 }
             }
+            con.close();
         }
         catch(Exception e) {
             System.out.println(e);
@@ -82,7 +83,7 @@ public class Equipment {
             
             
             
-//            TODO: Need to finish checkout process
+//            
 //            Use item fields to change equipment_checkout table to reflect 
 //            state of checked equipment. Above code will use selected item
 //            from list to find first available equipment in the database and 
@@ -98,8 +99,10 @@ public class Equipment {
                     elements.add(itemToAdd);
                 }
             }
+            con.close();
         } catch (Exception e) {
-            
+            System.out.println(e);
+            System.out.println("Equipment.CheckOut");
         }
         return elements;
         
@@ -107,8 +110,7 @@ public class Equipment {
     
     public ArrayList PullEquipInfo(String equipName, String equipDescrip) throws SQLException, ClassNotFoundException {
         //pull employee role and endorsements
-        //TODO -- move pull employee information for edit employee here
-        
+    
         /*  Set connection to DBConnect OpenConnection() method,
             Create ArrayList to store DB elements
         */
@@ -141,7 +143,6 @@ public class Equipment {
         /*  Set connection to DBConnect OpenConnection() method,
             Create ArrayList to store DB elements
         */
-        //need to find a way to ensure that dupe items are not added to the list, then pull both when the request is bigger than the primary
         con = db.OpenConnection();
         ArrayList<String> elements = new ArrayList<>();
         HashSet<String> uniqueItems = new HashSet<>(); // HashSet to store unique items 
@@ -239,6 +240,7 @@ public class Equipment {
                     elements.add(itemToAdd);
                 }
             }
+            con.close();
         }
         catch(Exception e) {
             System.out.println(e);
@@ -271,6 +273,7 @@ public class Equipment {
                     elements.add(itemToAdd);
                 }
             }
+            con.close();
         }
         catch(Exception e) {
             System.out.println(e);
@@ -302,6 +305,7 @@ public class Equipment {
                     
                 }
             }
+            con.close();
         }
         catch(Exception e){
             System.out.println(e);
@@ -330,6 +334,7 @@ public class Equipment {
                     requestedItemDesc = result.getString("Description");            
                 }
             }
+            con.close();
         }
         catch(Exception e){
             System.out.println(e);
@@ -525,10 +530,11 @@ public class Equipment {
         PreparedStatement stmt2;
         // adding a request against current inventory, will pull values from inventory table
         //requested vs number in inventory
-        //0=IDCHAR, 1=IDNUM, 2=ITEMNAME, 3=ITEMDESC, 4=REQUESTamt, 5=AMTinINVENTORY, 6=LOCATION
-        if(Integer.parseInt(requestedCurrentInventory.get(4).toString()) > Integer.parseInt(requestedCurrentInventory.get(5).toString())){
+        //0=IDCHAR, 1=IDNUM, 2=ITEMNAME, 3=ITEMDESC, 4=REQUESTamt, 5=AMTinINVENTORY, 6=LOCATION - old for reference
+        //0=IDCHAR, 1=IDNUM, 2=ITEMNAME, 3=ITEMDESC, 4=userIDrequested 5=REQUESTamt, 6=LOCATION, 7=AMTinINVENTORY
+        if(Integer.parseInt(requestedCurrentInventory.get(5).toString()) > Integer.parseInt(requestedCurrentInventory.get(7).toString())){
             //requested amount larger than the amount currently in inventory, adding an unfulfilled request to inventory_requests
-            int remainingInventoryRequired = Integer.parseInt(requestedCurrentInventory.get(4).toString()) - Integer.parseInt(requestedCurrentInventory.get(5).toString());
+            int remainingInventoryRequired = Integer.parseInt(requestedCurrentInventory.get(5).toString()) - Integer.parseInt(requestedCurrentInventory.get(7).toString());
             System.out.println(remainingInventoryRequired);
             requestNewInventory(requestedCurrentInventory, remainingInventoryRequired);
 
@@ -538,24 +544,24 @@ public class Equipment {
             sql2 = String.format("INSERT INTO inventory_request(ItemIDChar, ItemIDNum, UserIDRequested,"
                     + " ItemName, Description, Quantity, Destination, Fulfilled) VALUES(\"%s\", %s, %s, \"%s\", \"%s\", %s, \"%s\", %s)",
                     requestedCurrentInventory.get(0), requestedCurrentInventory.get(1), 
-                    123, requestedCurrentInventory.get(2), 
-                    requestedCurrentInventory.get(3), requestedCurrentInventory.get(5), 
+                    requestedCurrentInventory.get(4), requestedCurrentInventory.get(2), 
+                    requestedCurrentInventory.get(3), requestedCurrentInventory.get(7), 
                     requestedCurrentInventory.get(6), 1); // 1 here means the request has been fulfilled(true)
             
             System.out.println("request more");
-            System.out.println(String.format("%s - is something foing on here?", sql));
-            System.out.println(sql2);
+            //System.out.println(String.format("%s - is something foing on here?", sql));
+            //System.out.println(sql2);
         }
         else{
             //requested amt equal to or lesser than the amt currently in inventory, adding a fulfilled report to inventory_requests
-            //0=IDCHAR, 1=IDNUM, 2=ITEMNAME, 3=ITEMDESC, 4=REQUESTamt, 5=AMTinINVENTORY, 6=LOCATION
+            //0=IDCHAR, 1=IDNUM, 2=ITEMNAME, 3=ITEMDESC, 4=userIDrequested 5=REQUESTamt, 6=LOCATION, 7=AMTinINVENTORY
             sql = String.format("UPDATE inventory SET Quantity = (Quantity-%s) WHERE ItemIDChar = \"%s\" and ItemIDNum = %s", 
-                    requestedCurrentInventory.get(4), requestedCurrentInventory.get(0), requestedCurrentInventory.get(1));
+                    requestedCurrentInventory.get(5), requestedCurrentInventory.get(0), requestedCurrentInventory.get(1));
             sql2 = String.format("INSERT INTO inventory_request(ItemIDChar, ItemIDNum, UserIDRequested, "
                     + "ItemName, Description, Quantity, Destination, Fulfilled) VALUES(\"%s\", %s, %s, \"%s\", \"%s\", %s, \"%s\", %s)",
                     requestedCurrentInventory.get(0), requestedCurrentInventory.get(1), 
-                    123, requestedCurrentInventory.get(2), 
-                    requestedCurrentInventory.get(3), requestedCurrentInventory.get(4), 
+                    requestedCurrentInventory.get(4), requestedCurrentInventory.get(2), 
+                    requestedCurrentInventory.get(3), requestedCurrentInventory.get(5), 
                     requestedCurrentInventory.get(6), 1); // 1 here means the request has been fulfilled
             System.out.println("current request equals or lower");
             System.out.println(sql);
@@ -605,6 +611,7 @@ public class Equipment {
                     elements.add(itemToAdd);
                 }
             }
+            con.close();
         }
         catch(Exception e) {
 
@@ -637,6 +644,7 @@ public class Equipment {
                     elements.add(String.format("%s -- %s", result.getString("InvRequestID"), "Needed"));
                 }
             }
+            con.close();
         }
         catch(Exception e) {
             System.out.println(e);
@@ -687,6 +695,7 @@ public class Equipment {
             while(result.next()){
                 userInformation.add(result.getString("UserID"));
             }
+            con.close();
         }
         catch(Exception e){
             System.out.println(e);
@@ -709,6 +718,7 @@ public class Equipment {
             while(result.next()){
                 checkedIn.add(result.getString("Status"));
             }
+            con.close();
         }
         catch(Exception e){
             System.out.println(e);
@@ -742,6 +752,7 @@ public class Equipment {
             while (result.next()) {
                 elements.add(result.getString("ItemName"));
             }
+            con.close();
         }
         catch(Exception e) {
             

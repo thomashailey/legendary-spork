@@ -57,17 +57,14 @@ public class Employee {
         
         catch(Exception e) {
             System.out.println(e);
+            System.out.println("Employee.PullEmployees");
         }
         return elements;
     }
 
     public ArrayList SearchEmployees(boolean fName, boolean lName, String firstNameString, String lastInitString) throws SQLException, ClassNotFoundException {
         //use pull employees to search for specific names
-        // can use str.charAt(-1) in order to pull off last initial
-        // and str.substring(0, -2) to pull only the first name like so
-        //String fName = userID.substring(0,-2);
-        //String lInit = userIS.charAt(-1);
-        
+      
         /*  Set connection to DBConnect OpenConnection() method,
             Create ArrayList to store DB elements
         
@@ -75,6 +72,9 @@ public class Employee {
             FROM ceis400_groupc_maintsys.user_authoization
             where Username sounds like "Emma"
             and substr(Username, -1) ='A'
+        
+        pulls the entered first name and last initial, is also able to only use one or ther other
+        will then run the search through the db and display the results
         */
         
         con = db.OpenConnection();
@@ -116,17 +116,17 @@ public class Employee {
         
         catch(Exception e) {
             System.out.println(e);
+            System.out.println("Employee.SearchEmployees");
         }
         return elements;
         
     }
     
     public ArrayList PullEmpInfo(String userID) throws SQLException, ClassNotFoundException {
-        //pull employee role and endorsements
-        //TODO -- move pull employee information for edit employee here
-        
+        //pull employee role and endorsements   
         /*  Set connection to DBConnect OpenConnection() method,
             Create ArrayList to store DB elements
+        pulls all employee information for user information edits, returns an arraylist with that information
         */
         con = db.OpenConnection();
         ArrayList<String> elements = new ArrayList<String>();
@@ -154,11 +154,15 @@ public class Employee {
         
         catch(Exception e) {
             System.out.println(e);
+            System.out.println("Employee.PullEmpInfo");
         }
         return elements;
     }
     
     public void RemoveEmpInfo(String userID){
+        /*
+        Removes the selected employee entirely from the DB user_authoization
+        */
         sql = String.format("DELETE FROM user_authoization WHERE UserID = %s", userID);
         try {
             con = db.OpenConnection();
@@ -177,13 +181,14 @@ public class Employee {
         }
         catch(Exception e) {
             System.out.println(e);
+            System.out.println("Employee.RemoveEmployee");
         }
     }
     
     public ArrayList PullReports () throws SQLException, ClassNotFoundException {
-        //pull reports tied to the employee's User ID
         /*  Set connection to DBConnect OpenConnection() method,
             Create ArrayList to store DB elements
+        pulls all reports then returns an ArrayList to diaply them
         */
         con = db.OpenConnection();
         ArrayList<String> elements = new ArrayList<>();
@@ -199,16 +204,21 @@ public class Employee {
             while (result.next()) {
                 elements.add(result.getString("ReportID"));
             }
+            con.close();
         }
         catch(Exception e) {
-            
+            System.out.println(e);
+            System.out.println("Employee.PullReports");
         }
         return elements;
     }
     
     public ArrayList SearchReports(int userInput) throws SQLException, ClassNotFoundException {
+        /*
+        Pulls all reports associated with input userID, then returns an arraylist to display them
+        */
         con = db.OpenConnection();
-        MainPage mp = new MainPage();
+        //MainPage mp = new MainPage();
         ArrayList<String> elements = new ArrayList<>();
         try {
             String sql = "SELECT * FROM reports WHERE UserID = ? ";
@@ -223,16 +233,22 @@ public class Employee {
             while (result.next()) {
                 elements.add(result.getString("ReportID"));
             }
+            con.close();
         }
         catch(Exception e) {
-            JOptionPane.showMessageDialog(null, "Incorrect");
+            //JOptionPane.showMessageDialog(null, "Incorrect");
+            System.out.println(e);
+            System.out.println("Employee.SearchReports");
         }
         return elements;
     }
     
     public String ReportDetails(String selectedItem) throws SQLException, ClassNotFoundException {
+        /*
+        Pulls report detals using the report ID, then formats them for display and returns that in a string
+        */
         con = db.OpenConnection();
-        ArrayList<String> elements = new ArrayList<>();
+        //ArrayList<String> elements = new ArrayList<>();
         String results = "";
         try {
             String sql = String.format("SELECT * FROM reports WHERE ReportID = %s", selectedItem);
@@ -254,17 +270,22 @@ public class Employee {
                 }
                 
             }
+            con.close();
             //results = elements.toString();
             //System.out.println(results);
             //System.out.println(elements);
         }
         catch(Exception e) {
-            
+            System.out.println(e);
+            System.out.println("Employee.ReportDetails");
         }
         return results;
     }
     
     public String PrintReportLogs(String selectedReport){
+        /*
+        pulls all information in a single report and returns a formatted final report to print out
+        */
         String reportToPrint = null;
         sql = String.format("SELECT * FROM reports WHERE ReportID = %s", selectedReport);
         try{
@@ -277,6 +298,7 @@ public class Employee {
                         result.getString("ReportDate"), result.getString("ReportType"),
                         result.getString("data"));
             }
+            con.close();
         }
         catch(Exception e){
             System.out.println(e);
@@ -286,6 +308,9 @@ public class Employee {
     }
     
     public String pullAllLostForReport(){
+        /*
+        Pulls all lost equipment and sends the information within a string to generate a report with that information
+        */
         String allLostEquipment = "";
         sql = "SELECT equipment.EquipmentIDChar, equipment.EquipmentIDNum, equipment.Location, equipment_checkout.UserID " +
             "FROM equipment " +
@@ -310,6 +335,7 @@ public class Employee {
                 }
                 
             }
+            con.close();
         }
         catch(Exception e){
             System.out.println(e);
@@ -320,6 +346,9 @@ public class Employee {
     }
     
     public void addNewReport(ArrayList reportToAdd){
+        /*
+        Generated a new report based on the arraylist sent through the method
+        */
         //order UID, Date, report type, data
         sql = String.format("INSERT INTO reports(UserID, ReportDate, ReportType, Data) VALUES(%s, '%s', \"%s\", \"%s\")", 
                 reportToAdd.get(0), reportToAdd.get(1), reportToAdd.get(2), reportToAdd.get(3));
@@ -342,6 +371,9 @@ public class Employee {
     }
     
     public ArrayList PullMaintenanceActivities(String selectedItem) throws SQLException, ClassNotFoundException {
+        /*
+        Pulls all maint logs based on the provided UserID, then returns an arraylist with the sql information
+        */
 
         con = db.OpenConnection();
         ArrayList<String> elements = new ArrayList<>();
@@ -374,6 +406,9 @@ public class Employee {
     }
     
     public ArrayList PullAllMaintenanceActivities() throws SQLException, ClassNotFoundException {
+        /*
+        Pulls all maint logs and returns a formatted arraylist<string> to adjust the display
+        */
 
        con = db.OpenConnection();
         ArrayList<String> elements = new ArrayList<>();
@@ -393,6 +428,7 @@ public class Employee {
                         String.format("%12s", result.getString("ActivityDate")),
                         result.getString("Description")));
             }
+            con.close();
         
            }catch(Exception e) {
             System.out.println(e);
@@ -402,7 +438,9 @@ public class Employee {
     }
     
     public ArrayList PullMaintenanceActivitiesDate(String selectedItem) throws SQLException, ClassNotFoundException {
-
+        /*
+        Pulls all maint logs based on the provided date, then returns an arraylist with the sql information
+        */
         con = db.OpenConnection();
         ArrayList<String> elements = new ArrayList<>();
 
@@ -432,43 +470,45 @@ public class Employee {
         return elements;
     }
     
-    public ArrayList ConfirmNewLog(int userInput) throws SQLException, ClassNotFoundException {
-
-        con = db.OpenConnection();
-        ArrayList<String> elements = new ArrayList<>();
-
-        try {  sql = "SELECT * FROM maintenance_activities WHERE ActivityDate = ?";
-            stmt = con.prepareStatement(sql);
-            stmt.setInt(1, userInput);
-            result = stmt.executeQuery();
-
-            if (result != null) {
-                System.out.println("Successfully Accessed DataBase to pull maintenance activities");
-            }
-            while (result.next()) {
-            elements.add(String.format("%s,%s,   %s", 
-                        String.format("%10s",result.getString("ActivityID")), 
-                        String.format("%12s", result.getString("UserID")),
-                        result.getString("Description")));
-            }
-
-            con.close();
-            System.out.println("Database closed");
-         
-        }
-        catch(Exception e) {
-            System.out.println(e);
-            System.out.println("Employee.PullMaintenanceActivities");
-        }
-        return elements;
-    }
+//    public ArrayList ConfirmNewLog(int userInput) throws SQLException, ClassNotFoundException {
+//        /*
+//        does this get pulled by anything?
+//        can't actually see what it goes to
+//        based on the sql statement it looks like this was an original version of PullMaintenanceActivitiesDate, commenting out method
+//        */
+//        
+//
+//        con = db.OpenConnection();
+//        ArrayList<String> elements = new ArrayList<>();
+//
+//        try {  sql = "SELECT * FROM maintenance_activities WHERE ActivityDate = ?";
+//            stmt = con.prepareStatement(sql);
+//            stmt.setInt(1, userInput);
+//            result = stmt.executeQuery();
+//
+//            if (result != null) {
+//                System.out.println("Successfully Accessed DataBase to pull maintenance activities");
+//            }
+//            while (result.next()) {
+//            elements.add(String.format("%s,%s,   %s", 
+//                        String.format("%10s",result.getString("ActivityID")), 
+//                        String.format("%12s", result.getString("UserID")),
+//                        result.getString("Description")));
+//            }
+//
+//            con.close();
+//            System.out.println("Database closed");
+//         
+//        }
+//        catch(Exception e) {
+//            System.out.println(e);
+//            System.out.println("Employee.PullMaintenanceActivities");
+//        }
+//        return elements;
+//    }
     
     public void AccessLogs() {
         // stretch goal - if we have time to add
+        //moved to report and maint page
     }
-    
-    public void PrintRecords() {
-        
-    }
-    
 }
