@@ -215,12 +215,12 @@ public class EditEmployee extends javax.swing.JFrame {
         // TODO add your handling code here:
         if(MainPage.editEmployee){
             if(editEmpPasswordtxt.getText().equals("***************")){
-                sql = String.format("UPDATE user_authoization SET Username = '%s', Role = '%s', Endorsement = '%s' WHERE UserID = %s ", 
+                sql = String.format("UPDATE user_authoization SET Username = \"%s\", Role = \"%s\", Endorsement = \"%s\" WHERE UserID = %s", 
                 editEmpUsernametxt.getText(), editEmpRoleComboBox.getSelectedItem(), editEmpEndorseComboBox.getSelectedItem(),
                 editEmpUserIDtxt.getText());
             }
             else{
-                sql = String.format("UPDATE user_authoization SET Username = '%s', Role = '%s', Endorsement = '%s', Password = '%s; WHERE UserID = %s ", 
+                sql = String.format("UPDATE user_authoization SET Username = \"%s\", Role = \"%s\", Endorsement = \"%s\", Password = \"%s\" WHERE UserID = %s ", 
                 editEmpUsernametxt.getText(), editEmpRoleComboBox.getSelectedItem(), editEmpEndorseComboBox.getSelectedItem(),
                 editEmpPasswordtxt.getText(), editEmpUserIDtxt.getText());
             }
@@ -228,13 +228,13 @@ public class EditEmployee extends javax.swing.JFrame {
         else{
             if(editEmpPasswordtxt.getText().equals("***************")){
                 //password is a placeholder here and is intended to be used as the initial password given to all employees
-                sql = String.format("INSERT INTO user_authoization VALUES('%s', '%s', 'password123', '%s', '%s')", 
+                sql = String.format("INSERT INTO user_authoization VALUES(\"%s\", \"%s\", 'password123', \"%s\", \"%s\")", 
                 editEmpUserIDtxt.getText(), editEmpUsernametxt.getText(),
                 editEmpRoleComboBox.getSelectedItem(), editEmpEndorseComboBox.getSelectedItem());
             }
             else{
                 //password defined as the specific password the employee has chosen
-                sql = String.format("INSERT INTO user_authoization VALUES('%s', '%s', '%s', '%s', '%s')", 
+                sql = String.format("INSERT INTO user_authoization VALUES(\"%s\", \"%s\", \"%s\", \"%s\", \"%s\")", 
                 editEmpUserIDtxt.getText(), editEmpUsernametxt.getText(), editEmpPasswordtxt.getText(),
                 editEmpRoleComboBox.getSelectedItem(), editEmpEndorseComboBox.getSelectedItem());
             }

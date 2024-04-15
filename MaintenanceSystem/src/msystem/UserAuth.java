@@ -155,7 +155,8 @@ public class UserAuth extends javax.swing.JFrame {
                 
                     else{
                         System.out.println("passwords do not match");
-                        System.out.println(stmt.executeQuery(sql));
+                        JOptionPane.showMessageDialog(null, "UserID or password does not match, please try again");
+                        //System.out.println(stmt.executeQuery(sql));
                     }
                 }
                 con.close();
