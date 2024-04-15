@@ -17,6 +17,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Arrays;
 import java.util.Collections;
@@ -31,8 +32,111 @@ public class Equipment {
     PreparedStatement stmt;
     ResultSet result;
     String sql = null;
+
+    CheckInScreen checkin = new CheckInScreen();
+    CheckOutScreen checkout = new CheckOutScreen();
+    
+    public ArrayList<String> CheckIn() throws SQLException, ClassNotFoundException {
+        // Access database to return equipment
+        con = db.OpenConnection();
+        
+        // Instantiate variables
+        ArrayList<String> elements = new ArrayList<>();
+        String itemToAdd = null;
+        try {
+            String sql = "SELECT * FROM equipment";
+            stmt = con.prepareStatement(sql);
+            
+            result = stmt.executeQuery();
+            
+            if (result != null) {
+                System.out.println("Successfully Accessed Equipment DataBase");
+            }
+            while (result.next()) {
+                itemToAdd = String.format("%s -- %s", result.getString("EquipmentName"), result.getString("Description"));
+                if(!elements.contains(itemToAdd)){
+                    elements.add(itemToAdd);
+                }
+            }
+        }
+        catch(Exception e) {
+            System.out.println(e);
+            System.out.println("Equipment.Checkin");
+        }
+        return elements;   
+     }
+    
+    public ArrayList<String> CheckOut(String equipName, String equipDescrip) throws SQLException, ClassNotFoundException {
+        // Access database to assign equipment and check out        
+        con = db.OpenConnection();
+        ArrayList<String> elements = new ArrayList<>();
+        String itemToAdd = null;
+        try {
+            String sql = "SELECT * FROM equipment WHERE Status = \'?\' AND EquipmentName = \'?\' AND Description = \'?\' LIMIT 1;";
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1, "Available");
+            stmt.setString(2, equipName);
+            stmt.setString(3, equipDescrip);
+            
+            result = stmt.executeQuery();
+            
+            
+            
+//            TODO: Need to finish checkout process
+//            Use item fields to change equipment_checkout table to reflect 
+//            state of checked equipment. Above code will use selected item
+//            from list to find first available equipment in the database and 
+//            allow user to check it out under their account
+            
+            
+            if (result != null) {
+                System.out.println("Successfully Accessed Equipment DataBase - CheckOut");
+            }
+            while (result.next()) {
+                itemToAdd = String.format("%s -- %s", result.getString("EquipmentName"), result.getString("Description"));
+                if(!elements.contains(itemToAdd)){
+                    elements.add(itemToAdd);
+                }
+            }
+        } catch (Exception e) {
+            
+        }
+        return elements;
+        
+    }
+    
+    public ArrayList PullEquipInfo(String equipName, String equipDescrip) throws SQLException, ClassNotFoundException {
+        //pull employee role and endorsements
+        //TODO -- move pull employee information for edit employee here
+        
+        /*  Set connection to DBConnect OpenConnection() method,
+            Create ArrayList to store DB elements
+        */
+        con = db.OpenConnection();
+        ArrayList<String> elements = new ArrayList<String>();
+        try {
+            String sql = String.format("SELECT * FROM equipment WHERE EquipmentName = \'%s\' AND Description = \'%s\' AND Status = \'Available\' LIMIT 1", equipName, equipDescrip);
+            stmt = con.prepareStatement(sql);
+            
+            result = stmt.executeQuery();
+
+            if (result != null) {
+                System.out.println(String.format("Successfully Accessed DataBase to pull equipment: %s - %s", equipName, equipDescrip));
+            }
+            while (result.next()) {
+                Collections.addAll(elements, result.getString("EquipmentIDChar"), result.getString("EquipmentIDNum"), result.getString("EquipmentName"), result.getString("Description"));
+            }
+            con.close();
+            System.out.println("Database closed");
+        }   
+        catch(Exception e) {
+            System.out.println(e);
+        }
+        return elements;
+    }
     
     
+  
     public ArrayList ViewEquipment() throws SQLException, ClassNotFoundException {
         /*  Set connection to DBConnect OpenConnection() method,
             Create ArrayList to store DB elements

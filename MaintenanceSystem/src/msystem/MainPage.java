@@ -11,13 +11,14 @@ package msystem;
  * @author thoma
  */
 import java.awt.List;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+
+
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Scanner;
 import java.util.Collections;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -35,6 +36,7 @@ public class MainPage extends javax.swing.JFrame {
     ResultSet result;
     Employee emp = new Employee();
     static boolean editEmployee = false;
+    static boolean editEquipment = false;
     String sql = null;
     static String pullThisUserIdForEdit = null;
     static String selectingThisUserID = null;
@@ -42,7 +44,14 @@ public class MainPage extends javax.swing.JFrame {
     static String selectingThisPassword = null;
     static String selectingThisRole = null;
     static String selectingThisEndorsement = null;
+    static String getEquipmentName = null;
+    static String getEquipmentChar = null;
+    static String getEquipmentNum = null;
+    static String getEquipmentDescrip = null;
     Equipment equip = new Equipment();
+    CheckInScreen checkin = new CheckInScreen();
+    CheckOutScreen checkout = new CheckOutScreen();
+    static String getUserID = null;
     static ArrayList<String> nullArray = new ArrayList<>();
     String pattern = "yyyy-MM-dd";
     SimpleDateFormat simpleDate = new SimpleDateFormat(pattern);
@@ -60,6 +69,75 @@ public class MainPage extends javax.swing.JFrame {
         AccessEquipmentInfo();
         AccessInventoryRepportInfo();
         AccessMaintInfo();
+
+        
+        String role;
+        try {
+            role = LimitAccess();
+            SetToolSummary();
+            switch (role) {
+                case "Technician":
+
+                    // 0: Equipment
+                    // 1: Inventory
+                    // 2: Maintenance
+                    // 3: Report
+                    // 4: Employee
+                    
+                    // Technician gets access to:
+                    // Equipment, Inventory
+                    tabPanePanel.setEnabledAt(0, true);
+                    tabPanePanel.setEnabledAt(1, true);
+                    tabPanePanel.setEnabledAt(2, false);
+                    tabPanePanel.setEnabledAt(3, false);
+                    tabPanePanel.setEnabledAt(4, false);
+                    break;
+                case "Maintenance":
+                    // Maintenance gets access to:
+                    // Equipment, Inventory, Maintenance, Report
+                    tabPanePanel.setEnabledAt(0, true);
+                    tabPanePanel.setEnabledAt(1, true);
+                    tabPanePanel.setEnabledAt(2, true);
+                    tabPanePanel.setEnabledAt(3, false);
+                    tabPanePanel.setEnabledAt(4, false);
+                    break;
+                case "Warehouse":
+                    // Warehouse gets access to:
+                    // Equipment, Inventory, Report
+                    tabPanePanel.setEnabledAt(0, true);
+                    tabPanePanel.setEnabledAt(1, true);
+                    tabPanePanel.setEnabledAt(2, false);
+                    tabPanePanel.setEnabledAt(3, true);
+                    tabPanePanel.setEnabledAt(4, false);
+                    break;
+                case "Management":
+                    // Management gets access to:
+                    // Equipment, Inventory, Maintenance, Report, Employee
+                    tabPanePanel.setEnabledAt(0, true);
+                    tabPanePanel.setEnabledAt(1, true);
+                    tabPanePanel.setEnabledAt(2, true);
+                    tabPanePanel.setEnabledAt(3, true);
+                    tabPanePanel.setEnabledAt(4, true);
+                    break;
+                case "Admin":
+                    // Admin gets access to:
+                    // Equipment, Inventory, Maintenance, Report, Employee
+                    tabPanePanel.setEnabledAt(0, true);
+                    tabPanePanel.setEnabledAt(1, true);
+                    tabPanePanel.setEnabledAt(2, true);
+                    tabPanePanel.setEnabledAt(3, true);
+                    tabPanePanel.setEnabledAt(4, true);
+                    break;
+                default:
+                    break;
+        }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
     
 
@@ -86,10 +164,13 @@ public class MainPage extends javax.swing.JFrame {
         btnReportloss = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         equipmentPullAllBtn = new javax.swing.JButton();
-        jScrollPane8 = new javax.swing.JScrollPane();
-        equipmentCheckoutRecordLst = new javax.swing.JList<>();
-        InventoryTab = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
+
+        jScrollPane9 = new javax.swing.JScrollPane();
+        lstActionsTaken = new javax.swing.JList<>();
+        btnRefreshList = new javax.swing.JButton();
+        inventoryTab = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+
         txtInvSearch = new javax.swing.JTextField();
         btnInventorySearch = new javax.swing.JButton();
         btnInventoryAdd = new javax.swing.JButton();
@@ -166,8 +247,18 @@ public class MainPage extends javax.swing.JFrame {
         jScrollPane2.setViewportView(txaTooldescription);
 
         btnCheckout.setText("Check Out");
+        btnCheckout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnCheckoutMouseClicked(evt);
+            }
+        });
 
         btnCheckin.setText("Check In");
+        btnCheckin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnCheckinMouseClicked(evt);
+            }
+        });
 
         btnReportloss.setBackground(new java.awt.Color(255, 51, 51));
         btnReportloss.setText("REPORT LOST");
@@ -187,12 +278,23 @@ public class MainPage extends javax.swing.JFrame {
             }
         });
 
-        equipmentCheckoutRecordLst.setModel(new javax.swing.AbstractListModel<String>() {
+
+        lstActionsTaken.setModel(new javax.swing.AbstractListModel<String>() {
+
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane8.setViewportView(equipmentCheckoutRecordLst);
+
+        jScrollPane9.setViewportView(lstActionsTaken);
+
+        btnRefreshList.setText("Refresh List");
+        btnRefreshList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnRefreshListMouseClicked(evt);
+            }
+        });
+
 
         javax.swing.GroupLayout equipmentTabLayout = new javax.swing.GroupLayout(equipmentTab);
         equipmentTab.setLayout(equipmentTabLayout);
@@ -203,6 +305,7 @@ public class MainPage extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, equipmentTabLayout.createSequentialGroup()
                         .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(equipmentTabLayout.createSequentialGroup()
+
                                 .addGap(23, 23, 23)
                                 .addComponent(lblToolname))
                             .addGroup(equipmentTabLayout.createSequentialGroup()
@@ -223,11 +326,20 @@ public class MainPage extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, equipmentTabLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(equipmentPullAllBtn)
+
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnCheckin, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnCheckout)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, equipmentTabLayout.createSequentialGroup()
+                        .addComponent(btnRefreshList)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+
                         .addComponent(btnReportloss)))
                 .addContainerGap())
         );
@@ -235,6 +347,17 @@ public class MainPage extends javax.swing.JFrame {
             equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(equipmentTabLayout.createSequentialGroup()
                 .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+
+                    .addComponent(jScrollPane9)
+                    .addComponent(jScrollPane2)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+
+
+
+                    .addComponent(btnRefreshList))
+
                     .addGroup(equipmentTabLayout.createSequentialGroup()
                         .addGap(15, 15, 15)
                         .addGroup(equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -259,6 +382,7 @@ public class MainPage extends javax.swing.JFrame {
                         .addComponent(btnCheckin)
                         .addComponent(btnCheckout)
                         .addComponent(equipmentPullAllBtn)))
+
                 .addContainerGap())
         );
 
@@ -566,6 +690,7 @@ public class MainPage extends javax.swing.JFrame {
                             .addComponent(reportSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(reportSearchBtn))
                         .addGap(18, 18, 18)
+
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE))
                     .addComponent(jScrollPane4))
                 .addGap(18, 18, 18)
@@ -1019,6 +1144,54 @@ public class MainPage extends javax.swing.JFrame {
         AccessEquipmentInfo();
     }//GEN-LAST:event_equipmentPullAllBtnMouseClicked
 
+
+    private void btnCheckinMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCheckinMouseClicked
+        // TODO add your handling code here:
+        new CheckInScreen().setVisible(true);
+    }//GEN-LAST:event_btnCheckinMouseClicked
+
+    private void btnCheckoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCheckoutMouseClicked
+        // TODO add your handling code here:
+        editEquipment = true;
+        // Initialize variables
+        String name = "";
+        String description = "";
+        String equipListSelection = lstTools.getSelectedValue();
+        String[] list;
+        ArrayList<String> elements = new ArrayList();
+
+        // set array to selected value, split by '--'
+        // pull the first item to name, second to description
+        try {
+            // call the pullequipmentinfo method from equipment class,
+            if (lstTools.isSelectionEmpty()) {
+                getEquipmentChar = "";
+                getEquipmentNum = "";
+                getEquipmentName = "";
+                getEquipmentDescrip = "";
+            }
+            else {
+                list = equipListSelection.split("--");
+                name = list[0].trim();
+                description = list[1].trim();
+
+                elements = equip.PullEquipInfo(name, description);
+                getEquipmentChar = elements.get(0);
+                getEquipmentNum = elements.get(1);
+                getEquipmentName = elements.get(2);
+                getEquipmentDescrip = elements.get(3);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        new CheckOutScreen().setVisible(true);
+    }//GEN-LAST:event_btnCheckoutMouseClicked
+
+
+
     private void btnReportlossMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnReportlossMouseClicked
         // TODO add your handling code here:
         String equipmentIdInput = JOptionPane.showInputDialog("Please enter the equipment ID like \"APM-1\"");
@@ -1084,13 +1257,14 @@ public class MainPage extends javax.swing.JFrame {
         if (lstTools.getSelectedValue() != null){
         }
         
+
         // Initialize variables
         String name = "";
         String description = "";
         String equipDetails;
         String equipListSelection = lstTools.getSelectedValue();
         String[] list;
-        
+
         // set array to selected value, split by '--'
         // pull the first item to name, second to description
         list = equipListSelection.split("--");
@@ -1109,6 +1283,13 @@ public class MainPage extends javax.swing.JFrame {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_lstToolsValueChanged
+
+
+    private void btnRefreshListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRefreshListMouseClicked
+        try {
+            // TODO add your handling code here:
+            SetToolSummary();
+    }//GEN-LAST:event_btnRefreshListMouseClicked
 
     private void btnInventorySearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInventorySearchMouseClicked
         // TODO add your handling code here:
@@ -1185,6 +1366,7 @@ public class MainPage extends javax.swing.JFrame {
             selectingThisPassword = null;
             selectingThisRole = list.get(2);
             selectingThisEndorsement = list.get(3);
+
         } catch (SQLException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -1208,6 +1390,7 @@ public class MainPage extends javax.swing.JFrame {
         Collections.addAll(reportToAdd, userID, todaysDate, reportType, dataForReport);
         emp.addNewReport(reportToAdd);
     }//GEN-LAST:event_reportLostGenerateBtnMouseClicked
+
 
     /**
      * @param args the command line arguments
@@ -1244,9 +1427,84 @@ public class MainPage extends javax.swing.JFrame {
         });
     }
     
-    public void AccessEquipmentInfo() {
-             ArrayList<String> list = new ArrayList<String>();
+    public String LimitAccess() throws SQLException, ClassNotFoundException {
+//        TODO: pull userID from UserAuth in order to add it here
+//        then call this method when the jframe instance starts
+        
+//        UserAuth auth = new UserAuth();
+        
+        String userID = ReturnUserID();
+        ArrayList<String> elements = new ArrayList<>();
+        String role;
+        
+        con = db.OpenConnection();
+        
+        sql = String.format("SELECT Role FROM user_authoization WHERE UserID = \'%s\'", userID);
+        stmt = con.prepareStatement(sql);
+
+        result = stmt.executeQuery();
+        
+        while (result.next()) {
+            elements.add(result.getString("Role"));
+        }
+        
+        role = elements.get(0);
+        return role;
+    }
+    
+    public void SetToolSummary() throws SQLException, ClassNotFoundException {
+        String userID = ReturnUserID();
+        ArrayList<String> elements = new ArrayList<>();
+        String role;
+        
+        con = db.OpenConnection();
+        
+        sql = String.format("SELECT equipment_checkout.CheckoutID, equipment.EquipmentIDChar, equipment.EquipmentIDNum, " +
+            "equipment.EquipmentName, equipment.Description FROM equipment_checkout INNER JOIN " +
+            "equipment ON equipment_checkout.EquipmentIDChar=equipment.EquipmentIDChar AND " +
+            "equipment_checkout.EquipmentIDNum=equipment.EquipmentIDNum WHERE equipment_checkout.UserID=\'%s\'" +
+            "AND equipment_checkout.Status= \'Checked out\'", userID);
+        stmt = con.prepareStatement(sql);
+
+        result = stmt.executeQuery();
+        
+        while (result.next()) {
+            String itemName = result.getString("EquipmentName");
+            String itemDescription = result.getString("Description");
+            String equipmentInfo = String.format("%s -- %s", itemName, itemDescription);
+            elements.add(equipmentInfo);
+        }
+        
+        DefaultListModel model = new DefaultListModel();
+        model.addAll(elements);
+        lstActionsTaken.setModel(model);
+        
+        getUserID = userID;
+    }
+    
+    public String ReturnUserID() {
+        String userID = null;
         try {
+            File userIDFile = new File("currentuser.txt");
+            Scanner myReader = new Scanner(userIDFile);
+            while (myReader.hasNextLine()) {
+              String data = myReader.nextLine();
+              userID = data;
+              System.out.println(data);
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+        }
+        return userID;
+    }
+
+    public void AccessEquipmentInfo() {
+        ArrayList<String> list = new ArrayList<>();
+        try {
+            // call ViewEquipment and set to ArrayList list
+            // create the model, and add the list to the model.
+            // set the model to the list box so user can see info.
             list = equip.ViewEquipment();
             DefaultListModel model = new DefaultListModel();
             model.addAll(list);
@@ -1275,6 +1533,9 @@ public class MainPage extends javax.swing.JFrame {
     public void AccessInventoryInfo() {
         ArrayList<String> list = new ArrayList<String>();
         try {
+            // call ViewInventory and set to ArrayList list
+            // create the model, and add the list to the model.
+            // set the model to the list box so user can see info.
             list = equip.ViewInventory();
             DefaultListModel model = new DefaultListModel();
             model.addAll(list);
@@ -1290,6 +1551,11 @@ public class MainPage extends javax.swing.JFrame {
         ArrayList<String> list = new ArrayList<String>();
                 
         try {
+            // call SearchInventory and set to ArrayList list
+            // it will provide the searchbox text to the method.
+            // it will return the relevent inventory list data.
+            // create the model, and add the list to the model.
+            // set the model to the list box so user can see info.
             list = equip.SearchInventory(txtInvSearch.getText());
             DefaultListModel model = new DefaultListModel();
             model.addAll(list);
@@ -1302,8 +1568,11 @@ public class MainPage extends javax.swing.JFrame {
     }
     
     public void AccessEmployeeInfo() {
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> list = new ArrayList<>();
         try {
+            // call PullEmployees and set to ArrayList list
+            // create the model, and add the list to the model.
+            // set the model to the list box so user can see info.
             list = emp.PullEmployees();
             DefaultListModel model = new DefaultListModel();
             model.addAll(list);
@@ -1330,8 +1599,11 @@ public class MainPage extends javax.swing.JFrame {
     }
     
     public void AccessReportInfo() {
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> list = new ArrayList<>();
         try {
+            // call PullReports and set to ArrayList list
+            // create the model, and add the list to the model.
+            // set the model to the list box so user can see info.
             list = emp.PullReports();
             DefaultListModel model = new DefaultListModel();
             model.addAll(list);
@@ -1365,6 +1637,7 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JButton btnInventoryRecordSearch;
     private javax.swing.JButton btnInventoryRequest;
     private javax.swing.JButton btnInventorySearch;
+    private javax.swing.JButton btnRefreshList;
     private javax.swing.JButton btnReportloss;
     private javax.swing.JButton empAddBtn;
     private javax.swing.JButton empEditBtn;
@@ -1385,6 +1658,7 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JList<String> jList1;
+    private javax.swing.JList<String> jList2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane2;
@@ -1399,6 +1673,7 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JLabel lblTooldescription;
     private javax.swing.JLabel lblToolname;
     private javax.swing.JMenu logOutBtn;
+    private javax.swing.JList<String> lstActionsTaken;
     private javax.swing.JList<String> lstTools;
     private javax.swing.JMenuBar mainMenuBar;
     private javax.swing.JList<String> mainPageInvRequestsLst;
