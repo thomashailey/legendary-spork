@@ -10,6 +10,8 @@ package msystem;
  */
 import java.awt.List;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
 import java.lang.String;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
@@ -56,11 +59,85 @@ public class MainPage extends javax.swing.JFrame {
      */
     public MainPage() {
         initComponents();
+//        try {
+//            LimitAccess();
+//        } catch (SQLException ex) {
+//            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (ClassNotFoundException ex) {
+//            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         AccessReportInfo();
         AccessEmployeeInfo();
         AccessInventoryInfo();
         AccessInventoryRepportInfo();
         AccessMaintInfo();
+        
+        String role;
+        try {
+            role = LimitAccess();
+            switch (role) {
+                case "Technician":
+
+                    // 0: Equipment
+                    // 1: Inventory
+                    // 2: Maintenance
+                    // 3: Report
+                    // 4: Employee
+                    
+                    // Technician gets access to:
+                    // Equipment, Inventory
+                    tabPanePanel.setEnabledAt(0, true);
+                    tabPanePanel.setEnabledAt(1, true);
+                    tabPanePanel.setEnabledAt(2, false);
+                    tabPanePanel.setEnabledAt(3, false);
+                    tabPanePanel.setEnabledAt(4, false);
+                    break;
+                case "Maintenance":
+                    // Maintenance gets access to:
+                    // Equipment, Inventory, Maintenance, Report
+                    tabPanePanel.setEnabledAt(0, true);
+                    tabPanePanel.setEnabledAt(1, true);
+                    tabPanePanel.setEnabledAt(2, true);
+                    tabPanePanel.setEnabledAt(3, true);
+                    tabPanePanel.setEnabledAt(4, false);
+                    break;
+                case "Warehouse":
+                    // Warehouse gets access to:
+                    // Equipment, Inventory, Report
+                    tabPanePanel.setEnabledAt(0, true);
+                    tabPanePanel.setEnabledAt(1, true);
+                    tabPanePanel.setEnabledAt(2, false);
+                    tabPanePanel.setEnabledAt(3, true);
+                    tabPanePanel.setEnabledAt(4, false);
+                    break;
+                case "Management":
+                    // Management gets access to:
+                    // Equipment, Inventory, Maintenance, Report, Employee
+                    tabPanePanel.setEnabledAt(0, true);
+                    tabPanePanel.setEnabledAt(1, true);
+                    tabPanePanel.setEnabledAt(2, true);
+                    tabPanePanel.setEnabledAt(3, true);
+                    tabPanePanel.setEnabledAt(4, true);
+                    break;
+                case "Admin":
+                    // Admin gets access to:
+                    // Equipment, Inventory, Maintenance, Report, Employee
+                    tabPanePanel.setEnabledAt(0, true);
+                    tabPanePanel.setEnabledAt(1, true);
+                    tabPanePanel.setEnabledAt(2, true);
+                    tabPanePanel.setEnabledAt(3, true);
+                    tabPanePanel.setEnabledAt(4, true);
+                    break;
+                default:
+                    break;
+        }
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+
     }
 
     /**
@@ -728,6 +805,15 @@ public class MainPage extends javax.swing.JFrame {
 
     private void logOutBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logOutBtnMouseClicked
         // TODO add your handling code here:
+        try {
+            FileWriter myWriter = new FileWriter("currentuser.txt");
+            myWriter.write("");
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
         this.setVisible(false);
         new UserAuth().setVisible(true);
     }//GEN-LAST:event_logOutBtnMouseClicked
@@ -1203,12 +1289,13 @@ public class MainPage extends javax.swing.JFrame {
         });
     }
     
-    public void LimitAccess() throws SQLException, ClassNotFoundException {
+    public String LimitAccess() throws SQLException, ClassNotFoundException {
 //        TODO: pull userID from UserAuth in order to add it here
 //        then call this method when the jframe instance starts
         
-        UserAuth auth = new UserAuth();
-        String userID = auth.txtUsercode.getText();
+//        UserAuth auth = new UserAuth();
+        
+        String userID = ReturnUserID();
         System.out.println("I have made it this far and my ID is: " + userID);
         ArrayList<String> elements = new ArrayList<>();
         String role;
@@ -1226,46 +1313,63 @@ public class MainPage extends javax.swing.JFrame {
         
         role = elements.get(0);
         
-        switch (role) {
-            case "Technician":
-                equipmentTab.setVisible(true);
-                inventoryTab.setVisible(true);
-                maintenanceTab.setVisible(false);
-                reportTab.setVisible(false);
-                Employee.setVisible(false);
-                break;
-            case "Maintenance":
-                equipmentTab.setVisible(true);
-                inventoryTab.setVisible(true);
-                maintenanceTab.setVisible(true);
-                reportTab.setVisible(true);
-                Employee.setVisible(false);
-                break;
-            case "Warehouse":
-                equipmentTab.setVisible(true);
-                inventoryTab.setVisible(true);
-                maintenanceTab.setVisible(false);
-                reportTab.setVisible(true);
-                Employee.setVisible(false);
-                break;
-            case "Management":
-                equipmentTab.setVisible(true);
-                inventoryTab.setVisible(true);
-                maintenanceTab.setVisible(true);
-                reportTab.setVisible(true);
-                Employee.setVisible(true);
-                break;
-            case "Admin":
-                equipmentTab.setVisible(true);
-                inventoryTab.setVisible(true);
-                maintenanceTab.setVisible(true);
-                reportTab.setVisible(true);
-                Employee.setVisible(true);
-                break;
-            default:
-                break;
+//        switch (role) {
+//            case "Technician":
+//                equipmentTab.setVisible(true);
+//                inventoryTab.setVisible(true);
+//                maintenanceTab.setVisible(false);
+//                reportTab.setVisible(false);
+//                Employee.setVisible(false);
+//                break;
+//            case "Maintenance":
+//                equipmentTab.setVisible(true);
+//                inventoryTab.setVisible(true);
+//                maintenanceTab.setVisible(true);
+//                reportTab.setVisible(true);
+//                Employee.setVisible(false);
+//                break;
+//            case "Warehouse":
+//                equipmentTab.setVisible(true);
+//                inventoryTab.setVisible(true);
+//                maintenanceTab.setVisible(false);
+//                reportTab.setVisible(true);
+//                Employee.setVisible(false);
+//                break;
+//            case "Management":
+//                equipmentTab.setVisible(true);
+//                inventoryTab.setVisible(true);
+//                maintenanceTab.setVisible(true);
+//                reportTab.setVisible(true);
+//                Employee.setVisible(true);
+//                break;
+//            case "Admin":
+//                equipmentTab.setVisible(true);
+//                inventoryTab.setVisible(true);
+//                maintenanceTab.setVisible(true);
+//                reportTab.setVisible(true);
+//                Employee.setVisible(true);
+//                break;
+//            default:
+//                break;
+//        }
+        return role;
+    }
+    
+    public String ReturnUserID() {
+        String userID = null;
+        try {
+            File userIDFile = new File("currentuser.txt");
+            Scanner myReader = new Scanner(userIDFile);
+            while (myReader.hasNextLine()) {
+              String data = myReader.nextLine();
+              userID = data;
+              System.out.println(data);
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
         }
-        
+        return userID;
     }
 
     public void AccessEquipmentInfo() {

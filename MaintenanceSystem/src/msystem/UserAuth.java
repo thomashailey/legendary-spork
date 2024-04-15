@@ -4,6 +4,9 @@
  */
 package msystem;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,6 +23,7 @@ public class UserAuth extends javax.swing.JFrame {
     ResultSet result;
     String sql = null;
     boolean passUser = false;
+    
     
     /**
      * Creates new form UserAuth
@@ -155,6 +159,7 @@ public class UserAuth extends javax.swing.JFrame {
                         System.out.println(stmt.executeQuery(sql));
                     }
                 }
+                
                 con.close();
             }
             catch(Exception e){
@@ -168,11 +173,28 @@ public class UserAuth extends javax.swing.JFrame {
     
     private void txtUsercodeFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUsercodeFocusLost
         // TODO add your handling code here:
-        //No longer need the confirm here, was testing if userID exists in db
-        /*
-        if(checkPrimaryKey(txtUsercode.getText())){
-            JOptionPane.showMessageDialog(null, "Correct!");
-        }*/
+        // Write userId field value to file
+        try {
+            File userIdFile = new File("currentuser.txt");
+            if (userIdFile.createNewFile()) {
+                System.out.println("File created: " + userIdFile.getName());
+            } else {
+                System.out.println("File already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+        
+        try {
+            FileWriter myWriter = new FileWriter("currentuser.txt");
+            myWriter.write(txtUsercode.getText());
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_txtUsercodeFocusLost
 
     private void userAuthenByassBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userAuthenByassBtnActionPerformed
