@@ -16,6 +16,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -26,45 +27,84 @@ public class Equipment {
     // Global level Variables
     DBConnect db = new DBConnect();
     Connection con = null;
-    String sql = null;
     PreparedStatement stmt;
     ResultSet result;
     
-    public void CheckIn() {
-        // Access database to return equipment
-     }
-    
-    public void CheckOut() {
-        // Access database to assign equipment and check out
+    public ArrayList checkForUserCheckOut(String equipIDChar, String equipIDNum){
+        sql = String.format("SELECT * FROM equipment_checkout WHERE EquipmentIDChar = \"%s\" and EquipmentIDNum = %s and Status = \"Checked out\"", equipIDChar, equipIDNum);
+        ArrayList userInformation = new ArrayList<>();
+        
+        try{
+            con = db.OpenConnection();
+            stmt = con.prepareStatement(sql);
+            result = stmt.executeQuery();
+            while(result.next()){
+                userInformation.add(result.getString("UserID"));
+            }
+        }
+        catch(Exception e){
+            System.out.println(e);
+            System.out.println("Equipment.checkForUserCheckOut");
+        }
+        if(userInformation.isEmpty()){
+            userInformation.addLast("not checked out by a user");
+        }
+        return userInformation;
     }
-    public void ReportLoss() {
-        // Report loss of equipment
+    
+    public ArrayList checkIfCheckedIn(String equipIDChar, String equipIDNum){
+        sql = String.format("SELECT * FROM equipment WHERE EquipmentIDChar = \"%s\" and EquipmentIDNum = %s", equipIDChar, equipIDNum);
+        ArrayList checkedIn = new ArrayList<>();
+        
+        try{
+            con = db.OpenConnection();
+            stmt = con.prepareStatement(sql);
+            result = stmt.executeQuery();
+            while(result.next()){
+                checkedIn.add(result.getString("Status"));
+            }
+        }
+        catch(Exception e){
+            System.out.println(e);
+            System.out.println("Equipment.checkIfCheckedIn");
+        }
+        if(checkedIn.isEmpty()){
+            checkedIn.add("not an item");
+        }
+        return checkedIn;
     }
     
-    public void CheckStatus() {
-        // Check status of equipment by 
-    }
-    
-    public ArrayList SearchInventory(String item) throws SQLException, ClassNotFoundException {
-        // Search inventory for specific item
+    public ArrayList ViewEquipment() throws SQLException, ClassNotFoundException {
         /*  Set connection to DBConnect OpenConnection() method,
             Create ArrayList to store DB elements
         */
+        //need to find a way to ensure that dupe items are not added to the list, then pull both when the request is bigger than the primary
         con = db.OpenConnection();
         ArrayList<String> elements = new ArrayList<>();
+        HashSet<String> uniqueItems = new HashSet<>(); // HashSet to store unique items 
         String itemToAdd = null;
         try {
-            sql = String.format("SELECT * FROM inventory WHERE ItemName LIKE '%%%s%%' OR Description LIKE '%%%s%%'", item, item);
+            sql = "SELECT * FROM equipment";
             stmt = con.prepareStatement(sql);
-            //stmt.setString(1, item);
             
             result = stmt.executeQuery();
-
+            
             if (result != null) {
-                System.out.println("Successfully Accessed Inventory DataBase");
+                System.out.println("Successfully Accessed Equipment DataBase");
             }
             while (result.next()) {
-                itemToAdd = String.format("%s -- %s", result.getString("ItemName"), result.getString("Description"));
+                String itemName = result.getString("EquipmentName");
+                String itemDescription = result.getString("Description");
+                itemToAdd = String.format("%s -- %s", itemName, itemDescription);
+                //only need one of these to add a single item into the list, don't want duplicates since we will be pulling singles using sql
+//                if(!uniqueItems.contains(itemToAdd)) {
+//                    uniqueItems.add(itemToAdd);
+//                    elements.add(itemToAdd);
+//                } else{
+//                    // If the item is a duplicate, add it again to ensure both primay
+//                    // and duplicate items ae retieved
+//                    elements.add(itemToAdd);
+//                }
                 if(!elements.contains(itemToAdd)){
                     elements.add(itemToAdd);
                 }
@@ -72,37 +112,83 @@ public class Equipment {
         }
         catch(Exception e) {
             System.out.println(e);
-            System.out.println("Equipment.SearchInventory");
-
+            System.out.println("Equipment.ViewEquipment");
+        }finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
         }
         return elements;
+        
     }
-    public ArrayList searchInventoryForEdit(String selectedItemName, String selectedDescription){
-        //use this in order to pull the inventory item from both locations
-        //return is passed into EditInventory to show what the 2 locations have
+    
+    public ArrayList ViewEquipmentDetails(String equipName, String equipDescrip) throws SQLException, ClassNotFoundException {
+        /*  Set connection to DBConnect OpenConnection() method,
+            Create ArrayList to store DB elements
+        */
         
-        
-        sql = String.format("SELECT * FROM inventory WHERE ItemName = '%s' AND Description = '%s'",
-                selectedItemName, selectedDescription);
+        con = db.OpenConnection();
         ArrayList<String> elements = new ArrayList<>();
+        String itemToAdd = null;
+        String warehouseOne = "Primary";
+        String warehouseTwo = "Secondary";
+        int priCounter = 0;
+        int secCounter = 0;
         
-        try{
-            con = db.OpenConnection();
+        
+        try {
+            // Search for entry based on name, description, and location.
+            ResultSet primary, secondary;
+            
+            
+            // This one searches for primary location
+            sql = String.format("SELECT * FROM equipment WHERE EquipmentName = \'%s\' AND Description = \'%s\' AND Location = \'%s\'",
+                    equipName, equipDescrip, warehouseOne);
             stmt = con.prepareStatement(sql);
+            
+            primary = stmt.executeQuery();
+            
+            // Increment priCounter in order to determine the number of entries matching criteria
+            while (primary.next()) {
+                priCounter += 1;
+            }
+            
+            
+            // This one searches for entries at the secondary location
+            sql = String.format("SELECT * FROM equipment WHERE EquipmentName = \'%s\' AND Description = \'%s\' AND Location = \'%s\'",
+                    equipName, equipDescrip, warehouseTwo);
+            stmt = con.prepareStatement(sql);
+            
+            secondary = stmt.executeQuery();
+            
+            // Increment secCounter in order to determine the number of entries matching criteria
+            while (secondary.next()) {
+                secCounter +=1;
+            }
+            
+            // Search for item using just name and description to narrow down 
+            // results again, now that the other queries have determined the number of 
+            // items stored at each different location.
+            sql = String.format("SELECT * FROM equipment WHERE EquipmentName = \'%s\' AND Description = \'%s\'", equipName, equipDescrip);
+            stmt = con.prepareStatement(sql);
+            
             result = stmt.executeQuery();
-            if(result != null){
-                System.out.println("Successfully accessed database to pull inventory from user selection");
-                while(result.next()){
-                    Collections.addAll(elements, result.getString("ItemIDChar"), result.getString("ItemIDNum"),
-                            result.getString("ItemName"), result.getString("Description"),
-                            result.getString("Quantity"), result.getString("Location"));
-                    
+            
+            while (result.next()) {
+                itemToAdd = String.format("%s: %s \n\n --- Available --- \n Primary:\t%s \n Secondary:\t%s",
+                        result.getString("EquipmentName"), result.getString("Description"), 
+                        priCounter, secCounter);
+                if(!elements.contains(itemToAdd)){
+                    elements.add(itemToAdd);
                 }
             }
         }
-        catch(Exception e){
+        catch(Exception e) {
             System.out.println(e);
-            System.out.println("Equipment.searchInventoryForEdit");
+            System.out.println("Equipment.ViewEquipment");
         }
         return elements;
     }
@@ -289,7 +375,7 @@ public class Equipment {
             System.out.println("Equipment.addToInventory");
         }
     }
-    
+
     public void requestNewInventory(ArrayList requestedNewInv, int requestedAmt){
         // adding a request directly to the inventory request as there is no current inventory for this item, will pass values the user inputs
         //0=IDCHAR, 1=IDNUM, 2=ITEMNAME, 3=ITEMDESC, 4=USERidRequesting, 5=REQUESTamt, 6=LOCATION
@@ -382,27 +468,23 @@ public class Equipment {
         /*  Set connection to DBConnect OpenConnection() method,
             Create ArrayList to store DB elements
         */
-        //need to find a way to ensure that dupe items are not added to the list, then pull both when the request is bigger than the primary
         con = db.OpenConnection();
         ArrayList<String> elements = new ArrayList<>();
-        String itemToAdd = null;
         try {
             sql = "SELECT * FROM inventory";
             stmt = con.prepareStatement(sql);
             
             result = stmt.executeQuery();
-            
+
             if (result != null) {
                 System.out.println("Successfully Accessed Inventory DataBase");
             }
             while (result.next()) {
-                itemToAdd = String.format("%s -- %s", result.getString("ItemName"), result.getString("Description"));
-                if(!elements.contains(itemToAdd)){
-                    elements.add(itemToAdd);
-                }
+                elements.add(result.getString("ItemName"));
             }
         }
         catch(Exception e) {
+
             System.out.println(e);
             System.out.println("Equipment.ViewInventory");
         }
@@ -410,37 +492,14 @@ public class Equipment {
     }
     
     public ArrayList ViewInventoryRequests(boolean unfulfilledOnly){
+
             
-        ArrayList<String> elements = new ArrayList<>();
-        if(unfulfilledOnly){
-            sql = "SELECT * FROM inventory_request WHERE Fulfilled = 0";
-        }
-        else {
-            sql = "SELECT * FROM inventory_request ORDER BY InvRequestID DESC LIMIT 20";
-        }
-        try {
-            con = db.OpenConnection();
-            stmt = con.prepareStatement(sql);
-            result = stmt.executeQuery();
-            if (result != null) {
-                System.out.println("Successfully Accessed Inventory Request DataBase");
-            }
-            while (result.next()) {
-                if(result.getString("Fulfilled").equals("1")){
-                    elements.add(String.format("%s -- %s", result.getString("InvRequestID"), "Fulfilled"));
-                }
-                else{
-                    elements.add(String.format("%s -- %s", result.getString("InvRequestID"), "Needed"));
-                }
-            }
-        }
-        catch(Exception e) {
-            System.out.println(e);
-            System.out.println("Equipment.ViewInventoryRequests");
         }
         return elements;
+        
     }
     
+
     public void ReportLoss(String equipIDChar, String equipIDNum) throws SQLException, ClassNotFoundException {
               // Report loss of equipment
         con = db.OpenConnection();
@@ -516,6 +575,7 @@ public class Equipment {
     }
 
     public ArrayList ViewEquipment(String item) throws SQLException, ClassNotFoundException {
+
         // Search inventory for specific item
         /*  Set connection to DBConnect OpenConnection() method,
             Create ArrayList to store DB elements

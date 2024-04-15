@@ -9,15 +9,10 @@ package msystem;
  * @author thoma
  */
 import java.awt.List;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
-import java.lang.String;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
@@ -25,9 +20,8 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import msystem.Employee;
 import msystem.Equipment;
-
 public class MainPage extends javax.swing.JFrame {
-
+    
     DBConnect db = new DBConnect();
     Connection con = null;
     PreparedStatement stmt;
@@ -42,15 +36,7 @@ public class MainPage extends javax.swing.JFrame {
     static String selectingThisRole = null;
     static String selectingThisEndorsement = null;
     Equipment equip = new Equipment();
-    static boolean NewLog = false;
-    static ArrayList<String> nullArray = new ArrayList<>();
-    private int fileCounter = 1; // Counter for generating unique file names
-    String pattern = "yyyy-MM-dd";
-    SimpleDateFormat simpleDate = new SimpleDateFormat(pattern);
-    String currentDate = simpleDate.format(new java.util.Date());
 
-
-    // Assuming reportDetailsField is a JTextArea
     /**
      * Creates new form MainPage
      */
@@ -59,9 +45,11 @@ public class MainPage extends javax.swing.JFrame {
         AccessReportInfo();
         AccessEmployeeInfo();
         AccessInventoryInfo();
+        AccessEquipmentInfo();
         AccessInventoryRepportInfo();
         AccessMaintInfo();
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -93,20 +81,22 @@ public class MainPage extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         txtInvSearch = new javax.swing.JTextField();
         btnInventorySearch = new javax.swing.JButton();
-        btnInventoryAdd = new javax.swing.JButton();
-        btnInventoryRequest = new javax.swing.JButton();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        jList2 = new javax.swing.JList<>();
+        btnAdd = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        lblAdjustments = new javax.swing.JLabel();
         lblInventoryRecord = new javax.swing.JLabel();
-        btnInventoryRecordSearch = new javax.swing.JButton();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        txaRecord = new javax.swing.JTextArea();
+        txtSearchRecord = new javax.swing.JTextField();
+        btnSearchRecord = new javax.swing.JButton();
         jScrollPane11 = new javax.swing.JScrollPane();
         invMainList = new javax.swing.JList<>();
-        jScrollPane9 = new javax.swing.JScrollPane();
-        mainPageInvRequestsLst = new javax.swing.JList<>();
-        inventoryPullOnlyUnfulfilledBtn = new javax.swing.JButton();
-        inventoryPullAllReportsBtn = new javax.swing.JButton();
         maintenanceTab = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
         maintSearchEmpBtn = new javax.swing.JButton();
-        maintPullAll = new javax.swing.JButton();
+        maintSearchCatBtn = new javax.swing.JButton();
         maintSearchDateBtn = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane7 = new javax.swing.JScrollPane();
@@ -196,6 +186,7 @@ public class MainPage extends javax.swing.JFrame {
         equipmentTab.setLayout(equipmentTabLayout);
         equipmentTabLayout.setHorizontalGroup(
             equipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, equipmentTabLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(lblToolname)
@@ -268,28 +259,28 @@ public class MainPage extends javax.swing.JFrame {
             }
         });
 
-        btnInventoryAdd.setText("Add");
-        btnInventoryAdd.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnInventoryAddMouseClicked(evt);
-            }
+        jList2.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
+        jList2.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
         });
+        jScrollPane8.setViewportView(jList2);
 
-        btnInventoryRequest.setText("Request");
-        btnInventoryRequest.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnInventoryRequestMouseClicked(evt);
-            }
-        });
+        btnAdd.setText("Add");
+
+        btnDelete.setText("Delete");
+
+        lblAdjustments.setText("Adjustments:");
 
         lblInventoryRecord.setText("Inventory Record");
 
-        btnInventoryRecordSearch.setText("Open Record");
-        btnInventoryRecordSearch.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnInventoryRecordSearchMouseClicked(evt);
-            }
-        });
+        txaRecord.setColumns(20);
+        txaRecord.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
+        txaRecord.setRows(5);
+        jScrollPane10.setViewportView(txaRecord);
+
+        btnSearchRecord.setText("Search");
 
         invMainList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -297,32 +288,6 @@ public class MainPage extends javax.swing.JFrame {
             public String getElementAt(int i) { return strings[i]; }
         });
         jScrollPane11.setViewportView(invMainList);
-
-        mainPageInvRequestsLst.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        mainPageInvRequestsLst.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                mainPageInvRequestsLstValueChanged(evt);
-            }
-        });
-        jScrollPane9.setViewportView(mainPageInvRequestsLst);
-
-        inventoryPullOnlyUnfulfilledBtn.setText("Pull only Unfulfilled Reports");
-        inventoryPullOnlyUnfulfilledBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                inventoryPullOnlyUnfulfilledBtnMouseClicked(evt);
-            }
-        });
-
-        inventoryPullAllReportsBtn.setText("Pull All Reports");
-        inventoryPullAllReportsBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                inventoryPullAllReportsBtnMouseClicked(evt);
-            }
-        });
 
         javax.swing.GroupLayout inventoryTabLayout = new javax.swing.GroupLayout(inventoryTab);
         inventoryTab.setLayout(inventoryTabLayout);
@@ -332,6 +297,7 @@ public class MainPage extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(inventoryTabLayout.createSequentialGroup()
+
                         .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(inventoryTabLayout.createSequentialGroup()
                                 .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -356,11 +322,29 @@ public class MainPage extends javax.swing.JFrame {
                             .addComponent(lblInventoryRecord))
                         .addGap(19, 19, 19))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inventoryTabLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(inventoryPullAllReportsBtn)
-                            .addComponent(inventoryPullOnlyUnfulfilledBtn))
-                        .addGap(84, 84, 84))))
+                        .addComponent(txtInvSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnInventorySearch))
+                    .addComponent(jScrollPane11, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(18, 18, 18)
+                .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, inventoryTabLayout.createSequentialGroup()
+                            .addGap(6, 6, 6)
+                            .addComponent(btnAdd)
+                            .addGap(18, 18, 18)
+                            .addComponent(btnDelete))
+                        .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblAdjustments))
+                .addGap(18, 18, 18)
+                .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblInventoryRecord)
+                    .addGroup(inventoryTabLayout.createSequentialGroup()
+                        .addComponent(txtSearchRecord, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnSearchRecord))
+                    .addComponent(jScrollPane10))
+                .addGap(19, 19, 19))
         );
         inventoryTabLayout.setVerticalGroup(
             inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -368,63 +352,43 @@ public class MainPage extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
+                    .addComponent(lblAdjustments)
                     .addComponent(lblInventoryRecord))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-                    .addComponent(jScrollPane9))
+                    .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+                    .addComponent(jScrollPane11))
                 .addGap(20, 20, 20)
                 .addGroup(inventoryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtInvSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnInventorySearch)
-                    .addComponent(btnInventoryRequest)
-                    .addComponent(btnInventoryRecordSearch)
-                    .addComponent(btnInventoryAdd)
-                    .addComponent(inventoryPullAllReportsBtn))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(inventoryPullOnlyUnfulfilledBtn)
-                .addContainerGap(25, Short.MAX_VALUE))
+                    .addComponent(btnDelete)
+                    .addComponent(txtSearchRecord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSearchRecord)
+                    .addComponent(btnAdd))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
 
         tabPanePanel.addTab("Inventory", inventoryTab);
 
         maintSearchEmpBtn.setText("Search by Employee ID");
-        maintSearchEmpBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                maintSearchEmpBtnActionPerformed(evt);
-            }
-        });
 
-        maintPullAll.setText("Pull All Logs");
-        maintPullAll.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                maintPullAllActionPerformed(evt);
-            }
-        });
+        maintSearchCatBtn.setText("Search by Category");
 
         maintSearchDateBtn.setText("Search by Date");
-        maintSearchDateBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                maintSearchDateBtnActionPerformed(evt);
-            }
-        });
 
         jLabel3.setText("Maintenance Logs:");
 
         jList1.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
+        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
         jScrollPane7.setViewportView(jList1);
 
         maintLogBtn.setText("New Log");
-        maintLogBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                maintLogBtnMouseClicked(evt);
-            }
-        });
-        maintLogBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                maintLogBtnActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout maintenanceTabLayout = new javax.swing.GroupLayout(maintenanceTab);
         maintenanceTab.setLayout(maintenanceTabLayout);
@@ -434,12 +398,12 @@ public class MainPage extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(maintenanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(maintenanceTabLayout.createSequentialGroup()
-                        .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 767, Short.MAX_VALUE)
+                        .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 682, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
                         .addGroup(maintenanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(maintSearchEmpBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jTextField1)
-                            .addComponent(maintPullAll, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(maintSearchCatBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(maintSearchDateBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(maintLogBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(maintenanceTabLayout.createSequentialGroup()
@@ -459,7 +423,7 @@ public class MainPage extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(maintSearchEmpBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(maintPullAll)
+                        .addComponent(maintSearchCatBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(maintSearchDateBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -520,11 +484,6 @@ public class MainPage extends javax.swing.JFrame {
                 reportAddButtonMouseClicked(evt);
             }
         });
-        reportAddButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                reportAddButtonActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout reportTabLayout = new javax.swing.GroupLayout(reportTab);
         reportTab.setLayout(reportTabLayout);
@@ -546,6 +505,7 @@ public class MainPage extends javax.swing.JFrame {
                                         .addComponent(reportSearchField)
                                         .addGap(18, 18, 18)
                                         .addComponent(reportSearchBtn))
+
                                     .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 731, Short.MAX_VALUE)))
                             .addGroup(reportTabLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -663,6 +623,7 @@ public class MainPage extends javax.swing.JFrame {
                         .addComponent(empSearchBtn)
                         .addGap(18, 18, 18)
                         .addComponent(empLoadAllBtn)
+
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 287, Short.MAX_VALUE)
                         .addComponent(empAddBtn)
                         .addGap(18, 18, 18)
@@ -696,7 +657,10 @@ public class MainPage extends javax.swing.JFrame {
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabPanePanel, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(tabPanePanel)
+                .addContainerGap())
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -769,37 +733,8 @@ public class MainPage extends javax.swing.JFrame {
 
     private void reportPrintMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportPrintMouseClicked
         // TODO add info from details box into a new form that will be saved as a file to the user's device.
-        if(reportList.getSelectedValue() != null){
-            try{
-                saveToFile("report" + reportList.getSelectedValue() + "_" + currentDate + ".txt");
-            }
-            catch(Exception e){
-                System.out.println(e);
-                System.out.println("MainPage.reportPrintMouseClicked");
-            }
-        }
-        else{
-            JOptionPane.showMessageDialog(null, "Please select a report to save.");
-        }
+        JOptionPane.showMessageDialog(null, "Please connect a printer");
     }//GEN-LAST:event_reportPrintMouseClicked
-
-//     private String generateFileName() {
-//       
-//        return "report_" + reportList.getSelectedValue() + "_" + currentDate + ".txt";
-//    }
-    
-    private void saveToFile(String fileName) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
-            String reportContent = emp.PrintReportLogs(reportList.getSelectedValue());
-            writer.write(reportContent);
-            JOptionPane.showMessageDialog(null, "Report saved to file: " + fileName);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Error saving report to file: " + fileName);
-            ex.printStackTrace();
-        }
-    }
-
-
 
     private void reportListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_reportListValueChanged
         try {
@@ -814,7 +749,7 @@ public class MainPage extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
         /*
         String list = "Nothing";
         try {
@@ -830,13 +765,14 @@ public class MainPage extends javax.swing.JFrame {
     private void btnInventorySearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInventorySearchMouseClicked
         // TODO add your handling code here:
         if (txtInvSearch.getText().equals("")) {
-            System.out.println("pulling all inventory successful");
+            System.out.println("Search successful");
             AccessInventoryInfo();
-
-        } else {
+        
+        }
+        else{
             System.out.println("Search successful");
             SearchInventory();
-        }
+    }
     }//GEN-LAST:event_btnInventorySearchMouseClicked
 
     private void empAddBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_empAddBtnMouseClicked
@@ -847,12 +783,14 @@ public class MainPage extends javax.swing.JFrame {
 
     private void empRemoveBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_empRemoveBtnMouseClicked
         // TODO add your handling code here:
-        if (JOptionPane.showInputDialog("Are you sure you want to delete this user? Please enter DELETE to confirm action (case specific)").equals("DELETE")) {
+        if(JOptionPane.showInputDialog("Are you sure you want to delete this user? Please enter DELETE to confirm action (case specific)").equals("DELETE")){
             emp.RemoveEmpInfo(pullThisUserIdForEdit);
             //sql = String.format("DELETE FROM user_authoization WHERE UserID = %s", pullThisUserIdForEdit);
             //System.out.println(sql);
+            
             //JOptionPane.showMessageDialog(null, sql);
-        } else {
+        }
+        else{
             JOptionPane.showMessageDialog(null, "Data not removed, confirmation entered incorrectly");
         }
     }//GEN-LAST:event_empRemoveBtnMouseClicked
@@ -862,7 +800,7 @@ public class MainPage extends javax.swing.JFrame {
         //adding all code of selecting item here in order to not run it multiple times via the edit and delete button
         String test = empList.getSelectedValue();
         //trying to split this string into a list using .spit(",")
-        if (test != null) {
+        if(test != null){
             var Test = new ArrayList<String>(Arrays.asList(test.split(",")));
             pullThisUserIdForEdit = Test.get(0).trim();
             System.out.println(pullThisUserIdForEdit);
@@ -876,19 +814,19 @@ public class MainPage extends javax.swing.JFrame {
         String searchText = null;
         boolean fName = false;
         boolean lName = false;
-
-        if (!searchFirstNameText.equals("") && !searchFirstNameText.equals("First Name")) {
+        
+        if(!searchFirstNameText.equals("") && !searchFirstNameText.equals("First Name")){
             //System.out.println(searchFirstNameText);
             fName = true;
             searchText = searchFirstNameText;
         }
-        if (!searchLastInitText.equals("") && !searchLastInitText.equals("Last Initial")) {
+        if(!searchLastInitText.equals("") && !searchLastInitText.equals("Last Initial")){
             //System.out.println(searchLastInitText);
             lName = true;
             searchText = String.format("%s%s", searchText, searchLastInitText);
         }
         System.out.println(searchText);
-        if (!fName && !lName) {
+        if(!fName && !lName){
             return;
         }
         ArrayList<String> list = new ArrayList<String>();
@@ -906,14 +844,14 @@ public class MainPage extends javax.swing.JFrame {
 
     private void empFirstNameSearchFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_empFirstNameSearchFieldFocusGained
         // TODO add your handling code here:
-        if (!empFirstNameSearchField.getText().equals("")) {
+        if(!empFirstNameSearchField.getText().equals("")){
             empFirstNameSearchField.setText("");
         }
     }//GEN-LAST:event_empFirstNameSearchFieldFocusGained
 
     private void empLastInitSearchFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_empLastInitSearchFieldFocusGained
         // TODO add your handling code here:
-        if (!empLastInitSearchField.getText().equals("")) {
+        if(!empLastInitSearchField.getText().equals("")){
             empLastInitSearchField.setText("");
         }
     }//GEN-LAST:event_empLastInitSearchFieldFocusGained
@@ -936,6 +874,7 @@ public class MainPage extends javax.swing.JFrame {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
+       
         new EditEmployee().setVisible(true);
     }//GEN-LAST:event_empEditBtnMouseClicked
 
@@ -949,86 +888,9 @@ public class MainPage extends javax.swing.JFrame {
         reportSearchField.setText("");
     }//GEN-LAST:event_reportSearchFieldFocusGained
 
-    private void maintSearchEmpBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maintSearchEmpBtnActionPerformed
-        // TODO add your handling code here:
-        ArrayList<String> list = new ArrayList<String>();
-        try {
-            String input = String.format(jTextField1.getText());
-            try {
-                list = emp.PullMaintenanceActivities(jTextField1.getText());
-                DefaultListModel model = new DefaultListModel();
-                model.addAll(list);
-                jList1.setModel(model);
-            } catch (SQLException ex) {
-                Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "Please enter a valid User ID");
-        }
-    }//GEN-LAST:event_maintSearchEmpBtnActionPerformed
-
-    private void maintPullAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maintPullAllActionPerformed
-        // TODO add your handling code here:
-        // do we even have a category for these? we could change this to a pull all button >>>>Love it
-        AccessMaintInfo();
-    }//GEN-LAST:event_maintPullAllActionPerformed
-
-    private void maintSearchDateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maintSearchDateBtnActionPerformed
-        // TODO add your handling code here:
-        ArrayList<String> list = new ArrayList<String>();
-        try {
-
-            String input = String.format(jTextField1.getText());
-            try {
-                String pattern = "yyyy-MM-dd";
-                list = emp.PullMaintenanceActivitiesDate(jTextField1.getText());
-                DefaultListModel model = new DefaultListModel();
-                model.addAll(list);
-                jList1.setModel(model);
-            } catch (SQLException ex) {
-                Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "Please enter a valid Date");
-        }
-    }//GEN-LAST:event_maintSearchDateBtnActionPerformed
-
-    private void maintLogBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maintLogBtnActionPerformed
-        // TODO add your handling code here:
-        NewLog = true;
-        ArrayList<String> list = new ArrayList<String>();
-        try {
-            list = emp.PullEmpInfo(pullThisUserIdForEdit);
-            selectingThisUserID = pullThisUserIdForEdit;
-            selectingThisUsername = list.get(1);
-            selectingThisPassword = null;
-            selectingThisRole = list.get(2);
-            selectingThisEndorsement = list.get(3);
-        } catch (SQLException ex) {
-            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        new NewLog().setVisible(true);
-    }//GEN-LAST:event_maintLogBtnActionPerformed
-
-    private void reportAddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportAddButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_reportAddButtonActionPerformed
-
-    private void maintLogBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_maintLogBtnMouseClicked
-        // TODO add your handling code here:
-
-        new NewLog().setVisible(true);
-
-    }//GEN-LAST:event_maintLogBtnMouseClicked
-
     private void equipmentPullAllBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_equipmentPullAllBtnMouseClicked
+        AccessEquipmentInfo();        
+/*
         // TODO add your handling code here:
         System.out.println("Equipment Pull All Btn");
         sql = "SELECT * FROM equipment";
@@ -1052,9 +914,11 @@ public class MainPage extends javax.swing.JFrame {
         DefaultListModel model = new DefaultListModel();
         model.addAll(elements);
         lstTools.setModel(model);
+*/
     }//GEN-LAST:event_equipmentPullAllBtnMouseClicked
 
     private void lstToolsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstToolsValueChanged
+
         // TODO add your handling code here:
         String equipPullThisCharacterID = null;
         String equipPullThisCharacterNum = null;
@@ -1085,6 +949,54 @@ public class MainPage extends javax.swing.JFrame {
             System.out.println(e);
             System.out.println("MainPage.equipmentIDChar");
         }
+
+        
+        
+        // Previous example code:
+        
+//        // TODO add your handling code here:
+//        String equipPullThisCharacterID = null;
+//        String equipPullThisCharacterNum = null;
+//        String equipListSelection = lstTools.getSelectedValue().substring(0,10).trim();
+//        System.out.println(equipListSelection);
+//        if(equipListSelection != null){
+//            var equipmentListSelectionToList = new ArrayList<String>(Arrays.asList(equipListSelection.split("-")));
+//            System.out.println(equipmentListSelectionToList);
+//            equipPullThisCharacterID = equipmentListSelectionToList.get(0).trim();
+//            equipPullThisCharacterNum = equipmentListSelectionToList.get(1).trim();
+//         
+//        }
+//        System.out.println(equipPullThisCharacterID);
+//        System.out.println(equipPullThisCharacterNum);
+//        sql = String.format("SELECT * FROM equipment WHERE EquipmentIDChar = '%s' AND EquipmentIDNum = %s", equipPullThisCharacterID,equipPullThisCharacterNum);
+//        try {
+//            con = db.OpenConnection();
+//            stmt = con.prepareStatement(sql);
+//            result = stmt.executeQuery();
+//            if(result!=null){
+//                System.out.println("Successfully accessed database to pull equipment ID and characger number.");
+//            }
+//            while(result.next()){
+//                String elements;
+//                elements = String.format("%5s-%4s %s",result.getString("EquipmentIDChar"),result.getString("EquipmentIDNum"),result.getString("EquipmentName"));
+//                System.out.println(elements);
+//            }
+//            
+//            //System.out.println(elements);
+//            /*
+//            If you uncomment this print statement you can see that it cannot see the elements variable
+//            this is not a big deal since you are only pulling one item and pushing it into the description field,
+//            but if it was something like the previous method it would only ever display one item at a time since you are also initilizing that variable in the same while loop
+//            As much as possible initalize variables at the beginning of the method and outside of any loops or blocks
+//            
+//            add the set text line and this method should work as intended, just need the string to be formatted correctly after that
+//            */
+//        }
+//        catch (Exception e){
+//            System.out.println(e);
+//            System.out.println("MainPage.equipmentIDChar");
+    }//GEN-LAST:event_lstToolsValueChanged
+
 
     }//GEN-LAST:event_lstToolsValueChanged
 
@@ -1268,25 +1180,22 @@ public class MainPage extends javax.swing.JFrame {
             }
         });
     }
-
-    public void AccessEquipmentInfo() {
-
-    }
     
-    public void AccessMaintInfo(){
-        ArrayList<String> list = new ArrayList<String>();
+    public void AccessEquipmentInfo() {
+             ArrayList<String> list = new ArrayList<String>();
         try {
-            list = emp.PullAllMaintenanceActivities();
+            list = equip.ViewEquipment();
             DefaultListModel model = new DefaultListModel();
             model.addAll(list);
-            jList1.setModel(model);
+            lstTools.setModel(model);
         } catch (SQLException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+        }   
 
+    }
+    
     public void AccessInventoryInfo() {
         ArrayList<String> list = new ArrayList<String>();
         try {
@@ -1294,7 +1203,6 @@ public class MainPage extends javax.swing.JFrame {
             DefaultListModel model = new DefaultListModel();
             model.addAll(list);
             invMainList.setModel(model);
-            
         } catch (SQLException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -1302,23 +1210,9 @@ public class MainPage extends javax.swing.JFrame {
         }
     }
     
-    public void AccessInventoryRepportInfo(){
-        ArrayList<String> list = new ArrayList<String>();
-        try{
-            DefaultListModel model = new DefaultListModel();
-            list = equip.ViewInventoryRequests(false);
-            model.addAll(list);
-            mainPageInvRequestsLst.setModel(model);
-        }
-        catch(Exception e){
-            System.out.println(e);
-            System.out.println("MainPage.AccessInventoryRepportInfo");
-        }
-    }
-
     public void SearchInventory() {
         ArrayList<String> list = new ArrayList<String>();
-
+                
         try {
             list = equip.SearchInventory(txtInvSearch.getText());
             DefaultListModel model = new DefaultListModel();
@@ -1330,7 +1224,7 @@ public class MainPage extends javax.swing.JFrame {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public void AccessEmployeeInfo() {
         ArrayList<String> list = new ArrayList<String>();
         try {
@@ -1344,7 +1238,7 @@ public class MainPage extends javax.swing.JFrame {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public void AccessReportInfo() {
         ArrayList<String> list = new ArrayList<String>();
         try {
@@ -1357,7 +1251,7 @@ public class MainPage extends javax.swing.JFrame {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }        
     }
     /*
     public void ViewReportDetails() throws ClassNotFoundException {
@@ -1374,14 +1268,14 @@ public class MainPage extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Employee;
+
     private javax.swing.JButton btnCheckavailable;
     private javax.swing.JButton btnCheckin;
     private javax.swing.JButton btnCheckout;
-    private javax.swing.JButton btnInventoryAdd;
-    private javax.swing.JButton btnInventoryRecordSearch;
-    private javax.swing.JButton btnInventoryRequest;
+    private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnInventorySearch;
     private javax.swing.JButton btnReportloss;
+    private javax.swing.JButton btnSearchRecord;
     private javax.swing.JButton empAddBtn;
     private javax.swing.JButton empEditBtn;
     private javax.swing.JTextField empFirstNameSearchField;
@@ -1394,14 +1288,17 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JButton equipmentPullAllBtn;
     private javax.swing.JPanel equipmentTab;
     private javax.swing.JList<String> invMainList;
-    private javax.swing.JButton inventoryPullAllReportsBtn;
-    private javax.swing.JButton inventoryPullOnlyUnfulfilledBtn;
     private javax.swing.JPanel inventoryTab;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JList<String> jList1;
+
+    private javax.swing.JList<String> jList2;
+    private javax.swing.JList<String> jList3;
+
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -1409,19 +1306,20 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
-    private javax.swing.JTextArea jTextArea1;
+
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel lblAdjustments;
     private javax.swing.JLabel lblInventoryRecord;
     private javax.swing.JLabel lblTooldescription;
     private javax.swing.JLabel lblToolname;
     private javax.swing.JMenu logOutBtn;
     private javax.swing.JList<String> lstTools;
     private javax.swing.JMenuBar mainMenuBar;
-    private javax.swing.JList<String> mainPageInvRequestsLst;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JButton maintLogBtn;
-    private javax.swing.JButton maintPullAll;
+    private javax.swing.JButton maintSearchCatBtn;
     private javax.swing.JButton maintSearchDateBtn;
     private javax.swing.JButton maintSearchEmpBtn;
     private javax.swing.JPanel maintenanceTab;
@@ -1435,8 +1333,10 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JTextField reportSearchField;
     private javax.swing.JPanel reportTab;
     private javax.swing.JTabbedPane tabPanePanel;
+    private javax.swing.JTextArea txaRecord;
     private javax.swing.JTextArea txaTooldescription;
     private javax.swing.JTextField txtInvSearch;
+    private javax.swing.JTextField txtSearchRecord;
     // End of variables declaration//GEN-END:variables
 
     private void setVisisble(boolean b) {
