@@ -9,9 +9,12 @@ package msystem;
  * @author thoma
  */
 import java.awt.List;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Scanner;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -1020,6 +1023,75 @@ public class MainPage extends javax.swing.JFrame {
         });
     }
     
+    public String LimitAccess() throws SQLException, ClassNotFoundException {
+//        TODO: pull userID from UserAuth in order to add it here
+//        then call this method when the jframe instance starts
+        
+//        UserAuth auth = new UserAuth();
+        
+        String userID = ReturnUserID();
+        ArrayList<String> elements = new ArrayList<>();
+        String role;
+        
+        con = db.OpenConnection();
+        
+        sql = String.format("SELECT Role FROM user_authoization WHERE UserID = \'%s\'", userID);
+        stmt = con.prepareStatement(sql);
+
+        result = stmt.executeQuery();
+        
+        while (result.next()) {
+            elements.add(result.getString("Role"));
+        }
+        
+        role = elements.get(0);
+        return role;
+    }
+    
+    public void SetToolSummary() throws SQLException, ClassNotFoundException {
+        String userID = ReturnUserID();
+        ArrayList<String> elements = new ArrayList<>();
+        String role;
+        
+        con = db.OpenConnection();
+        
+        sql = String.format("SELECT equipment_checkout.CheckoutID, equipment.EquipmentIDChar, equipment.EquipmentIDNum, " +
+            "equipment.EquipmentName, equipment.Description FROM equipment_checkout INNER JOIN " +
+            "equipment ON equipment_checkout.EquipmentIDChar=equipment.EquipmentIDChar AND " +
+            "equipment_checkout.EquipmentIDNum=equipment.EquipmentIDNum WHERE equipment_checkout.UserID=\'%s\'" +
+            "AND equipment_checkout.Status= \'Checked out\'", userID);
+        stmt = con.prepareStatement(sql);
+
+        result = stmt.executeQuery();
+        
+        while (result.next()) {
+            String itemName = result.getString("EquipmentName");
+            String itemDescription = result.getString("Description");
+            String equipmentInfo = String.format("%s -- %s", itemName, itemDescription);
+            elements.add(equipmentInfo);
+        }
+        
+        DefaultListModel model = new DefaultListModel();
+        model.addAll(elements);
+    }
+    
+    public String ReturnUserID() {
+        String userID = null;
+        try {
+            File userIDFile = new File("currentuser.txt");
+            Scanner myReader = new Scanner(userIDFile);
+            while (myReader.hasNextLine()) {
+              String data = myReader.nextLine();
+              userID = data;
+              System.out.println(data);
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+        }
+        return userID;
+    }
+
     public void AccessEquipmentInfo() {
         ArrayList<String> list = new ArrayList<>();
         try {
