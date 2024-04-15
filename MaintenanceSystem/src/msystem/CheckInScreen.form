@@ -61,7 +61,7 @@
                       <Group type="102" alignment="1" attributes="0">
                           <Component id="checkinFinishedBtn" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
-                          <Component id="checkinCancelBtn" min="-2" pref="99" max="-2" attributes="0"/>
+                          <Component id="checkinCheckInViaEquipIDBtn" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="checkinCheckInBtn" min="-2" pref="99" max="-2" attributes="0"/>
                       </Group>
@@ -95,7 +95,7 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="checkinCheckInBtn" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="checkinCancelBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="checkinCheckInViaEquipIDBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="checkinFinishedBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
@@ -124,12 +124,12 @@
             <Property name="text" type="java.lang.String" value="Checked Out Equipment:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="checkinCancelBtn">
+        <Component class="javax.swing.JButton" name="checkinCheckInViaEquipIDBtn">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Cancel"/>
+            <Property name="text" type="java.lang.String" value="Check in via EquipID"/>
           </Properties>
           <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="checkinCancelBtnMouseClicked"/>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="checkinCheckInViaEquipIDBtnMouseClicked"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="checkinSearchBtn">

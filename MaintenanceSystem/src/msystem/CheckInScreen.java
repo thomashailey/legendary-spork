@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.logging.Level;
@@ -72,7 +73,7 @@ public class CheckInScreen extends javax.swing.JFrame {
         checkinUserIDField = new javax.swing.JTextField();
         checkinCheckInBtn = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        checkinCancelBtn = new javax.swing.JButton();
+        checkinCheckInViaEquipIDBtn = new javax.swing.JButton();
         checkinSearchBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         checkinLocationDropdown = new javax.swing.JComboBox<>();
@@ -93,10 +94,10 @@ public class CheckInScreen extends javax.swing.JFrame {
 
         jLabel5.setText("Checked Out Equipment:");
 
-        checkinCancelBtn.setText("Cancel");
-        checkinCancelBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+        checkinCheckInViaEquipIDBtn.setText("Check in via EquipID");
+        checkinCheckInViaEquipIDBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                checkinCancelBtnMouseClicked(evt);
+                checkinCheckInViaEquipIDBtnMouseClicked(evt);
             }
         });
 
@@ -148,7 +149,7 @@ public class CheckInScreen extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(checkinFinishedBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(checkinCancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(checkinCheckInViaEquipIDBtn)
                         .addGap(18, 18, 18)
                         .addComponent(checkinCheckInBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -174,7 +175,7 @@ public class CheckInScreen extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(checkinCheckInBtn)
-                    .addComponent(checkinCancelBtn)
+                    .addComponent(checkinCheckInViaEquipIDBtn)
                     .addComponent(checkinFinishedBtn))
                 .addGap(14, 14, 14))
         );
@@ -258,12 +259,37 @@ public class CheckInScreen extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_checkinSearchBtnMouseClicked
 
-    private void checkinCancelBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkinCancelBtnMouseClicked
+    private void checkinCheckInViaEquipIDBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkinCheckInViaEquipIDBtnMouseClicked
         // TODO add your handling code here:
-        // set this page not visible, reset the editEmployee variable
-        this.setVisible(false);
-        MainPage.editEmployee = false;
-    }//GEN-LAST:event_checkinCancelBtnMouseClicked
+        // create a popup to accept just the equipment ID, this is 
+        //   for the equipment that does not have a check out record and is not associated with an employee ID
+        String bypassCheckIn = JOptionPane.showInputDialog("Please enter an equipment ID as \"APM-1\"\nThis check in will default to Primary Warehouse ");
+        ArrayList<String> bypassCheckInSplit = new ArrayList<String>(Arrays.asList(bypassCheckIn.split("-")));
+        sql = String.format("SELECT * FROM equipment_checkout WHERE EquipmentIDChar = \"%s\" AND EquipmentIDNum = %s",
+                bypassCheckInSplit.get(0).toUpperCase(), bypassCheckInSplit.get(1));
+        try{
+            con = db.OpenConnection();
+            stmt = con.prepareStatement(sql);
+            result = stmt.executeQuery();
+            while(result.next()){
+                if(result.getString("CheckoutID")!=null){
+                    JOptionPane.showMessageDialog(null, "Please checkin via the employee ID\nThis Equipment has a checkout record.");
+                    con.close();
+                    return;
+                }
+            }   
+            JOptionPane.showMessageDialog(null, "Checking in to Primary Warehouse.");
+            sql = String.format("UPDATE equipment SET Status = \'Available\', Location = \"Primary\" WHERE EquipmentIDChar = \'%s\' AND EquipmentIDNum = \'%s\'",
+                bypassCheckInSplit.get(0).toUpperCase(), bypassCheckInSplit.get(1));
+            stmt = con.prepareStatement(sql);
+            stmt.execute();
+            con.close();
+        }
+        catch(Exception e){
+            System.out.println(e);
+            System.out.println("CheckInScreen.checkinCheckInViaEquipIDBtnMouseClicked");
+        }
+    }//GEN-LAST:event_checkinCheckInViaEquipIDBtnMouseClicked
 
     private void checkinCheckInBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkinCheckInBtnMouseClicked
         // TODO add your handling code here:
@@ -431,8 +457,8 @@ public class CheckInScreen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton checkinCancelBtn;
     private javax.swing.JButton checkinCheckInBtn;
+    private javax.swing.JButton checkinCheckInViaEquipIDBtn;
     private javax.swing.JList<String> checkinEquipList;
     private javax.swing.JButton checkinFinishedBtn;
     private javax.swing.JComboBox<String> checkinLocationDropdown;
