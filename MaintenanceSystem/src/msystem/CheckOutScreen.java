@@ -39,6 +39,7 @@ public class CheckOutScreen extends javax.swing.JFrame {
         checkoutEquipNumField.setText(MainPage.getEquipmentNum);
         checkoutEquipDescriptionField.setText(MainPage.getEquipmentDescrip);
         
+        // populate user id input field with saved user id
         checkoutUserIDField.setText(MainPage.getUserID);
         
     }
