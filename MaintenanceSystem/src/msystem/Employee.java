@@ -264,10 +264,152 @@ public class Employee {
         return results;
     }
     
+    public String PrintReportLogs(String selectedReport){
+        String reportToPrint = null;
+        sql = String.format("SELECT * FROM reports WHERE ReportID = %s", selectedReport);
+        try{
+            con = db.OpenConnection();
+            stmt = con.prepareStatement(sql);
+            result = stmt.executeQuery();
+            while(result.next()){
+                reportToPrint = String.format("Report ID   - %s\nUserID      - %s\nReport Date - %s\nType/ Description\n%s\n\nReport Body\n%s", 
+                        result.getString("ReportID"), result.getString("UserID"), 
+                        result.getString("ReportDate"), result.getString("ReportType"),
+                        result.getString("data"));
+            }
+        }
+        catch(Exception e){
+            System.out.println(e);
+            System.out.println("Employee.PrintReportLogs");
+        }
+        
+        return reportToPrint;
+    }
+    
+    public ArrayList PullMaintenanceActivities(String selectedItem) throws SQLException, ClassNotFoundException {
+
+        con = db.OpenConnection();
+        ArrayList<String> elements = new ArrayList<>();
+
+        try {  sql = "SELECT * FROM maintenance_activities WHERE UserID = ?";
+            stmt = con.prepareStatement(sql);
+            stmt.setInt(1, Integer.parseInt(selectedItem));
+            result = stmt.executeQuery();
+
+            if (result != null) {
+                System.out.println("Successfully Accessed DataBase to pull maintenance activities");
+            }
+            while (result.next()) {
+            elements.add(String.format("%s,%s,   %s", 
+                        String.format("%10s",result.getString("ActivityID")), 
+                        String.format("%12s", result.getString("ActivityDate")),
+                        result.getString("Description")));
+            }
+
+            con.close();
+            System.out.println("Database closed");
+         
+        }
+        
+        catch(Exception e) {
+            System.out.println(e);
+            System.out.println("Employee.PullMaintenanceActivities");
+        }
+        return elements;
+    }
+    
+    public ArrayList PullAllMaintenanceActivities() throws SQLException, ClassNotFoundException {
+
+       con = db.OpenConnection();
+        ArrayList<String> elements = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM maintenance_activities";
+            stmt = con.prepareStatement(sql);
+            
+            result = stmt.executeQuery();
+
+            if (result != null) {
+                System.out.println("Successfully Accessed Maintenance DataBase");
+            }
+            while (result.next()) {
+                elements.add(String.format("%s,%s,   %s, %s",
+                        String.format("%10s",result.getString("ActivityID")),
+                        String.format("%12s", result.getString("UserID")),
+                        String.format("%12s", result.getString("ActivityDate")),
+                        result.getString("Description")));
+            }
+        
+           }catch(Exception e) {
+            System.out.println(e);
+            System.out.println("Employee.PullMaintenanceActivities");
+        }
+        return elements;
+    }
+    
+    public ArrayList PullMaintenanceActivitiesDate(String selectedItem) throws SQLException, ClassNotFoundException {
+
+        con = db.OpenConnection();
+        ArrayList<String> elements = new ArrayList<>();
+
+        try {  sql = "SELECT * FROM maintenance_activities WHERE ActivityDate = ?";
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1, selectedItem);
+            result = stmt.executeQuery();
+
+            if (result != null) {
+                System.out.println("Successfully Accessed DataBase to pull maintenance activities");
+            }
+            while (result.next()) {
+            elements.add(String.format("%s,%s,   %s", 
+                        String.format("%10s",result.getString("ActivityID")), 
+                        String.format("%12s", result.getString("UserID")),
+                        result.getString("Description")));
+            }
+
+            con.close();
+            System.out.println("Database closed");
+         
+        }
+        catch(Exception e) {
+            System.out.println(e);
+            System.out.println("Employee.PullMaintenanceActivities");
+        }
+        return elements;
+    }
+    
+    public ArrayList ConfirmNewLog(int userInput) throws SQLException, ClassNotFoundException {
+
+        con = db.OpenConnection();
+        ArrayList<String> elements = new ArrayList<>();
+
+        try {  sql = "SELECT * FROM maintenance_activities WHERE ActivityDate = ?";
+            stmt = con.prepareStatement(sql);
+            stmt.setInt(1, userInput);
+            result = stmt.executeQuery();
+
+            if (result != null) {
+                System.out.println("Successfully Accessed DataBase to pull maintenance activities");
+            }
+            while (result.next()) {
+            elements.add(String.format("%s,%s,   %s", 
+                        String.format("%10s",result.getString("ActivityID")), 
+                        String.format("%12s", result.getString("UserID")),
+                        result.getString("Description")));
+            }
+
+            con.close();
+            System.out.println("Database closed");
+         
+        }
+        catch(Exception e) {
+            System.out.println(e);
+            System.out.println("Employee.PullMaintenanceActivities");
+        }
+        return elements;
+    }
+    
     public void AccessLogs() {
         // stretch goal - if we have time to add
-
-        
     }
     
     public void PrintRecords() {
