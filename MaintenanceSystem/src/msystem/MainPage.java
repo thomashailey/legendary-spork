@@ -231,6 +231,11 @@ public class MainPage extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        lstActionsTaken.addContainerListener(new java.awt.event.ContainerAdapter() {
+            public void componentAdded(java.awt.event.ContainerEvent evt) {
+                lstActionsTakenComponentAdded(evt);
+            }
+        });
         jScrollPane12.setViewportView(lstActionsTaken);
 
         btnReportlost.setBackground(new java.awt.Color(255, 51, 51));
@@ -293,33 +298,33 @@ public class MainPage extends javax.swing.JFrame {
             EquipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(EquipmentTabLayout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addGroup(EquipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(EquipmentTabLayout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(245, 245, 245))
-                    .addGroup(EquipmentTabLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addGap(40, 40, 40)))
                 .addGroup(EquipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 131, Short.MAX_VALUE)
+                    .addGroup(EquipmentTabLayout.createSequentialGroup()
+                        .addGroup(EquipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(EquipmentTabLayout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(245, 245, 245))
+                            .addGroup(EquipmentTabLayout.createSequentialGroup()
+                                .addComponent(jScrollPane1)
+                                .addGap(40, 40, 40)))
+                        .addGroup(EquipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(EquipmentTabLayout.createSequentialGroup()
+                        .addComponent(equipmentPullAllBtn)
+                        .addGap(26, 26, 26)
+                        .addComponent(btnCheckin)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnCheckout)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
                 .addGroup(EquipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(EquipmentTabLayout.createSequentialGroup()
+                        .addComponent(btnRefreshList)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnReportlost))
                     .addComponent(jLabel6)
                     .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(34, 34, 34))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EquipmentTabLayout.createSequentialGroup()
-                .addGap(120, 120, 120)
-                .addComponent(btnCheckin)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCheckout)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnRefreshList)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(equipmentPullAllBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnReportlost)
-                .addContainerGap())
         );
         EquipmentTabLayout.setVerticalGroup(
             EquipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -335,18 +340,13 @@ public class MainPage extends javax.swing.JFrame {
                     .addComponent(jScrollPane2)
                     .addComponent(jScrollPane12, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(EquipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EquipmentTabLayout.createSequentialGroup()
-                        .addGroup(EquipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnReportlost)
-                            .addComponent(equipmentPullAllBtn))
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EquipmentTabLayout.createSequentialGroup()
-                        .addGroup(EquipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnRefreshList)
-                            .addComponent(btnCheckout)
-                            .addComponent(btnCheckin))
-                        .addGap(17, 17, 17))))
+                .addGroup(EquipmentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnRefreshList)
+                    .addComponent(btnCheckout)
+                    .addComponent(btnCheckin)
+                    .addComponent(equipmentPullAllBtn)
+                    .addComponent(btnReportlost))
+                .addGap(17, 17, 17))
         );
 
         tabPanePanel.addTab("Equipment", EquipmentTab);
@@ -1345,8 +1345,26 @@ public class MainPage extends javax.swing.JFrame {
     }//GEN-LAST:event_btnReportlostMouseClicked
 
     private void btnRefreshListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRefreshListMouseClicked
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            SetToolSummary();
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnRefreshListMouseClicked
+
+    private void lstActionsTakenComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_lstActionsTakenComponentAdded
+        try {
+            // TODO add your handling code here:
+            SetToolSummary();
+        } catch (SQLException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_lstActionsTakenComponentAdded
 
 
     /**
