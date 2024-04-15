@@ -282,8 +282,63 @@ public class Employee {
             System.out.println(e);
             System.out.println("Employee.PrintReportLogs");
         }
-        
         return reportToPrint;
+    }
+    
+    public String pullAllLostForReport(){
+        String allLostEquipment = "";
+        sql = "SELECT equipment.EquipmentIDChar, equipment.EquipmentIDNum, equipment.Location, equipment_checkout.UserID " +
+            "FROM equipment " +
+            "LEFT JOIN equipment_checkout ON equipment.EquipmentIDChar = equipment_checkout.EquipmentIDChar " +
+            "AND equipment.EquipmentIDNum = equipment_checkout.EquipmentIDNum " +
+            "WHERE equipment.Location = \"Lost\"";
+        
+        try{
+            con = db.OpenConnection();
+            stmt = con.prepareStatement(sql);
+            result = stmt.executeQuery();
+            while(result.next()){
+                if(result.getString("UserID") == null){
+                    allLostEquipment = String.format("%s\nEquipment %s%s lost without a UserID associated", 
+                            allLostEquipment, result.getString("EquipmentIDChar"),
+                            result.getString("EquipmentIDNum"));
+                }
+                else{
+                    allLostEquipment = String.format("%s\nEquipment %s%s lost by Employee %s", 
+                            allLostEquipment, result.getString("EquipmentIDChar"),
+                            result.getString("EquipmentIDNum"), result.getString("UserID"));
+                }
+                
+            }
+        }
+        catch(Exception e){
+            System.out.println(e);
+            System.out.println("Employee.pullAllLostForReport");
+        }
+
+        return allLostEquipment;
+    }
+    
+    public void addNewReport(ArrayList reportToAdd){
+        //order UID, Date, report type, data
+        sql = String.format("INSERT INTO reports(UserID, ReportDate, ReportType, Data) VALUES(%s, '%s', \"%s\", \"%s\")", 
+                reportToAdd.get(0), reportToAdd.get(1), reportToAdd.get(2), reportToAdd.get(3));
+        //JOptionPane.showMessageDialog(null, sql);
+        try {
+            con = db.OpenConnection();
+            stmt = con.prepareStatement(sql);
+            stmt.execute();
+            
+            if (result != null) {
+                System.out.println("Successfully Accessed DataBase to add report");
+            }
+            con.close();
+            System.out.println("Database closed");
+        }
+        catch(Exception e) {
+            System.out.println(e);
+            System.out.println("Employee.addNewReport");
+        }
     }
     
     public ArrayList PullMaintenanceActivities(String selectedItem) throws SQLException, ClassNotFoundException {

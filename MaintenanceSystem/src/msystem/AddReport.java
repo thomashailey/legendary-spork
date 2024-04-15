@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import javax.swing.JOptionPane;
 
@@ -15,6 +17,7 @@ import javax.swing.JOptionPane;
  * @author never
  */
 public class AddReport extends javax.swing.JFrame {
+    Employee emp = new Employee();
     boolean mainTextVisible = false;
     String pattern = "yyyy-MM-dd";
     SimpleDateFormat simpleDate = new SimpleDateFormat(pattern);
@@ -186,28 +189,14 @@ public class AddReport extends javax.swing.JFrame {
     private void addReportConfirmBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addReportConfirmBtnMouseClicked
         // TODO add your handling code here:
         //TODO checking against the date code, add error checking
-        sql = String.format("INSERT INTO reports(UserID, ReportDate, ReportType, Data) VALUES(%s, '%s', \"%s\", \"%s\")", 
-                addReportUserIdTxt.getText(), addReportDateTxt.getText(), addReportTypeTxt.getText(), addReportMainReportTxtBox.getText());
-        //JOptionPane.showMessageDialog(null, sql);
-        try {
-            con = db.OpenConnection();
-            stmt = con.prepareStatement(sql);
-            stmt.execute();
-            
-            if (result != null) {
-                System.out.println("Successfully Accessed DataBase to add report");
-            }
-            /*
-            while (result.next()) {
-                System.out.print(result.getString("Username") + ", " + result.getString("UserID"));
-            }*/
-            con.close();
-            System.out.println("Database closed");
-        }
-        catch(Exception e) {
-            System.out.println(e);
-            System.out.println("AddReport.addReporConfirmBtnMouseClicked");
-        }
+        // add to an arraylist to make a report
+        // order UID, Date, report type, data
+        ArrayList reportToAdd = new ArrayList<>();
+        Collections.addAll(reportToAdd, addReportUserIdTxt.getText(), 
+                addReportDateTxt.getText(), addReportTypeTxt.getText(),
+                addReportMainReportTxtBox.getText());
+        emp.addNewReport(reportToAdd);
+        
         MainPage.editEmployee = false;
         this.setVisible(false);
     }//GEN-LAST:event_addReportConfirmBtnMouseClicked

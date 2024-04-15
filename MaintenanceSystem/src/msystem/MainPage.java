@@ -18,6 +18,7 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -121,6 +122,7 @@ public class MainPage extends javax.swing.JFrame {
         reportPrint = new javax.swing.JButton();
         reportLoadAllBtn = new javax.swing.JButton();
         reportAddButton = new javax.swing.JButton();
+        reportLostGenerateBtn = new javax.swing.JButton();
         Employee = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
         empList = new javax.swing.JList<>();
@@ -312,11 +314,6 @@ public class MainPage extends javax.swing.JFrame {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
-        });
-        mainPageInvRequestsLst.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                mainPageInvRequestsLstValueChanged(evt);
-            }
         });
         jScrollPane9.setViewportView(mainPageInvRequestsLst);
 
@@ -517,6 +514,14 @@ public class MainPage extends javax.swing.JFrame {
             }
         });
 
+        reportLostGenerateBtn.setBackground(new java.awt.Color(255, 51, 51));
+        reportLostGenerateBtn.setText("Lost Report");
+        reportLostGenerateBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                reportLostGenerateBtnMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout reportTabLayout = new javax.swing.GroupLayout(reportTab);
         reportTab.setLayout(reportTabLayout);
         reportTabLayout.setHorizontalGroup(
@@ -528,7 +533,9 @@ public class MainPage extends javax.swing.JFrame {
                         .addComponent(reportListLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(reportTabLayout.createSequentialGroup()
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(reportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(reportLostGenerateBtn))
                         .addGroup(reportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(reportTabLayout.createSequentialGroup()
                                 .addGap(18, 18, 18)
@@ -565,7 +572,8 @@ public class MainPage extends javax.swing.JFrame {
                 .addGroup(reportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(reportPrint)
                     .addComponent(reportLoadAllBtn)
-                    .addComponent(reportAddButton))
+                    .addComponent(reportAddButton)
+                    .addComponent(reportLostGenerateBtn))
                 .addGap(15, 15, 15))
         );
 
@@ -736,7 +744,16 @@ public class MainPage extends javax.swing.JFrame {
  
     
     private void btnInventoryRequestMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInventoryRequestMouseClicked
-        // TODO add your handling code here:
+        /*
+        Inventory request button clicked
+        This will pull the selected item from the inventory table on the left and 
+            fill out information from the inventory table to the new window that is generated
+        If nothing is selected, it will prompt a confirm rom the user that they
+            are requesting a completely new item
+            -if yes, open a blank window
+            -if no, warn to select an item and then click the button
+        */
+        
         if (invMainList.getSelectedValue() != null) {
             ArrayList<String> requestedInv = new ArrayList<String>(Arrays.asList(invMainList.getSelectedValue().split(" -- ")));
             ArrayList<String> list = new ArrayList<>();
@@ -757,12 +774,13 @@ public class MainPage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnInventoryRequestMouseClicked
 
-    private void mainPageInvRequestsLstValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_mainPageInvRequestsLstValueChanged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_mainPageInvRequestsLstValueChanged
-
     private void btnInventoryRecordSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInventoryRecordSearchMouseClicked
-        // TODO add your handling code here:
+        /*
+        Inventory Record Search Button clicked
+        This will open up a details window of the inventory record selected from the right
+            of the inventory tab
+        If no item is selected it will do nothing 
+        */
         if (mainPageInvRequestsLst.getSelectedValue() != null) {
             //pulling record
             var recordPulled = new ArrayList<String>(Arrays.asList(mainPageInvRequestsLst.getSelectedValue().split("--")));
@@ -793,8 +811,11 @@ public class MainPage extends javax.swing.JFrame {
     }//GEN-LAST:event_btnInventoryRecordSearchMouseClicked
 
     private void inventoryPullOnlyUnfulfilledBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inventoryPullOnlyUnfulfilledBtnMouseClicked
-        // TODO add your handling code here:
-
+        /*
+        Pull only Unfulfilled Reports Button Clicked
+        This will pull all unfulfilled inventory requests for management to look at
+            and/or use to fill out their new inventory request
+        */
         ArrayList<String> list = new ArrayList<String>();
         try {
             list = equip.ViewInventoryRequests(true);
@@ -1172,6 +1193,22 @@ public class MainPage extends javax.swing.JFrame {
         new NewLog().setVisible(true);
     }//GEN-LAST:event_maintLogBtnMouseClicked
 
+    private void reportLostGenerateBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportLostGenerateBtnMouseClicked
+        /*
+        Lost Report Button clicked
+        This will generate a new report with all of the lost pieces of equipment
+        */
+        //order UID, Date, report type, data
+        ArrayList<String> reportToAdd = new ArrayList<>();
+        String userID = "0";
+        String todaysDate = currentDate.toString();
+        String reportType = "Report for all lost equipment";
+        String dataForReport = "";
+        dataForReport = emp.pullAllLostForReport();
+        Collections.addAll(reportToAdd, userID, todaysDate, reportType, dataForReport);
+        emp.addNewReport(reportToAdd);
+    }//GEN-LAST:event_reportLostGenerateBtnMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -1376,6 +1413,7 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JList<String> reportList;
     private javax.swing.JLabel reportListLabel;
     private javax.swing.JButton reportLoadAllBtn;
+    private javax.swing.JButton reportLostGenerateBtn;
     private javax.swing.JButton reportPrint;
     private javax.swing.JButton reportSearchBtn;
     private javax.swing.JTextField reportSearchField;
