@@ -1,0 +1,10 @@
+Report ID   - 12359
+UserID      - 0
+Report Date - 2024-04-15
+Type/ Description
+Report for all lost equipment
+
+Report Body
+
+Equipment APM2 lost without a UserID associated
+Equipment MTM4 lost by Employee 1
