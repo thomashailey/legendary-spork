@@ -843,7 +843,7 @@ public class MainPage extends javax.swing.JFrame {
         */
         
         if (invMainList.getSelectedValue() != null) {
-            ArrayList<String> requestedInv = new ArrayList<String>(Arrays.asList(invMainList.getSelectedValue().split(" -- ")));
+            ArrayList<String> requestedInv = new ArrayList(Arrays.asList(invMainList.getSelectedValue().split(" -- ")));
             ArrayList<String> list = new ArrayList<>();
             System.out.println(requestedInv);
             try {
@@ -904,7 +904,7 @@ public class MainPage extends javax.swing.JFrame {
         This will pull all unfulfilled inventory requests for management to look at
             and/or use to fill out their new inventory request
         */
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> list = new ArrayList();
         try {
             list = equip.ViewInventoryRequests(true);
             DefaultListModel model = new DefaultListModel();
@@ -939,7 +939,7 @@ public class MainPage extends javax.swing.JFrame {
         //TODO add your handling code here:
         //this.setVisible(false);
         editEmployee = true;
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> list = new ArrayList();
         try {
             list = emp.PullEmpInfo(pullThisUserIdForEdit);
             selectingThisUserID = pullThisUserIdForEdit;
@@ -1291,6 +1291,12 @@ public class MainPage extends javax.swing.JFrame {
 
     private void btnReportlostMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnReportlostMouseClicked
         // TODO add your handling code here:
+        
+        // TODO add code to pull item's value from database and insert into a new table 
+        // in order to keep track of losses (need to create the finance_tracking table,
+        // and add field in equipment table to track values of each item. Inventory
+        // needs this as well.)
+        
         String equipmentIdInput = JOptionPane.showInputDialog("Please enter the equipment ID like \"APM-1\"");
         var equipID = new ArrayList<String>(Arrays.asList(equipmentIdInput.split("-")));
         System.out.println(equipID);
